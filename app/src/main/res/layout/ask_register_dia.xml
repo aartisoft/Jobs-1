@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/lrtbp_15"
+        card_view:cardBackgroundColor="@color/trans_black"
+        card_view:cardElevation="@dimen/lrtbp_15"
+        card_view:cardUseCompatPadding="false">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/lrtbp_5">
+
+                <ImageView
+                    android:id="@+id/txtfd"
+                    android:layout_width="@dimen/wh_40"
+                    android:layout_height="@dimen/wh_40"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/handshake" />
+
+                <WebView
+                    android:id="@+id/info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtfd"
+                    android:layout_marginBottom="@dimen/lrtbp_5"
+                    android:layout_marginTop="@dimen/lrtbp_5"
+                    android:gravity="center"
+                    android:text="@string/info"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lrtbp_15"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/never"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/wh_35"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/lrtbp_20"
+                        android:gravity="center"
+                        android:src="@drawable/ic_close"
+                        android:text="@string/later"
+                        android:textColor="@color/skyblue_thick" />
+
+                    <Button
+                        android:id="@+id/text_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/wh_35"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/lrtbp_20"
+                        android:background="@drawable/chip_unselected"
+                        android:padding="@dimen/lrtbp_10"
+                        android:src="@drawable/ic_done_black_24dp"
+                        android:text="@string/register"
+                        android:textColor="@color/skyblue_thick"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

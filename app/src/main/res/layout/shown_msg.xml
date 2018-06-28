@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   >
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/lrtbp_5"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/titlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="@dimen/wh_35"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:padding="2dp"
+                    android:shadowColor="#7F000000"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="1.5"
+                    android:text="Rate Now.!"
+                    android:textColor="#000"
+                    android:textSize="@dimen/txt_20"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="2dp"
+                android:shadowColor="#7F000000"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1.5"
+                android:text="If you enjoy using Tamil Provebs app, would you mind a moment to rate it.!\nThank you for your support.!!"
+                android:textSize="@dimen/txt_16"
+                android:textColor="#000"
+                android:textStyle="bold|italic"
+                android:autoLink="web"/>
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="2dp"
+                android:shadowColor="#7F000000"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1.5"
+
+                android:textSize="@dimen/txt_16"
+                android:textColor="#000"
+                android:textStyle="bold|italic"
+                android:autoLink="web"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="@dimen/lrtbp_10"
+
+                >
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/holo_green_dark"
+                    android:text="Close"
+                    android:layout_weight="0.33"
+                    android:textSize="@dimen/txt_18"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:padding="@dimen/lrtbp_5"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

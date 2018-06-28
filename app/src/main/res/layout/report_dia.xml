@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/rel_lay"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/top_lay"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/transparent">
+
+        <TextView
+            android:id="@+id/report_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/top_lay">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint=""
+            android:layout_marginTop="5dp"
+            android:textSize="16dp"
+            android:background="@color/trans_black"
+            android:textColorHint="@color/shade2"
+            android:gravity="top"
+            android:textColor="@color/white"
+            android:textStyle="italic|bold"
+            android:lineSpacingExtra="5dp"/>
+
+        <EditText
+            android:id="@+id/mobno"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint=""
+            android:layout_marginTop="5dp"
+            android:textSize="16dp"
+            android:background="@color/trans_black"
+            android:textColorHint="@color/shade2"
+            android:gravity="top"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textStyle="italic|bold"
+            android:lineSpacingExtra="5dp"/>
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint=""
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="5dp"
+            android:textSize="16dp"
+            android:background="@color/trans_black"
+            android:textColorHint="@color/shade2"
+            android:gravity="top"
+            android:textColor="@color/white"
+            android:textStyle="italic|bold"
+            android:lineSpacingExtra="5dp"/>
+
+        <RadioGroup
+            android:layout_below="@+id/report"
+            android:id="@+id/report_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/lrtbp_10"
+            android:scrollbars="none">
+
+            <RadioButton
+                android:id="@+id/reportbtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/fakejob"/>
+            <RadioButton
+                android:id="@+id/reportbtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/lnf"/>
+            <RadioButton
+                android:id="@+id/reportbtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/exjob"/>
+            <RadioButton
+                android:id="@+id/reportbtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/cnr"/>
+            <RadioButton
+                android:id="@+id/reportbtn5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/others"/>
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/report"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/wh_50"
+            android:background="@color/trans_black"
+            android:gravity="top"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:hint=""
+            android:textStyle="italic|bold"
+            android:textColorHint="@color/shade2"
+            android:layout_below="@+id/name"/>
+
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/lrtbp_10"
+            android:text="@string/send"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:background="@drawable/layout_bg"
+            android:layout_below="@+id/report"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/lrtbp_15"
+            android:layout_marginBottom="@dimen/lrtbp_15"/>
+
+    </LinearLayout>
+
+    </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/lightblue_circle"
+        android:padding="5dp"
+        android:layout_above="@id/layoutBottom"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/ic_close"/>
+
+</RelativeLayout>

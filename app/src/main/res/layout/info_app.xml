@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/trans_back"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/lrtbp_10">
+
+    <TextView
+        android:id="@+id/txtfd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:padding="@dimen/lrtbp_10"
+        android:src="@drawable/ic_info_black_24dp"
+        android:text="வணக்கம்!"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/txt_18"
+        android:textStyle="italic|bold"
+        android:tint="@color/white" />
+
+    <WebView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtfd"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:layout_above="@+id/bottom_lay"
+        android:gravity="center"
+        android:text="@string/info"
+        android:scrollbars="none"
+        android:textSize="@dimen/lrtbp_15" />
+
+        <RelativeLayout
+            android:id="@+id/bottom_lay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/wh_80"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bottom_shape">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="@dimen/wh_200"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/lrtbp_20"
+                android:textStyle="bold|italic"
+                android:text="இன்றைய (அ)லட்சியம், நாளைய (ஏ)மாற்றம்."
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_12" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/text_ok"
+                android:layout_height="@dimen/wh_100"
+                android:layout_width="@dimen/wh_100"
+                app:backgroundTint="@color/thick_yellow"
+                app:layout_anchorGravity="top|right"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/lrtbp_10"
+                android:layout_marginBottom="@dimen/wh_20"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

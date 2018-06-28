@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:id="@+id/layoutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:padding="@dimen/lrtbp_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/lrtbp_15">
+
+                        <ImageView
+                            android:id="@+id/txtfd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_info_outline_white_24dp" />
+
+                        <TextView
+                            android:id="@+id/txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtfd"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="நமது நித்ரா செயலியின் புதிய பதிப்பு வெளியிடப்பட்டுள்ளது."
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/txt_15"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lrtbp_5"
+                    android:text="WHAT'S NEW :"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="bold" />
+
+                <WebView
+                    android:id="@+id/info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/info"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/lrtbp_15" />
+
+                <RelativeLayout
+                    android:id="@+id/continue_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/l"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/lrtbp_15">
+
+                    <Button
+                        android:id="@+id/updateBtn"
+                        android:layout_width="@dimen/wh_120"
+                        android:layout_height="@dimen/wh_40"
+                        android:background="@color/colorPrimary"
+                        android:layout_alignParentLeft="true"
+                        android:text="UPDATE"
+                        android:gravity="center"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:id="@+id/later"
+                        android:layout_width="@dimen/wh_120"
+                        android:layout_height="@dimen/wh_40"
+                        android:background="@color/colorPrimary"
+                        android:text="LATER"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="#fff" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@id/layoutBottom"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-30dp"
+            android:background="@drawable/lightblue_circle"
+            android:padding="5dp"
+            android:src="@drawable/ic_close" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/ads">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@id/swipeContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ScrollView
+                android:id="@+id/cat_lay"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <nithra.jobs.career.placement.utills.FlexboxLayout xmlns:n2="http://schemas.android.com/apk/res-auto"
+                    android:id="@id/fbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    n2:alignContent="flex_start"
+                    n2:alignItems="flex_start"
+                    n2:flexDirection="row"
+                    n2:flexWrap="wrap"
+                    n2:justifyContent="flex_start" />
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:n3="http://schemas.android.com/apk/res-auto"
+            android:id="@id/progressBar"
+            style="@style/SpinKitView.Large.CubeGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            n3:SpinKit_Color="@color/colorPrimary" />
+
+        <include
+            android:id="@+id/lError"
+            layout="@layout/error_lay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@id/ads"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+</RelativeLayout>

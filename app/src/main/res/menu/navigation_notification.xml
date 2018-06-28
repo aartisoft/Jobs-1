@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_whatsapp"
+        android:icon="@drawable/ic_whatsapp_icon"
+        android:title="WhatsApp" />
+
+    <item
+        android:id="@+id/tab_mail"
+        android:icon="@drawable/ic_mail_outline_black_24dp"
+        android:title="Gmail"  />
+
+    <item
+        android:id="@+id/tab_gp"
+        android:icon="@drawable/ic_g_icon"
+        android:title="Gplus"  />
+
+    <item
+        android:id="@+id/tab_shareall"
+        android:icon="@drawable/ic_menu_share"
+        android:title="All"  />
+
+</menu>

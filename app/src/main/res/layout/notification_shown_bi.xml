@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:padding="2dp">
+
+        <RelativeLayout
+            android:id="@+id/cardd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/image"
+                android:text="testtesttes"
+                android:textSize="@dimen/txt_10"
+                android:textColor="@color/primary_text"
+                android:gravity="center|right"
+                />
+            <ImageView android:id="@+id/image"
+                android:layout_width="?android:attr/actionBarSize"
+                android:layout_height="?android:attr/actionBarSize"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_launcher"/>
+            <TextView android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/image"
+                android:layout_below="@+id/time"
+                android:text="testtesttesttesttesttesttesnjkdbjfbdbfdbgjdsbgjsdbgjbdjgbsdjbgsdjbgjsdbgjsdbjbdsjbgdbgsbgjsdgdssdbgksdbgksdbgksdbgkjsdkgjbsdkbgsdkjbgksdgksdbgksdgjkttest"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/primary_text"
+                android:gravity="center|left|top"
+                android:minLines="2"
+                android:maxLines="2"
+                />
+            <TextView android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/image"
+                android:layout_below="@id/title"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardd"
+        />
+
+</RelativeLayout>

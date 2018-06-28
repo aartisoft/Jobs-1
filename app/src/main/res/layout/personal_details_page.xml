@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:gravity="center|left"
+                    android:text="Gender : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/gendergroup"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/light_green_dark"
+                    android:padding="5dp"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/light_green_dark"
+                    android:padding="5dp"
+                    android:text="Female" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:gravity="center|left"
+                    android:text="Marital Status : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/marital_statusgroup"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/unmarried"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/light_green_dark"
+                    android:padding="5dp"
+                    android:text="UnMarried" />
+
+                <RadioButton
+                    android:id="@+id/married"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/light_green_dark"
+                    android:padding="5dp"
+                    android:text="Married" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:gravity="center|left"
+                    android:text="Date of Birth : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/doblay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <!--<nithra.jobs.career.placement.utills.Pinview
+                        android:visibility="gone"
+                        android:id="@+id/pinview_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cursorVisible="false"
+                        app:forceKeyboard="false"
+                        app:hint="d"
+                        app:inputType="number"
+                        app:password="false"
+                        app:pinBackground="@drawable/pin_background"
+                        app:pinHeight="30dp"
+                        app:pinLength="2"
+                        app:pinWidth="30dp"
+                        app:splitWidth="5dp" />-->
+
+                    <TextView
+                        android:id="@+id/pinview_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/lrtbp_10"
+                        android:gravity="center"
+                        android:background="@drawable/pin_background"
+                        android:hint="dd"
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+
+                    <View
+                        android:layout_width="@dimen/lrtbp_5"
+                        android:layout_height="@dimen/wh_2"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/lrtbp_10"
+                        android:layout_marginRight="@dimen/lrtbp_10"
+                        android:background="@color/black" />
+
+                   <!-- <nithra.jobs.career.placement.utills.Pinview
+                        android:visibility="gone"
+                        android:id="@+id/pinview_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cursorVisible="false"
+                        app:forceKeyboard="false"
+                        app:hint="m"
+                        app:inputType="number"
+                        app:password="false"
+                        app:pinBackground="@drawable/pin_background"
+                        app:pinHeight="30dp"
+                        app:pinLength="2"
+                        app:pinWidth="30dp"
+                        app:splitWidth="5dp" />-->
+
+                    <TextView
+                        android:id="@+id/pinview_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/lrtbp_10"
+                        android:hint="mm"
+                        android:background="@drawable/pin_background"
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+
+                    <View
+                        android:layout_width="@dimen/lrtbp_5"
+                        android:layout_height="@dimen/wh_2"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/lrtbp_10"
+                        android:layout_marginRight="@dimen/lrtbp_10"
+                        android:background="@color/black" />
+
+                    <!--<nithra.jobs.career.placement.utills.Pinview
+                        android:visibility="gone"
+                        android:id="@+id/pinview_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cursorVisible="false"
+                        app:forceKeyboard="false"
+                        app:hint="y"
+                        app:inputType="number"
+                        app:password="false"
+                        app:pinBackground="@drawable/pin_background"
+                        app:pinHeight="30dp"
+                        app:pinLength="4"
+                        app:pinWidth="30dp"
+                        app:splitWidth="5dp" />-->
+
+                    <TextView
+                        android:id="@+id/pinview_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:hint="yyyy"
+                        android:padding="@dimen/lrtbp_10"
+                        android:background="@drawable/pin_background"
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/datepick_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_date_range_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:text="Age : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/pinview_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/lrtbp_10"
+                    android:background="@drawable/pin_background"
+                    android:padding="@dimen/lrtbp_10"
+                    android:gravity="center"
+                    android:text=""
+                    android:hint="--"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

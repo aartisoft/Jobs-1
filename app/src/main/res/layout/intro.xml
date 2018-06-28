@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_lay"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/front_screen_1"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/slogantext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/lrtbp_10"
+        android:layout_marginRight="@dimen/lrtbp_10"
+        android:layout_marginTop="@dimen/lrtbp_15"
+        android:gravity="center"
+        android:text="We spot,you get"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_25"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/wh_200"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/txt_25"
+        android:src="@drawable/jobs_logo" />
+
+    <TextView
+        android:id="@+id/quote"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/lrtbp_15"
+        android:layout_marginRight="@dimen/lrtbp_15"
+        android:layout_marginTop="@dimen/lrtbp_15"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/wh_2"
+        android:lineSpacingMultiplier="1.0"
+        android:text="முயற்சி செய்தால் முடியாதது என்று எதுவும் இல்லை ! தொடர்ந்து முயற்சி செய்வோம் ! வெற்றி பெறுவோம் !"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_15"
+        android:textStyle="bold" />
+
+    <!--<TextView
+        android:id="@+id/authorname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="@dimen/lrtbp_25"
+        android:layout_marginTop="@dimen/lrtbp_10"
+        android:text="- நித்ரா"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_20"
+        android:textStyle="bold" />-->
+
+</LinearLayout>

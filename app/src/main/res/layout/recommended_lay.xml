@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/ads"
+        android:layout_weight="1">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@id/swipeContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0">
+
+                <LinearLayout
+                    android:id="@+id/front_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lrtbp_10"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/cardRecommand"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/wh_2"
+                                n2:cardBackgroundColor="@color/colorPrimary">
+
+                                <ImageView
+                                    android:layout_width="@dimen/wh_50"
+                                    android:layout_height="@dimen/wh_50"
+                                    android:layout_gravity="center"
+                                    android:padding="@dimen/lrtbp_5"
+                                    android:src="@drawable/recommanded_job"
+                                    android:tint="@color/white" />
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/wh_2"
+                                android:layout_weight="1"
+                                n2:cardBackgroundColor="@color/dark_yellow">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:padding="@dimen/lrtbp_10"
+                                    android:text="@string/rjob_title"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold" />
+
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/cardLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/wh_2"
+                                n2:cardBackgroundColor="@color/colorPrimary">
+
+                                <ImageView
+                                    android:layout_width="@dimen/wh_50"
+                                    android:layout_height="@dimen/wh_50"
+                                    android:layout_gravity="center"
+                                    android:padding="@dimen/lrtbp_5"
+                                    android:src="@drawable/near_by_jobs"
+                                    android:tint="@color/white" />
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/wh_2"
+                                android:layout_weight="1"
+                                n2:cardBackgroundColor="@color/dark_yellow">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:padding="@dimen/lrtbp_10"
+                                    android:text="@string/rjob_location_title"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold" />
+
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/cardSkills"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/wh_2"
+                                n2:cardBackgroundColor="@color/colorPrimary">
+
+                                <ImageView
+                                    android:layout_width="@dimen/wh_50"
+                                    android:layout_height="@dimen/wh_50"
+                                    android:layout_gravity="center"
+                                    android:padding="@dimen/lrtbp_5"
+                                    android:src="@drawable/reccomend_skills"
+                                    android:tint="@color/white" />
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/wh_2"
+                                android:layout_weight="1"
+                                n2:cardBackgroundColor="@color/dark_yellow">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:padding="@dimen/lrtbp_10"
+                                    android:text="@string/rjob_skill_title"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold" />
+
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/cardQualification"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/wh_2"
+                                n2:cardBackgroundColor="@color/colorPrimary">
+
+                                <ImageView
+                                    android:layout_width="@dimen/wh_50"
+                                    android:layout_height="@dimen/wh_50"
+                                    android:layout_gravity="center"
+                                    android:padding="@dimen/lrtbp_5"
+                                    android:src="@drawable/recommend_qualification"
+                                    android:tint="@color/white" />
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/wh_2"
+                                android:layout_weight="1"
+                                n2:cardBackgroundColor="@color/dark_yellow">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:padding="@dimen/lrtbp_10"
+                                    android:text="@string/rjob_qualifi_title"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold" />
+
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/lrtbp_10"
+                        android:layout_weight="1"
+                        n2:cardElevation="@dimen/lrtbp_5"
+                        n2:cardBackgroundColor="@color/dark_yellow">
+
+                        <TextView
+                            android:id="@+id/btnBrowse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/lrtbp_20"
+                            android:paddingTop="@dimen/lrtbp_20"
+                            android:text="அனைத்து வேலைவாய்ப்புகளையும் காண"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@id/header"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/bgg"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@id/logo"
+                        android:layout_width="@dimen/wh_240"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="@dimen/wh_200"
+                        android:src="@drawable/rjob" />
+
+                    <WebView
+                        android:id="@id/txtStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/logo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/lrtbp_15"
+                        android:layout_marginRight="@dimen/lrtbp_15"
+                        android:descendantFocusability="blocksDescendants"
+                        android:padding="@dimen/lrtbp_5"
+                        android:scrollbars="none"
+                        android:text="description" />
+
+                    <Button
+                        android:id="@id/btnEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/wh_35"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/lrtbp_20"
+                        android:background="@drawable/button_back"
+                        android:padding="@dimen/lrtbp_10"
+                        android:text=""
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:n6="http://schemas.android.com/apk/res-auto"
+            android:id="@id/progressBar"
+            style="@style/SpinKitView.Large.CubeGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            n6:SpinKit_Color="@color/colorPrimary" />
+
+        <include
+            android:id="@+id/lError"
+            layout="@layout/error_lay"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@id/fragment_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@id/ads"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone" />
+</LinearLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimary"
+    android:gravity="center">
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.Large.FoldingCube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/colorPrimary" />
+
+    <RelativeLayout
+        android:id="@+id/lContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/quick_start_cropped_image"
+            android:layout_width="@dimen/wh_80"
+            android:layout_height="@dimen/wh_80"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/lrtbp_10"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:id="@+id/layoutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/quick_start_cropped_image"
+            android:layout_marginTop="@dimen/lrtbp_25"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/lrtbp_25"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/wh_20"
+                        android:gravity="center"
+                        android:shadowColor="@color/white"
+                        android:shadowRadius="5"
+                        android:textStyle="bold"
+                        android:text="நீங்கள் பதிவு செய்த கைப்பேசி எண்ணிற்கு அனுப்பப்பட்டுள்ள நான்கு  இலக்க OTP எண்-ஐ உள்ளீடு செய்யவும்."
+                        android:textColor="@color/black"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/phoneno"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/wh_20"
+                        android:gravity="center"
+                        android:shadowColor="@color/white"
+                        android:shadowRadius="5"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <nithra.jobs.career.placement.utills.Pinview
+                        android:id="@+id/pinview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/wh_20"
+                        app:cursorVisible="false"
+                        app:forceKeyboard="false"
+                        app:hint="-"
+                        app:inputType="number"
+                        app:password="false"
+                        app:pinBackground="@drawable/rounded_sqr"
+                        app:pinHeight="@dimen/wh_40"
+                        app:pinLength="4"
+                        app:pinWidth="@dimen/wh_40" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/wh_20"
+                        android:background="@color/colorPrimary"
+                        android:text="Verify"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/resend_otp_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/wh_20"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/lrtbp_10"
+                            android:shadowColor="@color/white"
+                            android:shadowRadius="5"
+                            android:textStyle="bold"
+                            android:text="OTP-ஐ பெறவில்லையா?"
+                            android:textColor="@color/black"
+                            android:textSize="13dp" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btnResendOtp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:text="மீண்டும் அனுப்பு"
+                            android:textColor="@color/colorPrimary"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/timer_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/wh_20"
+                        android:orientation="horizontal">
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="@dimen/lrtbp_15"-->
+                            <!--android:layout_height="@dimen/lrtbp_15"-->
+                            <!--android:src="@drawable/ic_alarm_black_24dp"/>-->
+
+                        <TextView
+                            android:id="@+id/timer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/lrtbp_5"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/thick_green"
+                            android:textSize="@dimen/lrtbp_15" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

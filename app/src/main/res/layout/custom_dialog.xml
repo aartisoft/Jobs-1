@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/text_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="Select Item"
+            android:textColor="@color/voilet"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/wh_20"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/list_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/searchview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/lrtbp_20"
+                android:layout_marginRight="@dimen/lrtbp_20"
+                android:background="@drawable/rounded_sqr"
+                android:padding="@dimen/wh_2"
+                app:iconifiedByDefault="false"
+                android:focusable="false"
+                app:queryHint="search..."
+                app:searchIcon="@drawable/ic_search_black_24dp" />
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/searchview"
+                android:layout_marginTop="@dimen/lrtbp_15"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/list_lay"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/wh_20"
+            android:layout_marginRight="@dimen/wh_20"
+            android:layout_marginTop="@dimen/wh_20"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="If your skills were not here,Kindly mention it below :"
+                android:textColor="#131212"
+                android:textSize="@dimen/txt_16"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/user_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="5"
+                android:inputType="textCapWords"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end"
+        android:layout_marginBottom="@dimen/lrtbp_10"
+        android:layout_marginRight="@dimen/lrtbp_15"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/lrtbp_10"
+            android:background="@color/navi_back"
+            android:text="CANCEL" />
+
+        <Button
+            android:id="@+id/set_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/navi_back"
+            android:text="DONE" />
+
+    </LinearLayout>
+
+</LinearLayout>

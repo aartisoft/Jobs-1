@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/light_yellow"
+    android:layout_marginBottom="@dimen/lrtbp_10"
+    android:layout_marginLeft="@dimen/lrtbp_10"
+    android:layout_marginRight="@dimen/lrtbp_10">
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/wh_40"
+            android:background="@drawable/half_circle"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/photo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/lrtbp_10"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_exclamation_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lrtbp_10"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/delete_text1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/nativelocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:gravity="center|left"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/delete_text2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/nativel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:gravity="center|left"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/delete_text3"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:gravity="center"
+                android:text="@string/delete_text4"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_15"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/number_change"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wh_40"
+                android:layout_marginTop="@dimen/lrtbp_15">
+
+                <Button
+                    android:id="@+id/yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_back"
+                    android:text="@string/yes"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_back"
+                    android:text="@string/no"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- <ImageView
+         android:id="@+id/photo"
+         android:layout_width="@dimen/wh_40"
+         android:layout_height="@dimen/wh_40"
+         android:layout_marginLeft="@dimen/lrtbp_5"
+         android:background="@drawable/lightblue_circle"
+         android:gravity="center"
+         android:padding="@dimen/lrtbp_10"
+         android:src="@drawable/exclamation_sign" />-->
+
+</android.support.v7.widget.CardView>

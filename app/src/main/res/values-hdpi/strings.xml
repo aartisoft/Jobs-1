@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="screen_identification">HDPI-sw320dp</string>
+    <string name="initial_scale">140</string>
+    <string name="options_gap">1</string>
+    <string name="margin_top4">margin-top:0.5%</string>
+    <string name="margin_top3">margin-top:1%</string>
+    <string name="margin_top2">margin-top:2%</string>
+    <string name="margin_top1">margin-top:3%</string>
+    <string name="body_font">17</string>
+    <string name="body_font1">15</string>
+
+</resources>

@@ -1,0 +1,75 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <LinearLayout
+       android:orientation="vertical"
+       android:layout_margin="@dimen/lrtbp_10"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <EditText
+           android:cursorVisible="false"
+           android:focusable="false"
+           android:id="@+id/edSkills"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:hint="Skills"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <EditText
+           android:cursorVisible="false"
+           android:focusable="false"
+           android:id="@+id/edLocation"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:hint="Location"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <EditText
+           android:visibility="gone"
+           android:cursorVisible="false"
+           android:focusable="false"
+           android:id="@+id/edQualification"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:hint="Qualification"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <EditText
+           android:cursorVisible="false"
+           android:focusable="false"
+           android:id="@+id/edExperience"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:hint="Experience"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <EditText
+           android:cursorVisible="false"
+           android:focusable="false"
+           android:id="@+id/edSalary"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:hint="Salary"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+
+       <android.support.v7.widget.AppCompatButton
+           android:id="@+id/btnSearch"
+           android:layout_marginRight="@dimen/lrtbp_10"
+           android:layout_marginLeft="@dimen/lrtbp_10"
+           android:layout_marginTop="@dimen/lrtbp_10"
+           android:textColor="@android:color/white"
+           android:background="@color/colorPrimary"
+           android:text="Search"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+   </LinearLayout>
+
+</FrameLayout>

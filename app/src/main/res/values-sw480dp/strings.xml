@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="screen_identification">sw480dp</string>
+    <string name="initial_scale">100</string>
+    <string name="options_gap">3</string>
+    <string name="margin_top4">margin-top:6%</string>
+    <string name="margin_top3">margin-top:7%</string>
+    <string name="margin_top2">margin-top:8%</string>
+    <string name="margin_top1">margin-top:10%</string>
+    <string name="body_font">18</string>
+    <string name="body_font1">16</string>
+
+</resources>

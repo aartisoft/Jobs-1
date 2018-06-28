@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="screen_identification">sw360dp</string>
+    <string name="initial_scale">150</string>
+    <string name="options_gap">2</string>
+    <string name="margin_top4">margin-top:3%</string>
+    <string name="margin_top3">margin-top:5%</string>
+    <string name="margin_top2">margin-top:6%</string>
+    <string name="margin_top1">margin-top:7%</string>
+    <string name="body_font">19</string>
+    <string name="body_font1">16</string>
+
+</resources>

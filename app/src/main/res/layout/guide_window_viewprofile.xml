@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/trans_black"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/wh_50"
+            android:src="@drawable/point_arrow"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_below="@+id/lin1"
+        android:padding="@dimen/lrtbp_10"
+        android:text="உங்கள் விபரங்களை புதுப்பித்து கொள்ள இங்கே கிளிக் செய்யவும்."/>
+
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:textColor="@color/white"
+        android:background="@drawable/rectangle_guide"
+        android:layout_marginTop="50dp"
+        android:text="@string/ok"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/search_text"/>
+
+</RelativeLayout>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/trans_black"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/action_employer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:src="@drawable/ic_call_white_24dp"
+                android:textColor="@color/white"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="@dimen/wh_100"
+                android:layout_height="@dimen/wh_100"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:src="@drawable/point_arrow"
+                android:textColor="@color/white"
+                android:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="@dimen/wh_100"
+                android:layout_height="@dimen/wh_100"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/white" />
+
+            <RelativeLayout
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/action_notifications"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="bell"
+                    android:gravity="center"
+                    android:src="@drawable/ic_notifications_none_white_24dp" />
+
+                <TextView
+                    android:id="@+id/notifications_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/action_notifications"
+                    android:layout_alignRight="@+id/action_notifications"
+                    android:layout_alignTop="@+id/action_notifications"
+                    android:background="@drawable/rounded_sqr"
+                    android:gravity="center"
+                    android:minWidth="15sp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:text="9+"
+                    android:textColor="#000000"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:padding="@dimen/lrtbp_10"
+        android:text="உங்கள் விபரங்களை புதுப்பித்து கொள்ள இங்கே கிளிக் செய்யவும்."
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/search_text"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/rectangle_guide"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

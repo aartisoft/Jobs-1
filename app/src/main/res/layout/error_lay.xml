@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lError"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_empty_white_box" />
+
+    <TextView
+        android:id="@+id/txtError1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lrtbp_10"
+        android:gravity="center"
+        android:text="Something went wrong"
+        android:textColor="@color/secondary_text" />
+
+    <Button
+        android:id="@+id/network_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lrtbp_10"
+        android:padding="@dimen/lrtbp_10"
+        android:background="@color/colorPrimary"
+        android:text = "@string/retry"
+        android:textColor="@color/white"/>
+
+</LinearLayout>
+

@@ -1,0 +1,3 @@
+# Referenced at /home/vanmathi/Desktop/Jobs_03_03_18_ver19_backup/Jobs/app/build/intermediates/manifests/full/debug/AndroidManifest.xml:31
+-keep class nithra.jobs.career.placement.App_analytics { <init>(...); }
+

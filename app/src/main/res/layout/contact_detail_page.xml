@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="left"
+                android:text="*"
+                android:textColor="@color/red"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="left"
+                android:text="(குறியிட்ட இடங்களைக் கண்டிப்பாக நிரப்ப வேண்டும்)"
+                android:textColor="@color/grey"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:id="@+id/lin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/profilephoto"
+                    android:layout_width="@dimen/wh_100"
+                    android:layout_height="@dimen/wh_100"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/user" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/lrtbp_20"
+                        android:gravity="left"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="20dp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <nithra.jobs.career.placement.utills.CustomEditText
+                            android:id="@+id/edName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/lrtbp_30"
+                            android:drawableRight="@drawable/ic_accessibility_black_24dp"
+                            android:hint="Name"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/lrtbp_20"
+                        android:gravity="left"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="20dp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <nithra.jobs.career.placement.utills.CustomEditText
+                            android:id="@+id/edMail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/lrtbp_30"
+                            android:drawableRight="@drawable/ic_gmail"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/edMobno"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_bg"
+                    android:drawablePadding="@dimen/lrtbp_30"
+                    android:drawableRight="@drawable/ic_call_black_24dp"
+                    android:gravity="center|left"
+                    android:hint="Mobile No."
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <nithra.jobs.career.placement.utills.CustomEditText
+                        android:id="@+id/edAlternateMob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/lrtbp_30"
+                        android:drawableRight="@drawable/ic_exit_to_app_black_24dp"
+                        android:hint="Alternate Mobile No."
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/livingcity"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_bg"
+                    android:drawablePadding="@dimen/lrtbp_30"
+                    android:drawableRight="@drawable/ic_place_black_24dp"
+                    android:gravity="center|left"
+                    android:hint="Living City"
+                    android:inputType="textAutoComplete"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lin"
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="@dimen/wh_20"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/mobileshow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/yellow"
+                        android:lineSpacingExtra="1dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="left"
+                        android:text="உங்கள் மின்னஞ்சல் மற்றும் தொலைபேசி எண் ஆகியவற்றை நிறுவனங்களுக்கு காண்பிக்க."
+                        android:textColor="@color/black"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

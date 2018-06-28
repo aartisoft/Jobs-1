@@ -1,0 +1,115 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:padding="@dimen/lrtbp_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:text="உங்கள் கருத்தை பகிரவும்"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/txt_20" />
+
+            <EditText
+                android:id="@+id/edEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/lrtbp_20"
+                android:background="@drawable/layout_bg1"
+                android:gravity="left"
+                android:hint="உங்களது மின்னஞ்சலை தட்டச்சு செய்யவும்"
+                android:inputType="textEmailAddress|textMultiLine"
+                android:paddingTop="@dimen/lrtbp_10" />
+
+            <EditText
+                android:id="@+id/edphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/lrtbp_20"
+                android:background="@drawable/layout_bg1"
+                android:inputType="number"
+                android:gravity="left"
+                android:hint="கைப்பேசி எண்"
+                android:paddingTop="@dimen/lrtbp_10" />
+
+            <EditText
+                android:id="@+id/edFeed"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wh_180"
+                android:layout_margin="@dimen/lrtbp_20"
+                android:background="@drawable/layout_bg1"
+                android:gravity="left"
+                android:hint="உங்களது கருத்துக்களை தட்டச்சு செய்யவும்"
+                android:inputType="textCapSentences|textMultiLine"
+                android:paddingTop="@dimen/lrtbp_10" />
+
+            <TextView
+                android:id="@+id/txtPrivacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/lrtbp_10"
+                android:text="@string/privacy_policy"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_16" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/txtCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center"
+                    android:padding="@dimen/lrtbp_20"
+                    android:text="CANCEL"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/txt_16" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/txtSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center"
+                    android:padding="@dimen/lrtbp_20"
+                    android:text="@string/send"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/txt_16" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>
