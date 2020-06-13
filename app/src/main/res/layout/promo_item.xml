@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/lrtbp_5"
+                app:cardElevation="@dimen/lrtbp_10"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/lrtbp_5"
+                card_view:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/lrtbp_5">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/wh_35"
+                        android:layout_height="@dimen/wh_35"
+                        android:layout_margin="@dimen/lrtbp_5"
+                        android:background="@drawable/half_rec"
+                        android:gravity="center"
+                        android:rotation="45">
+
+                        <TextView
+                            android:id="@+id/status_view_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/wh_2"
+                            android:padding="@dimen/lrtbp_5"
+                            android:rotation="320"
+                            android:text="1"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#FFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/claim_no_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/txt_10"
+                                android:text="+91 8526935727"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                android:textColor="#000"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/status_click_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/lrtbp_5"
+                            android:background="@drawable/bg_green"
+                            android:padding="@dimen/lrtbp_5"
+                            android:text="Claim Now"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#FFF"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

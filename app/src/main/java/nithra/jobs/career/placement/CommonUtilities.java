@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import nithra.jobs.career.placement.utills.SU;
-import nithra.jobs.career.placement.utills.U;
 
 
 public final class CommonUtilities {

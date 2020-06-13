@@ -2,12 +2,7 @@ package nithra.jobs.career.placement.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +33,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.networking.MySingleton;
 import nithra.jobs.career.placement.pojo.Item;
 import nithra.jobs.career.placement.utills.FlexboxLayout;
 import nithra.jobs.career.placement.utills.SU;
+import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
 
 /**
@@ -61,6 +64,7 @@ public class DistrictWiseFragment extends Fragment {
     SpinKitView progressBar;
     SwipeRefreshLayout swipeContainer;
     Button networkRetry;
+    SharedPreference pref;
 
     public DistrictWiseFragment() {
         // Required empty public constructor
@@ -85,6 +89,7 @@ public class DistrictWiseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = new SharedPreference();
         districtList = new ArrayList<>();
         fblLay = view.findViewById(R.id.fbl);
         fragHolder = view.findViewById(R.id.fragment_container);
@@ -100,8 +105,16 @@ public class DistrictWiseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         MainActivity.homePagePosition = U.DISTRICT_PAGE;
-        ads.setVisibility(View.VISIBLE);
-        MainActivity.showAd(getActivity(), ads, false);
+
+        if (getActivity() != null)
+            if (pref.getInt(getActivity(), U.SH_AD_PURCHASED) == 0) {
+                if (U.isNetworkAvailable(getActivity())) {
+                    ads.setVisibility(View.VISIBLE);
+                    MainActivity.showAd(getActivity(), ads, false);
+                }
+            }
+
+
         load();
 
         swipeContainer.setColorSchemeResources(R.color.green, R.color.orange, R.color.lightblue);
@@ -132,10 +145,11 @@ public class DistrictWiseFragment extends Fragment {
 
     private void loadJSON(final String param) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, SU.BASE_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SU.SERVER,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e("districtresponse", "" + response);
                         showJSON(response);
                     }
                 },
@@ -149,7 +163,14 @@ public class DistrictWiseFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("action", param);
+                if (getActivity() != null) {
+                    params.put("action", param);
+                    params.put("user_type", pref.getString(getActivity(), U.SH_USER_TYPE));
+                    params.put("employee_id", pref.getString(getActivity(), U.SH_EMPLOYEE_ID));
+                    params.put("android_id", U.getAndroidId(getActivity()));
+                    params.put("vcode", String.valueOf(U.versioncode_get(getActivity())));
+                    Log.e("paramsresponse", "" + params);
+                }
                 return params;
             }
         };
@@ -181,7 +202,7 @@ public class DistrictWiseFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    public void setCategory(List<Item> list, final FlexboxLayout fbl) {
+    private void setCategory(List<Item> list, final FlexboxLayout fbl) {
         fbl.setVisibility(View.VISIBLE);
         fbl.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
@@ -191,6 +212,7 @@ public class DistrictWiseFragment extends Fragment {
                 final ImageView remove = subchild.findViewById(R.id.remove);
                 remove.setVisibility(View.GONE);
                 tv.setId(list.get(i).getId());
+                tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.thick_blue));
                 tv.setText(list.get(i).getItem() + "  " + "(" + list.get(i).getCount() + ")");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -216,11 +238,8 @@ public class DistrictWiseFragment extends Fragment {
                             fragmentTransaction = fragmentManager.beginTransaction();
                             JobListFragment cat = JobListFragment.newInstance(SU.DISTRICTWISE, "", "" + distStr,
                                     "", "", "", "", "", "", "1");
-                            if (fragmentTransaction != null) {
-                                fragmentTransaction.replace(R.id.fragment_container, cat, "HELLO");
-                                fragmentTransaction.commit();
-                            }
-
+                            fragmentTransaction.replace(R.id.fragment_container, cat, "HELLO");
+                            fragmentTransaction.commit();
                         }
                     }
                 });
@@ -243,12 +262,8 @@ public class DistrictWiseFragment extends Fragment {
 
     private void errorHandling(VolleyError error) {
         String e;
-        if (error instanceof TimeoutError)
-            e = "Request TimeOut";
-        else if (error instanceof AuthFailureError)
-            e = "AuthFailureError";
-        else if (error instanceof ServerError)
-            e = "ServerError";
+        if (error instanceof TimeoutError || error instanceof AuthFailureError || error instanceof ServerError)
+            e = U.SERVER_ERROR;
         else if (error instanceof NetworkError)
             e = U.INA;
         else if (error instanceof ParseError)

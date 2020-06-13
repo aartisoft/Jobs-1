@@ -1,104 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:scrollbars="none">
 
-    <RelativeLayout
-        android:id="@+id/title_lay"
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/wh_60"
-        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/lrtbp_15"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/settings"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/lrtbp_10"
-        card_view:cardBackgroundColor="#FFFFFF"
-        card_view:cardUseCompatPadding="false">
-
         <RelativeLayout
+            android:id="@+id/title_lay"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp">
+            android:layout_height="@dimen/wh_50"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/lrtbp_15"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/white" />
 
             <TextView
-                android:id="@+id/notify_settings_text"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Notification on/off"
-                android:textSize="15dp" />
-
-            <Switch
-                android:id="@+id/switch2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/notify_settings_text"
-                android:checked="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/settings"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/lrtbp_10"
-        card_view:cardBackgroundColor="#FFFFFF"
-        card_view:cardUseCompatPadding="false">
-
-        <RelativeLayout
+        <!--<androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lrtbp_10"
+            card_view:cardBackgroundColor="#FFFFFF"
+            card_view:cardUseCompatPadding="false">
 
-            <TextView
-                android:id="@+id/notify_settings"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/notify_settings_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Notification on/off"
+                    android:textSize="15dp" />
+
+                <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/notify_settings_text"
+                    android:checked="true" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+-->
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lrtbp_10"
+            card_view:cardBackgroundColor="#FFFFFF"
+            card_view:cardUseCompatPadding="false">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp">
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/notify_settings"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/notify_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Notification Sound on/off"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lrtbp_10"
+            card_view:cardBackgroundColor="#FFFFFF"
+            card_view:cardUseCompatPadding="false">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Notification Sound on/off"
-                android:textSize="15dp" />
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@+id/notify_settings"
-                android:checked="true" />
+                <ImageView
+                    android:id="@+id/editDistrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/lrtbp_5"
+                    android:src="@drawable/ic_mode_edit_black_24dp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/lrtbp_30"
+                    android:text="வேலை தேட நீங்கள் தேர்வு செய்த மாவட்டங்கள் :"
+                    android:textSize="15dp" />
 
-    </android.support.v7.widget.CardView>
+                <nithra.jobs.career.placement.utills.FlexboxLayout
+                    android:id="@+id/fblDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingTop="8dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start" />
 
-</LinearLayout>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.activity.SubCategoryActivity;
 import nithra.jobs.career.placement.engine.DBHelper;
@@ -26,22 +27,9 @@ import nithra.jobs.career.placement.engine.DBHelper;
  */
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+    DBHelper dbHelper;
     private Context mContext;
     private List<String> values;
-    DBHelper dbHelper;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title;
-        public RelativeLayout parentLay;
-        ImageView imgLogo;
-
-        public MyViewHolder(View view) {
-            super(view);
-            title = view.findViewById(R.id.title);
-            parentLay = view.findViewById(R.id.parent_lay);
-            imgLogo = view.findViewById(R.id.imgLogo);
-        }
-    }
 
     public CategoryAdapter(Context mContext, List<String> values) {
         this.mContext = mContext;
@@ -62,21 +50,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
         Cursor c = dbHelper.getQry("SELECT image FROM govtexams where board='" + values.get(position) + "'");
         c.moveToFirst();
-        String imageName=c.getString(0);
+        String imageName = c.getString(0);
         try {
-            InputStream ims = mContext.getAssets().open("images/"+imageName+"");
+            InputStream ims = mContext.getAssets().open("images/" + imageName + "");
             Drawable d = Drawable.createFromStream(ims, null);
             holder.imgLogo.setImageDrawable(d);
-        }
-        catch(IOException ex) {
-
+        } catch (IOException ignored) {
+            Log.e("error", "" + ignored);
         }
         holder.parentLay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.parentLay.setEnabled(false);
                 Intent intent = new Intent(mContext, SubCategoryActivity.class);
-                intent.putExtra("board",values.get(position));
+                intent.putExtra("board", values.get(position));
                 mContext.startActivity(intent);
+                holder.parentLay.setEnabled(true);
             }
         });
     }
@@ -89,6 +78,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @Override
     public int getItemCount() {
         return values.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public RelativeLayout parentLay;
+        ImageView imgLogo;
+
+        public MyViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.title);
+            parentLay = view.findViewById(R.id.parent_lay);
+            imgLogo = view.findViewById(R.id.imgLogo);
+        }
     }
 
 }

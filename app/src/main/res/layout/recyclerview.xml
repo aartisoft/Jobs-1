@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/row_activated"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -26,7 +26,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/wh_40"
+                android:layout_marginLeft="@dimen/wh_50"
                 android:textColor="@color/white"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/txt_15"
@@ -35,11 +35,47 @@
 
         </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/adLayout">
+
+        <LinearLayout
+            android:id="@+id/lProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgLoading"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wh_35"
+                android:src="@drawable/loading" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/infoTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5"
+        android:text=""
+        android:textSize="@dimen/txt_15"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/adLayout"
+        android:visibility="visible"
         android:layout_below="@+id/title_lay"
         android:scrollbars="vertical" />
 
@@ -50,5 +86,19 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="@dimen/wh_50"
+        android:layout_height="@dimen/wh_50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/wh_100"
+        android:layout_marginRight="@dimen/lrtbp_25"
+        android:src="@drawable/plus"
+        android:tint="@color/white"
+        android:visibility="gone"
+        app:backgroundTint="@color/orange"
+        app:elevation="0dp" />
 
 </RelativeLayout>

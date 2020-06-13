@@ -2,17 +2,20 @@ package nithra.jobs.career.placement.pojo;
 
 import android.widget.FrameLayout;
 
+import java.io.Serializable;
+
 /**
  * Created by arunrk on 24/5/17.
  */
 
-public class Jobs {
+public class Jobs implements Serializable {
 
     public FrameLayout frameLayout;
-    public boolean isAlarm, isAd, isRead;
+    public boolean isAlarm, isAd, isRead, isRateus, isRjobs;
     public int id, iscomplete, datediff, isAMPM;
     public String postedby;
     public String jobtitle;
+    public String jobtitleId;
     public String image;
     public String jobtype;
     public String experience;
@@ -32,14 +35,22 @@ public class Jobs {
     public String expiredate;
     public String completeddate;
     public String verified;
+    public String viewType;
+    public String grpJobId;
+    public String popularEmpContent;
+    public String serialNumber;
+    public String tag;
+    public String AdditionalTag;
     public long actionDate;
 
-    public Jobs() {}
+    public Jobs() {
+    }
 
-    public Jobs(int id, String image, String jobtitle, String employer, String date, long actionDate) {
+    public Jobs(int id, String image, String jobtitle, String jobtitleId, String employer, String date, long actionDate) {
         this.id = id;
         this.image = image;
         this.jobtitle = jobtitle;
+        this.jobtitleId = jobtitleId;
         this.employer = employer;
         this.date = date;
         this.actionDate = actionDate;
@@ -51,6 +62,22 @@ public class Jobs {
 
     public void setAd(boolean ad) {
         isAd = ad;
+    }
+
+    public boolean isRjobs() {
+        return isRjobs;
+    }
+
+    public void setRjobs(boolean rjobs) {
+        isRjobs = rjobs;
+    }
+
+    public boolean isRateus() {
+        return isRateus;
+    }
+
+    public void setRateus(boolean rateus) {
+        isRateus = rateus;
     }
 
     public long getActionDate() {
@@ -131,6 +158,14 @@ public class Jobs {
 
     public void setJobtitle(String jobtitle) {
         this.jobtitle = jobtitle;
+    }
+
+    public String getJobtitleId() {
+        return jobtitleId;
+    }
+
+    public void setJobtitleId(String jobtitleId) {
+        this.jobtitleId = jobtitleId;
     }
 
     public String getDescription() {
@@ -283,5 +318,53 @@ public class Jobs {
 
     public void setAlarm(boolean alarm) {
         isAlarm = alarm;
+    }
+
+    public String getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(String viewType) {
+        this.viewType = viewType;
+    }
+
+    public String getGrpJobId() {
+        return grpJobId;
+    }
+
+    public void setGrpJobId(String grpJobId) {
+        this.grpJobId = grpJobId;
+    }
+
+    public String getPopularEmpContent() {
+        return popularEmpContent;
+    }
+
+    public void setPopularEmpContent(String popularEmpContent) {
+        this.popularEmpContent = popularEmpContent;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getAdditionalTag() {
+        return AdditionalTag;
+    }
+
+    public void setAdditionalTag(String additionalTag) {
+        AdditionalTag = additionalTag;
     }
 }

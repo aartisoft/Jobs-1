@@ -3,7 +3,7 @@
 <defaultsMap>
     <entry>
         <key>JOB_VACANCY_TITLE</key>
-        <value>1</value>
+        <value>0</value>
     </entry>
     <entry>
         <key>welcome_message_caps</key>

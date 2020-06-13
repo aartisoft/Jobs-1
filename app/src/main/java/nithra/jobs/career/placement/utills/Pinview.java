@@ -3,8 +3,6 @@ package nithra.jobs.career.placement.utills;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -21,6 +19,8 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import nithra.jobs.career.placement.R;
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
@@ -33,6 +33,10 @@ import static android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD;
 
 public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusChangeListener, View.OnKeyListener {
     private final float DENSITY = getContext().getResources().getDisplayMetrics().density;
+    OnClickListener mClickListener;
+    View currentFocus = null;
+    InputFilter[] filters = new InputFilter[1];
+    LinearLayout.LayoutParams params;
     /**
      * Attributes
      */
@@ -44,7 +48,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
     private boolean mCursorVisible = false;
     private boolean mDelPressed = false;
     @DrawableRes
-    private int mPinBackground = R.drawable.rounded_sqr;
+    private int mPinBackground = R.drawable.bg_black_line;
     private boolean mPassword = false;
     private String mHint = "";
     private InputType inputType = InputType.TEXT;
@@ -53,33 +57,13 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
     private boolean fromSetValue = false;
     private boolean mForceKeyboard = true;
 
-    public enum InputType {
-        TEXT, NUMBER
-    }
-
-    /**
-     * Interface for onDataEntered event.
-     */
-
-    public interface PinViewEventListener {
-        void onDataEntered(Pinview pinview, boolean fromUser);
-    }
-
-    OnClickListener mClickListener;
-
-    View currentFocus = null;
-
-    InputFilter filters[] = new InputFilter[1];
-    LinearLayout.LayoutParams params;
-
-
     public Pinview(Context context) {
         this(context, null);
     }
-
     public Pinview(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
 
     public Pinview(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -245,35 +229,6 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
     }
 
     /**
-     * Requsets focus on current pin view and opens keyboard if forceKeyboard is enabled.
-     *
-     * @return the current focused pin view. It can be used to open softkeyboard manually.
-     */
-    public View requestPinEntryFocus() {
-        int currentTag = Math.max(0, getIndexOfCurrentFocus());
-        EditText currentEditText = editTextList.get(currentTag);
-        if (currentEditText != null) {
-            currentEditText.requestFocus();
-        }
-        openKeyboard();
-        return currentEditText;
-    }
-
-    private void openKeyboard() {
-        if (mForceKeyboard) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
-    }
-
-    /**
-     * Clears the values in the Pinview
-     */
-    public void clearValue() {
-        setValue("");
-    }
-
-    /**
      * Sets the value of the Pinview
      *
      * @param value
@@ -306,6 +261,35 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
         }
         fromSetValue = false;
         updateEnabledState();
+    }
+
+    /**
+     * Requsets focus on current pin view and opens keyboard if forceKeyboard is enabled.
+     *
+     * @return the current focused pin view. It can be used to open softkeyboard manually.
+     */
+    public View requestPinEntryFocus() {
+        int currentTag = Math.max(0, getIndexOfCurrentFocus());
+        EditText currentEditText = editTextList.get(currentTag);
+        if (currentEditText != null) {
+            currentEditText.requestFocus();
+        }
+        openKeyboard();
+        return currentEditText;
+    }
+
+    private void openKeyboard() {
+        if (mForceKeyboard) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+    }
+
+    /**
+     * Clears the values in the Pinview
+     */
+    public void clearValue() {
+        setValue("");
     }
 
     @Override
@@ -476,54 +460,11 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
     }
 
     /**
-     * A class to implement the transformation mechanism
-     */
-    private class PinTransformationMethod implements TransformationMethod {
-
-        private char BULLET = '\u2022';
-
-        @Override
-        public CharSequence getTransformation(CharSequence source, final View view) {
-            return new PasswordCharSequence(source);
-        }
-
-        @Override
-        public void onFocusChanged(final View view, final CharSequence sourceText, final boolean focused, final int direction, final Rect previouslyFocusedRect) {
-
-        }
-
-        private class PasswordCharSequence implements CharSequence {
-            private final CharSequence source;
-
-            public PasswordCharSequence(@NonNull CharSequence source) {
-                this.source = source;
-            }
-
-            @Override
-            public int length() {
-                return source.length();
-            }
-
-            @Override
-            public char charAt(int index) {
-                return BULLET;
-            }
-
-            @Override
-            public CharSequence subSequence(int start, int end) {
-                return new PasswordCharSequence(this.source.subSequence(start, end));
-            }
-
-        }
-    }
-
-    /**
      * Getters and Setters
      */
     private int getIndexOfCurrentFocus() {
         return editTextList.indexOf(currentFocus);
     }
-
 
     public int getSplitWidth() {
         return mSplitWidth;
@@ -622,5 +563,59 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
 
     public void setPinViewEventListener(PinViewEventListener listener) {
         this.mListener = listener;
+    }
+
+    public enum InputType {
+        TEXT, NUMBER
+    }
+
+    /**
+     * Interface for onDataEntered event.
+     */
+
+    public interface PinViewEventListener {
+        void onDataEntered(Pinview pinview, boolean fromUser);
+    }
+
+    /**
+     * A class to implement the transformation mechanism
+     */
+    private class PinTransformationMethod implements TransformationMethod {
+
+        private char BULLET = '\u2022';
+
+        @Override
+        public CharSequence getTransformation(CharSequence source, final View view) {
+            return new PasswordCharSequence(source);
+        }
+
+        @Override
+        public void onFocusChanged(final View view, final CharSequence sourceText, final boolean focused, final int direction, final Rect previouslyFocusedRect) {
+
+        }
+
+        private class PasswordCharSequence implements CharSequence {
+            private final CharSequence source;
+
+            public PasswordCharSequence(@NonNull CharSequence source) {
+                this.source = source;
+            }
+
+            @Override
+            public int length() {
+                return source.length();
+            }
+
+            @Override
+            public char charAt(int index) {
+                return BULLET;
+            }
+
+            @Override
+            public CharSequence subSequence(int start, int end) {
+                return new PasswordCharSequence(this.source.subSequence(start, end));
+            }
+
+        }
     }
 }

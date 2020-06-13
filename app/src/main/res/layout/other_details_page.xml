@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,10 +16,10 @@
             android:id="@+id/linlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -94,7 +93,7 @@
                     android:layout_height="@dimen/wh_35"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Skills  "
+                    android:text="Skills :"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
 
@@ -137,11 +136,132 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Preferred Job Category : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/txtjobCat"
+                    android:layout_width="@dimen/wh_35"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_gravity="right"
+                    android:background="@color/bacg"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/black"
+                    android:textSize="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <nithra.jobs.career.placement.utills.FlexboxLayout
+                    android:id="@+id/fbl_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingTop="8dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Preferred Job Title : "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/txtjobTitle"
+                    android:layout_width="@dimen/wh_35"
+                    android:layout_height="@dimen/wh_35"
+                    android:layout_gravity="right"
+                    android:background="@color/bacg"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/black"
+                    android:textSize="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <nithra.jobs.career.placement.utills.FlexboxLayout
+                    android:id="@+id/fbl_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:paddingTop="8dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="left"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="20dp" />
+
+                <TextView
                     android:layout_width="@dimen/wh_240"
                     android:layout_height="@dimen/wh_35"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Preferred Job Location  "
+                    android:text="Preferred Job Location :"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
 
@@ -176,6 +296,60 @@
                     app:justifyContent="flex_start" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:padding="@dimen/wh_2"
+                android:text="Supporting formats : pdf/PDF, doc/DOC, docx/DOCX"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_10" />
+
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/resumeUploadCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:minHeight="@dimen/wh_35"
+                app:cardElevation="@dimen/lrtbp_5"
+                card_view:cardBackgroundColor="@color/light_green_dark"
+                card_view:cardCornerRadius="@dimen/lrtbp_5"
+                card_view:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/lrtbp_15"
+                    android:paddingRight="@dimen/lrtbp_15">
+
+                    <ImageView
+                        android:id="@+id/uploadImage"
+                        android:layout_width="@dimen/wh_35"
+                        android:layout_height="@dimen/lrtbp_25"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:src="@drawable/ic_cloud_upload"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/uploadResumeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/lrtbp_5"
+                        android:gravity="center|left"
+                        android:text="Update Your Resume"
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -243,12 +417,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tclay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pplay"
-            android:layout_marginBottom="25dp"
             android:layout_marginTop="@dimen/lrtbp_20"
+            android:layout_marginBottom="25dp"
             android:orientation="horizontal">
 
             <TextView

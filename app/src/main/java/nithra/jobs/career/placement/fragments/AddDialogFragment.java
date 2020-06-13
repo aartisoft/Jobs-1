@@ -7,16 +7,14 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,6 +25,10 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.engine.LocalDB;
 import nithra.jobs.career.placement.pojo.Jobs;
@@ -41,28 +43,29 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
     LocalDB localDB;
     DialogListener dialogListener;
     int action = 0, id = 0, position = 0;
-    String title = "", emp = "", lastDate = "", time = "", date = "", image = "";
+    String title = "", titleId = "", emp = "", lastDate = "", time = "", date = "", image = "";
     long actionDate = 0;
     TextView txtDate, txtTime;
     ImageButton btnDate, btnTime;
     int amPM = 0;
-    private int mHour;
-    private int mMinute;
     Calendar calendar;
     int selectedDay, selectedMonth, selectedYear, selectedHour, selectedMinute;
+    private int mHour;
+    private int mMinute;
 
     public AddDialogFragment() {
         // Required empty public constructor
     }
 
     @SuppressLint("ValidFragment")
-    public AddDialogFragment(Fragment context, int action, int position, int id, String image, String title, String emp, String date) {
+    public AddDialogFragment(Fragment context, int action, int position, int id, String image, String title, String titleId, String emp, String date) {
         dialogListener = (DialogListener) context;
         this.action = action;
         this.position = position;
         this.id = id;
         this.image = image;
         this.title = title;
+        this.titleId = titleId;
         this.emp = emp;
         this.lastDate = date;
     }
@@ -119,11 +122,14 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
             txtDate.setText(U.s2d(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + U.s2d(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR));
 
             //set time to textview
-            mHour = calendar.get(Calendar.HOUR);
+            mHour = calendar.get(Calendar.HOUR_OF_DAY);
             mMinute = calendar.get(Calendar.MINUTE);
-            String tH = U.s2d(mHour).equals("00") ? "12" : U.s2d(mHour);
-            amPM = calendar.get(Calendar.AM_PM);
-            txtTime.setText(tH + ":" + U.s2d(mMinute) + " " + (amPM == Calendar.AM ? "AM" : "PM"));
+            final StringBuffer sb = new StringBuffer();
+            final String date_time = String.valueOf(sb.append(U.time_convert(String.format("%02d:%02d", mHour, mMinute))));
+//            String tH = U.s2d(mHour).equals("00") ? "12" : U.s2d(mHour);
+//            amPM = calendar.get(Calendar.AM_PM);
+//            txtTime.setText(tH + ":" + U.s2d(mMinute) + " " + (amPM == Calendar.AM ? "AM" : "PM"));
+            txtTime.setText(date_time);
             btnAdd.setVisibility(View.VISIBLE);
 
         } else btnAdd.setVisibility(View.GONE);
@@ -133,32 +139,24 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
         edDescription.setText(emp);
 //        edTitle.setSelection(edTitle.getText().toString().length());
 //        edDescription.setSelection(edDescription.getText().toString().length());
-
     }
 
     @Override
     public void onClick(View view) {
         if (view == btnAdd) {
-            String title , emp ;
+            String title, emp;
             title = edTitle.getText().toString();
             emp = edDescription.getText().toString();
-            if (title.equals("") && txtDate.getText().toString().equals("") && txtTime.getText().toString().equals(""))
+            if (title.equals("") || txtDate.getText().toString().equals("") || txtTime.getText().toString().equals(""))
                 L.t(getActivity(), "Please Fill All Fields");
             else {
                 String message;
                 boolean done = false;
                 actionDate = calendar.getTimeInMillis();
                 if (action != 0) {
-                    done = localDB.updateTask(new Jobs(id, image, title, emp, lastDate, actionDate));
+                    done = localDB.updateTask(new Jobs(id, image, title, titleId, emp, lastDate, actionDate));
                     message = "Reminder updated successfully";
                 } else {
-//                    Calendar current = Calendar.getInstance();
-//                    if (current.compareTo(calendar) <= 0) {
-//                        message = "Invalid Date/Time";
-//                    } else {
-//                    message = "Reminder set successfully";
-//                    done = localDB.addJobReminder(new Jobs(id, image, title, emp, lastDate, actionDate));
-//                    }
                     Calendar cal = Calendar.getInstance();
                     cal.set(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute, 0);
 
@@ -171,7 +169,7 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
                         message = "Set Reminder for Upcoming Time";
                     } else {
                         message = "Reminder set successfully";
-                        done = localDB.addJobReminder(new Jobs(id, image, title, emp, lastDate, actionDate));
+                        done = localDB.addJobReminder(new Jobs(id, image, title, titleId, emp, lastDate, actionDate));
                     }
                 }
                 if (done) {
@@ -182,20 +180,50 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
                 dismiss();
             }
         } else if (view == btnCancel) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(edTitle.getWindowToken(), 0);
+            }
             dismiss();
         } else if (view == btnDate) {
             setDate();
         } else if (view == btnTime) {
             setTime();
         } else if (view == btnRemove) {
-            localDB.deleteJobReminder(id);
-            dialogListener.onReminderRemoved(id);
-            dismiss();
+            androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("இந்த நினைவுட்டலை நீக்க விரும்புகிறீர்களா?")
+                    .setCancelable(false)
+                    .setPositiveButton("ஆம்", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int ids) {
+                            // if this button is clicked, close
+                            // current activity
+                            if (localDB.deleteJobReminder(id)) {
+                                dialogListener.onReminderRemoved(id);
+                                dismiss();
+                                dialog.dismiss();
+                            }
+                        }
+                    })
+                    .setNegativeButton("இல்லை", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
+
         }
     }
 
     private void setAlarm(Calendar targetCal, int jobid, String title, String emp, String image) {
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             targetCal.set(Calendar.SECOND, 0);
             targetCal.set(Calendar.MILLISECOND, 0);
             System.out.println("Alarm setAlarm : " + jobid + " --- " + title);
@@ -217,7 +245,7 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
 
     private void setTime() {
         // Get Current Time
-        mHour = calendar.get(Calendar.HOUR);
+        mHour = calendar.get(Calendar.HOUR_OF_DAY);
         mMinute = calendar.get(Calendar.MINUTE);
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT,
@@ -230,10 +258,15 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
                         selectedMinute = minute;
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-                        amPM = calendar.get(Calendar.AM_PM) == Calendar.AM ? Calendar.AM : Calendar.PM;
+//                        amPM = calendar.get(Calendar.AM_PM) == Calendar.AM ? Calendar.AM : Calendar.PM;
+//                        time = U.s2d(hourOfDay) + ":" + U.s2d(minute);
+//                        String tH = U.s2d(calendar.get(Calendar.HOUR)).equals("00") ? "12" : U.s2d(calendar.get(Calendar.HOUR));
+//                        txtTime.setText(tH + ":" + U.s2d(minute) + " " + (amPM == Calendar.AM ? "AM" : "PM"));
+
                         time = U.s2d(hourOfDay) + ":" + U.s2d(minute);
-                        String tH = U.s2d(calendar.get(Calendar.HOUR)).equals("00") ? "12" : U.s2d(calendar.get(Calendar.HOUR));
-                        txtTime.setText(tH + ":" + U.s2d(minute) + " " + (amPM == Calendar.AM ? "AM" : "PM"));
+                        final StringBuffer sb = new StringBuffer();
+                        final String date_time = String.valueOf(sb.append(U.time_convert(String.format("%02d:%02d", hourOfDay, minute))));
+                        txtTime.setText(date_time);
                         if (action == 0) enableButton(date);
                     }
                 }, mHour, mMinute, false);
@@ -243,7 +276,7 @@ public class AddDialogFragment extends DialogFragment implements View.OnClickLis
     private void setDate() {
         // Get Current Date
 
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             int mYear = calendar.get(Calendar.YEAR);
             int mMonth = calendar.get(Calendar.MONTH);
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);

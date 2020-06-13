@@ -29,14 +29,12 @@ android:background="@color/white">
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/intimate_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="5dp"
                 android:src="@mipmap/ic_launcher"/>
 
             <TextView
-                android:id="@+id/intimate_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="30sp"
                 android:padding="2dp"
@@ -56,7 +54,7 @@ android:background="@color/white">
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/layout_bg1"
+            android:background="@drawable/bg_light_grey"
             android:orientation="horizontal">
 
             <TextView
@@ -74,7 +72,6 @@ android:background="@color/white">
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lay3"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="center"

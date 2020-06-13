@@ -1,37 +1,34 @@
 package nithra.jobs.career.placement.activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
-import nithra.jobs.career.placement.FragmentInterface;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import nithra.jobs.career.placement.Interface.FragmentInterface;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.fragments.ContactFragment;
 import nithra.jobs.career.placement.fragments.OthersFragment;
 import nithra.jobs.career.placement.fragments.PersonalFragment;
 import nithra.jobs.career.placement.fragments.QualificationFragment;
-import nithra.jobs.career.placement.pojo.ArrayItem;
-import nithra.jobs.career.placement.utills.FlexboxLayout;
 import nithra.jobs.career.placement.utills.L;
-import nithra.jobs.career.placement.utills.Pinview;
 import nithra.jobs.career.placement.utills.SU;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
@@ -40,18 +37,25 @@ import nithra.jobs.career.placement.utills.U;
  * Created by nithra-apps on 27/1/18.
  */
 
-public class ProfileEntryActivity extends AppCompatActivity {
+public class ProfileEntryActivity extends AppCompatActivity
+        implements ContactFragment.OnRegistrationListener,
+        PersonalFragment.OnRegistrationListener,
+        QualificationFragment.OnRegistrationListener,
+        OthersFragment.OnRegistrationListener {
 
     SharedPreference pref;
     TabLayout tabLayout;
     ViewPager viewPager;
-    LinearLayout back, next;
-    TextView nextText, backText;
+    LinearLayout back, next, progressLay;
+    TextView nextText, backText, percentIndicator;
+    ProgressBar progressbarPredict;
     int notifyImg = R.drawable.profile;
     int notifyImg_light = R.drawable.profile_light;
     int current_page = 0;
     ViewPagerAdapter adapter;
     String task;
+    int status = 0;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,12 @@ public class ProfileEntryActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         task = getIntent().getStringExtra("task");
         pref = new SharedPreference();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         registration();
     }
 
@@ -76,6 +86,18 @@ public class ProfileEntryActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
 
+        progressLay = findViewById(R.id.progressLay);
+        percentIndicator = findViewById(R.id.percentIndicator);
+        progressbarPredict = findViewById(R.id.progressbarPredict);
+
+        if (pref.getBoolean(ProfileEntryActivity.this, U.SH_SIGN_UP_SUCCESS) &&
+                pref.getBoolean(ProfileEntryActivity.this, U.SH_OTP_SUCCESS)) {
+            progressLay.setVisibility(View.GONE);
+        } else {
+            progressLay.setVisibility(View.VISIBLE);
+            showPercentage();
+        }
+
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
@@ -90,9 +112,8 @@ public class ProfileEntryActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 FragmentInterface fragment = (FragmentInterface) adapter.instantiateItem(viewPager, position);
-                if (fragment != null) {
-                    fragment.fragmentBecameVisible();
-                }
+                fragment.fragmentBecameVisible();
+
                 if (position == 3) {
                     if (task.equals(SU.REGISTER)) {
                         nextText.setText("Submit");
@@ -115,17 +136,23 @@ public class ProfileEntryActivity extends AppCompatActivity {
             }
         });
 
-        if ((task.equals(U.SH_JOBLOCATION)) || (task.equals(U.SH_SKILLS))) {
-            task = SU.UPDATE;
-            viewPager.setCurrentItem(3);
-            notifyImg = R.drawable.edit;
-            notifyImg_light = R.drawable.edit_light;
-        } else if (task.equals(SU.REGISTER)) {
-            notifyImg = R.drawable.profile;
-            notifyImg_light = R.drawable.profile_light;
-        } else if (task.equals(SU.UPDATE)) {
-            notifyImg = R.drawable.edit;
-            notifyImg_light = R.drawable.edit_light;
+        switch (task) {
+            case U.SH_JOBLOCATION:
+            case U.SH_SKILLS:
+            case U.SH_RESUME:
+                task = SU.UPDATE;
+                viewPager.setCurrentItem(3);
+                notifyImg = R.drawable.edit;
+                notifyImg_light = R.drawable.edit_light;
+                break;
+            case SU.REGISTER:
+                notifyImg = R.drawable.profile;
+                notifyImg_light = R.drawable.profile_light;
+                break;
+            case SU.UPDATE:
+                notifyImg = R.drawable.edit;
+                notifyImg_light = R.drawable.edit_light;
+                break;
         }
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +186,6 @@ public class ProfileEntryActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 if (tab.getPosition() == 0) {
                     ImageView imageView = tab.getCustomView().findViewById(R.id.profile_img);
                     imageView.setImageResource(notifyImg);
@@ -255,44 +281,10 @@ public class ProfileEntryActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                return ContactFragment.newInstance();
-            } else if (position == 1) {
-                return PersonalFragment.newInstance();
-            } else if (position == 2) {
-                return QualificationFragment.newInstance();
-            } else if (position == 3) {
-                return OthersFragment.newInstance();
-            }
-            return null;
-        }
-
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            // POSITION_NONE makes it possible to reload the PagerAdapter
-            return POSITION_NONE;
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-
+    @Override
+    public void onPercentageChange() {
+        showPercentage();
     }
-
-    //-----------------------------------------  profile Submit ------------------------------------
 
     private void checkValuesForSubmit(String task) {
         if (pref.getString(ProfileEntryActivity.this, U.SH_NAME).equals("")) {
@@ -300,10 +292,16 @@ public class ProfileEntryActivity extends AppCompatActivity {
             L.t(this, "Enter Your Name");
         } else if (pref.getString(ProfileEntryActivity.this, U.SH_EMAIL).equals("")) {
             viewPager.setCurrentItem(0);
-            L.t(this, "Enter Your Email");
-        } else if (pref.getString(ProfileEntryActivity.this, U.SH_MOBILE).equals("")) {
+            L.t(this, "Enter Your Email Address");
+        } /*else if (!U.EmailValidation(pref.getString(ProfileEntryActivity.this, U.SH_EMAIL))) {
+            viewPager.setCurrentItem(0);
+            L.t(ProfileEntryActivity.this, "Enter Valid Email");
+        }*/ else if (pref.getString(ProfileEntryActivity.this, U.SH_MOBILE).equals("")) {
             viewPager.setCurrentItem(0);
             L.t(this, "Enter Your MobileNumber");
+        } else if (pref.getString(ProfileEntryActivity.this, U.SH_NATIVE_LOCATION).equals("")) {
+            viewPager.setCurrentItem(0);
+            L.t(this, "Choose Your Native Location");
         } else if (pref.getString(ProfileEntryActivity.this, U.SH_GENDER).equals("")) {
             viewPager.setCurrentItem(1);
             L.t(this, "Choose Your Gender");
@@ -322,6 +320,15 @@ public class ProfileEntryActivity extends AppCompatActivity {
         } else if (pref.getString(ProfileEntryActivity.this, U.SH_SKILLS).equals("")) {
             viewPager.setCurrentItem(3);
             L.t(this, "Choose Your Skills");
+        } else if (pref.getString(ProfileEntryActivity.this, U.SH_CATEGORY).equals("")) {
+            viewPager.setCurrentItem(3);
+            L.t(this, "Choose Your preferred Job Category");
+        } else if (pref.getString(ProfileEntryActivity.this, U.SH_TITLE).equals("")) {
+            viewPager.setCurrentItem(3);
+            L.t(this, "Choose Your preferred Job Title");
+        } else if (pref.getString(ProfileEntryActivity.this, U.SH_JOBLOCATION).equals("")) {
+            viewPager.setCurrentItem(3);
+            L.t(this, "Choose Your preferred Job Location");
         } else if (pref.getString(ProfileEntryActivity.this, U.SH_PRIVACY_POLICY).equals("") ||
                 pref.getString(ProfileEntryActivity.this, U.SH_PRIVACY_POLICY).equals("0")) {
             viewPager.setCurrentItem(3);
@@ -330,6 +337,8 @@ public class ProfileEntryActivity extends AppCompatActivity {
                 pref.getString(ProfileEntryActivity.this, U.SH_TERMS_CONDITIONS).equals("0")) {
             viewPager.setCurrentItem(3);
             L.t(this, "Read & Tick Terms & conditions");
+        } else if (!U.isNetworkAvailable(ProfileEntryActivity.this)) {
+            L.t(this, U.INA);
         } else {
             pref.putInt(ProfileEntryActivity.this, U.SH_REGISTRATION_FLAG, 1);
             pref.putString(ProfileEntryActivity.this, U.SH_REGISTRATION_TASK, task);
@@ -337,19 +346,24 @@ public class ProfileEntryActivity extends AppCompatActivity {
         }
     }
 
+    //-----------------------------------------  profile Submit ------------------------------------
+
     private void checkContactValues() {
         if (pref.getString(ProfileEntryActivity.this, U.SH_NAME).equals("")) {
             viewPager.setCurrentItem(0);
             L.t(ProfileEntryActivity.this, "Enter Your Name");
         } else if (pref.getString(ProfileEntryActivity.this, U.SH_EMAIL).equals("")) {
             viewPager.setCurrentItem(0);
-            L.t(ProfileEntryActivity.this, "Enter Your Email");
-        } else if (pref.getString(ProfileEntryActivity.this, U.SH_MOBILE).equals("")) {
+            L.t(ProfileEntryActivity.this, "Enter Your Email Address");
+        } /*else if (!U.EmailValidation(pref.getString(ProfileEntryActivity.this, U.SH_EMAIL))) {
+            viewPager.setCurrentItem(0);
+            L.t(ProfileEntryActivity.this, "Enter Valid Email");
+        }*/ else if (pref.getString(ProfileEntryActivity.this, U.SH_MOBILE).equals("")) {
             viewPager.setCurrentItem(0);
             L.t(ProfileEntryActivity.this, "Enter Your MobileNumber");
-        } else if (pref.getString(ProfileEntryActivity.this, U.SH_GENDER).equals("")) {
-            viewPager.setCurrentItem(1);
-            L.t(ProfileEntryActivity.this, "Choose Your Gender");
+        } else if (pref.getString(ProfileEntryActivity.this, U.SH_NATIVE_LOCATION).equals("")) {
+            viewPager.setCurrentItem(0);
+            L.t(ProfileEntryActivity.this, "Choose Your Native Location");
         } else {
             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         }
@@ -404,4 +418,145 @@ public class ProfileEntryActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    private int predictPercentage() {
+        int percentage = 0;
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_PHOTO).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_NAME).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_EMAIL).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_MOBILE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_ALTERNATE_MOBILE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_NATIVE_LOCATION).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_GENDER).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_MARITAL_STATUS).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_DOB).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_AGE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_COURSE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_CERTIFIED_COURSE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_WORK_STATUS).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_SKILLS).equals("")) {
+            percentage++;
+
+        } else if (!pref.getString(ProfileEntryActivity.this, U.SH_ADDED_SKILLS).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_CATEGORY).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_TITLE).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_JOBLOCATION).equals("")) {
+            percentage++;
+
+        }
+
+        if (!pref.getString(ProfileEntryActivity.this, U.SH_RESUME).equals("")) {
+            percentage++;
+
+        }
+        return percentage;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void showPercentage() {
+        final int percentage = (int) (((float) predictPercentage() / 18f) * 100);
+        progressbarPredict.setProgress(percentage);
+        percentIndicator.setText(percentage + "% Profile Completed");
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return ContactFragment.newInstance();
+            } else if (position == 1) {
+                return PersonalFragment.newInstance();
+            } else if (position == 2) {
+                return QualificationFragment.newInstance();
+            } else if (position == 3) {
+                return OthersFragment.newInstance();
+            }
+            return null;
+        }
+
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            // POSITION_NONE makes it possible to reload the PagerAdapter
+            return POSITION_NONE;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+    }
 }

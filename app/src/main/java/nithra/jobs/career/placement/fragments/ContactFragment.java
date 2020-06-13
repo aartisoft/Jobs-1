@@ -7,6 +7,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,20 +18,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -47,14 +44,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.common.AccountPicker;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,7 +60,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import nithra.jobs.career.placement.FragmentInterface;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.fragment.app.Fragment;
+import nithra.jobs.career.placement.Interface.FragmentInterface;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.activity.RegistrationActivity;
 import nithra.jobs.career.placement.pojo.Item;
@@ -72,7 +76,7 @@ import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.TouchImageView;
 import nithra.jobs.career.placement.utills.U;
 
-import static android.support.v4.view.ViewCompat.jumpDrawablesToCurrentState;
+import static androidx.core.view.ViewCompat.jumpDrawablesToCurrentState;
 
 /**
  * Created by nithra-apps on 14/11/17.
@@ -80,18 +84,20 @@ import static android.support.v4.view.ViewCompat.jumpDrawablesToCurrentState;
 
 public class ContactFragment extends Fragment implements FragmentInterface {
 
-    CustomEditText edName, edEmail, edAltermob;
-    SharedPreference pref;
-    TextView txtMobno, nativeLocation;
-    CheckBox mobileShow;
-    List<Item> cities;
-    ListView listview;
-    Dialog dialog;
-    SearchView searchView;
-    ImageView profilePhoto;
-    int flip = 0;
-    final int PIC_CROP = 3;
     private static final int SELECT_PICTURE = 1;
+    private CustomEditText edName, edEmail, edAltermob;
+    private SharedPreference pref;
+    private TextView txtMobno, nativeLocation;
+    private CheckBox mobileShow;
+    private List<Item> cities;
+    private Dialog dialog;
+    private SearchView searchView;
+    private ImageView profilePhoto;
+    private int flip = 0;
+    private int REQUEST_CAMERA = 0;
+    private int PIC_SELECT_MODE;
+    private OnRegistrationListener onRegistrationListener;
+    private ProgressDialog mProgress;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -102,14 +108,14 @@ public class ContactFragment extends Fragment implements FragmentInterface {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        onRegistrationListener = (OnRegistrationListener) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -138,67 +144,17 @@ public class ContactFragment extends Fragment implements FragmentInterface {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.e("photoURi_oncreate", pref.getString(getActivity(), U.SH_PHOTO_URI));
-        if (!pref.getString(getActivity(), U.SH_PHOTO_URI).equals("")) {
 
-            Uri photoUri = Uri.parse(pref.getString(getActivity(), U.SH_PHOTO_URI));
-            Glide.with(this)
-                    .load(photoUri)
-                    .asBitmap()
-                    .placeholder(R.drawable.user)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .centerCrop()
-                    .into(new BitmapImageViewTarget(profilePhoto) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            profilePhoto.setImageDrawable(circularBitmapDrawable);
-                        }
-                    });
-
-            flip = 1;
-        } else if (pref.getBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS)) {
-
-            String photoValue = pref.getString(getActivity(), U.SH_PHOTO);
-            Glide.with(this)
-                    .load(SU.BASE_URL + photoValue)
-                    .asBitmap()
-                    .placeholder(R.drawable.user)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .centerCrop()
-                    .into(new BitmapImageViewTarget(profilePhoto) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            profilePhoto.setImageDrawable(circularBitmapDrawable);
-                        }
-                    });
-
-            if (photoValue.equals("")) {
-                flip = 0;
-            } else {
-                flip = 1;
-            }
-
-        } else {
-
-            flip = 0;
-        }
-
-        for (int i = 0; i < RegistrationActivity.locationList.size(); i++) {
-            for (int j = 0; j < RegistrationActivity.locationList.get(i).getList().size(); j++) {
-                Item data = new Item();
-                data.setId(RegistrationActivity.locationList.get(i).getList().get(j).getId());
-                data.setItem(RegistrationActivity.locationList.get(i).getList().get(j).getItem());
-                cities.add(data);
-                if (pref.getString(getActivity(), U.SH_NATIVE_LOCATION).equals("" + RegistrationActivity.locationList.get(i).getList().get(j).getId())) {
-                    nativeLocation.setText(RegistrationActivity.locationList.get(i).getList().get(j).getItem());
+        if (getActivity() != null && RegistrationActivity.locationList != null && RegistrationActivity.locationList.size() > 0) {
+            for (int i = 0; i < RegistrationActivity.locationList.size(); i++) {
+                for (int j = 0; j < RegistrationActivity.locationList.get(i).getList().size(); j++) {
+                    Item data = new Item();
+                    data.setId(RegistrationActivity.locationList.get(i).getList().get(j).getId());
+                    data.setItem(RegistrationActivity.locationList.get(i).getList().get(j).getItem());
+                    cities.add(data);
+                    if (pref.getString(getActivity(), U.SH_NATIVE_LOCATION).equals("" + RegistrationActivity.locationList.get(i).getList().get(j).getId())) {
+                        nativeLocation.setText(RegistrationActivity.locationList.get(i).getList().get(j).getItem());
+                    }
                 }
             }
         }
@@ -222,7 +178,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                 } else {
                     pref.putString(getActivity(), U.SH_NAME, "");
                 }
-
+                onRegistrationListener.onPercentageChange();
             }
         });
 
@@ -245,7 +201,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                 } else {
                     pref.putString(getActivity(), U.SH_EMAIL, "");
                 }
-
+                onRegistrationListener.onPercentageChange();
             }
         });
 
@@ -268,6 +224,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                 } else {
                     pref.putString(getActivity(), U.SH_ALTERNATE_MOBILE, "");
                 }
+                onRegistrationListener.onPercentageChange();
             }
         });
 
@@ -319,7 +276,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
             @Override
             public void onClick(View v) {
                 if (flip == 0) {
-                    GalleryPermissionFun();
+                    selectImage();
                 } else {
                     reselectimg();
                 }
@@ -342,7 +299,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
     }
 
     @SuppressLint("SetTextI18n")
-    public void ShowNativeLocationDialog() {
+    private void ShowNativeLocationDialog() {
         if (getActivity() != null) {
             dialog = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -361,7 +318,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
             LinearLayout bottomLay = dialog.findViewById(R.id.bottom_lay);
             bottomLay.setVisibility(View.GONE);
 
-            listview = dialog.findViewById(R.id.listview);
+            ListView listview = dialog.findViewById(R.id.listview);
             //Ascending order
             Collections.sort(cities, new Comparator<Item>() {
                 @Override
@@ -370,7 +327,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                 }
             });
 
-            final SkillsSelectionAdapter SkillAdapter = new SkillsSelectionAdapter(getActivity(), R.layout.filter_layout, cities);
+            final locationSelectionAdapter SkillAdapter = new locationSelectionAdapter(getActivity(), R.layout.filter_layout, cities);
             listview.setTextFilterEnabled(true);
             listview.setAdapter(SkillAdapter);
 
@@ -391,75 +348,14 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                 }
             });
 
-            dialog.show();
-        }
-    }
-
-    public class SkillsSelectionAdapter extends ArrayAdapter {
-
-        Context context;
-        List<Item> list;
-        LayoutInflater inflater;
-        List<Item> orig;
-
-        public SkillsSelectionAdapter(Context context, int resource, List<Item> list) {
-            super(context, resource, list);
-            this.context = context;
-            this.list = list;
-            orig = new ArrayList<Item>();
-            orig.addAll(list);
-        }
-
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
-        }
-
-        @NonNull
-        @Override
-        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.dialog_list_item, null);
-
-            TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
-            checkBox.setVisibility(View.GONE);
-//            txt.setTextColor(context.getResources().getColor(R.color.skyblue_thick));
-            txt.setText(list.get(position).getItem());
-            view.setOnClickListener(new View.OnClickListener() {
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
-                public void onClick(View v) {
-                    nativeLocation.setText(list.get(position).getItem());
-                    RegistrationActivity.nativeLocation = "" + list.get(position).getId();
-                    pref.putString(getActivity(), U.SH_NATIVE_LOCATION, RegistrationActivity.nativeLocation);
+                public void onDismiss(DialogInterface dialogInterface) {
                     searchView.setQuery("", true);
-                    if (getActivity() != null) {
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (imm != null) {
-                            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-                        }
-                    }
-                    dialog.dismiss();
                 }
             });
-            return view;
-        }
 
-        public void filter(String charText) {
-
-            charText = charText.toLowerCase(Locale.getDefault());
-            list.clear();
-            if (charText.length() == 0) {
-                list.addAll(orig);
-            } else {
-                for (Item postDetail : orig) {
-                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
-                        list.add(postDetail);
-                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
-                        list.add(postDetail);
-                    }
-                }
-            }
-            notifyDataSetChanged();
+            dialog.show();
         }
     }
 
@@ -493,6 +389,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
             jumpDrawablesToCurrentState(mobileShow);
         }
 
+        setImage();
     }
 
     @Override
@@ -500,7 +397,79 @@ public class ContactFragment extends Fragment implements FragmentInterface {
         super.onStop();
     }
 
-    public void emailPermissionFun() {
+    public void setImage() {
+        if (pref.getBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS)) {
+
+            String photoValue = "";
+            if (pref.getString(getActivity(), U.SH_PHOTO).contains(pref.getString(getActivity(), U.SH_MOBILE) + ".webp")) {
+                if (!pref.getString(getActivity(), U.SH_PHOTO).contains("https")) {
+                    photoValue = SU.BASE_URL + pref.getString(getActivity(), U.SH_PHOTO);
+                } else {
+                    photoValue = pref.getString(getActivity(), U.SH_PHOTO);
+                }
+
+            } else {
+                if (!pref.getString(getActivity(), U.SH_PHOTO).contains("https")) {
+                    photoValue = SU.BASE_URL + pref.getString(getActivity(), U.SH_PHOTO);
+                } else {
+                    photoValue = pref.getString(getActivity(), U.SH_PHOTO);
+                }
+
+            }
+            Log.e("photoValue", "" + photoValue);
+
+            Glide.with(this.getActivity())
+                    .load(photoValue)
+                    .asBitmap()
+                    .placeholder(R.drawable.user)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .centerCrop()
+                    .into(new BitmapImageViewTarget(profilePhoto) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            profilePhoto.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
+
+            if (photoValue.equals("")) {
+                flip = 0;
+            } else {
+                flip = 1;
+            }
+
+        } else if (!pref.getString(getActivity(), U.SH_PHOTO).equals("")) {
+
+            String photoUri = pref.getString(getActivity(), U.SH_PHOTO);
+            Log.e("photoUri", "" + photoUri);
+            Glide.with(this.getActivity())
+                    .load(photoUri)
+                    .asBitmap()
+                    .placeholder(R.drawable.user)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .centerCrop()
+                    .into(new BitmapImageViewTarget(profilePhoto) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            profilePhoto.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
+
+            flip = 1;
+        } else {
+
+            flip = 0;
+        }
+    }
+
+    private void emailPermissionFun() {
         if (getActivity() != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getActivity().checkSelfPermission(android.Manifest.permission.GET_ACCOUNTS)
@@ -509,7 +478,13 @@ public class ContactFragment extends Fragment implements FragmentInterface {
                     dialog.setContentView(R.layout.permission_dialog_layout);
                     dialog.setCancelable(false);
                     TextView text = dialog.findViewById(R.id.text);
-                    text.setText(getResources().getString(R.string.email_permission_text));
+
+                    if (pref.getInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW) == 2) {
+                        text.setText(getResources().getString(R.string.email_permission_settings_text));
+                    } else {
+                        text.setText(getResources().getString(R.string.email_permission_text));
+                    }
+
                     Button ok = dialog.findViewById(R.id.permission_ok);
                     Button cancel = dialog.findViewById(R.id.permission_cancel);
                     cancel.setOnClickListener(new View.OnClickListener() {
@@ -551,233 +526,8 @@ public class ContactFragment extends Fragment implements FragmentInterface {
         super.onDetach();
     }
 
-    public void imgviewdia() {
-        if(getActivity()!=null) {
-            final Dialog viewimgdia = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
-            viewimgdia.setContentView(R.layout.viewimage);
-            ImageView img_vimgback;
-            final TouchImageView img_zview;
-            img_zview = viewimgdia.findViewById(R.id.img_zview);
-            img_vimgback = viewimgdia.findViewById(R.id.img_vimgback);
-
-            img_vimgback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewimgdia.dismiss();
-                }
-            });
-
-            if (!pref.getString(getActivity(), U.SH_PHOTO_URI).equals("")) {
-
-                String photoUri = pref.getString(getActivity(), U.SH_PHOTO_URI);
-                Glide.with(this)
-                        .load(photoUri)
-                        .asBitmap()
-                        .placeholder(R.drawable.user)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .centerCrop()
-                        .into(img_zview);
-
-            } else if (pref.getBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS)) {
-
-                String photoValue = pref.getString(getActivity(), U.SH_PHOTO);
-                Glide.with(this)
-                        .load(SU.BASE_URL + photoValue)
-                        .asBitmap()
-                        .placeholder(R.drawable.user)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .centerCrop()
-                        .into(img_zview);
-            }
-            viewimgdia.show();
-        }
-    }
-
-    public void reselectimg() {
-        final CharSequence[] items = {"View picture", "Choose from Gallery", "Remove Picture"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Please Select");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("View picture")) {
-                    dialog.dismiss();
-                    imgviewdia();
-                } else if (items[item].equals("Choose from Gallery")) {
-                    GalleryPermissionFun();
-                } else if (items[item].equals("Remove Picture")) {
-                    profilePhoto.setImageResource(R.drawable.user);
-                    flip = 0;
-                    pref.putString(getActivity(), U.SH_PHOTO_URI, "");
-                    pref.putString(getActivity(), U.SH_PHOTO, "");
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void galleryIntent() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        int SELECT_FILE = 1;
-        startActivityForResult(galleryIntent, SELECT_FILE);
-    }
-
-    public void GalleryPermissionFun() {
-        if (getActivity() != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth);
-                    dialog.setContentView(R.layout.permission_dialog_layout);
-                    dialog.setCancelable(false);
-                    TextView txt = dialog.findViewById(R.id.text);
-                    if (pref.getInt(getActivity(), U.SH_PHOTO_PERMISSION_DIA_SHOW) == 2) {
-
-                        txt.setText(getResources().getString(R.string.storage_permission_settings_text));
-                    } else {
-
-                        txt.setText(getResources().getString(R.string.storage_permission_text));
-                    }
-                    Button ok = dialog.findViewById(R.id.permission_ok);
-                    Button cancel = dialog.findViewById(R.id.permission_cancel);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    ok.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (pref.getInt(getActivity(), U.SH_PHOTO_PERMISSION_DIA_SHOW) == 2) {
-                                Intent intent = new Intent();
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                                dialog.dismiss();
-                            } else {
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 154);
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-                    dialog.show();
-                } else {
-
-                    galleryIntent();
-
-                }
-            } else {
-                galleryIntent();
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-
-            pref.putString(getActivity(), U.SH_PHOTO, "");
-            pref.putString(getActivity(), U.SH_PHOTO_URI, "");
-
-            String root = Environment.getExternalStorageDirectory().toString();
-            File mydir = new File(root + "/Nithra/Jobs");
-            mydir.mkdirs();
-            String fname = "ProfilePhoto.jpg";
-            final File file = new File(mydir, fname);
-            Intent intent1 = new Intent("com.android.camera.action.CROP");
-            intent1.setType("image/*");
-            intent1.setData(data.getData()); // Uri to the image you want to crop
-            intent1.putExtra("scale", true);
-            intent1.putExtra("circleCrop", "");
-            intent1.putExtra("return-data", false);
-            intent1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-            startActivityForResult(intent1, PIC_CROP);
-
-        } else if (requestCode == PIC_CROP && resultCode == Activity.RESULT_OK) {
-
-            File root = Environment.getExternalStorageDirectory();
-            File fil = new File(root.getAbsolutePath() + "/Nithra/Jobs/ProfilePhoto.jpg");
-            String fi = fil.getPath();
-            Bitmap bmp = U.compressImage(getActivity(), String.valueOf(fi));
-            bmp = CompressResizeImage(bmp);
-            RegistrationActivity.photo = bmp == null ? "" : getStringImage(bmp);
-            pref.putString(getActivity(), U.SH_PHOTO, RegistrationActivity.photo);
-            pref.putString(getActivity(), U.SH_PHOTO_URI, fi);
-            Log.e("photoURi", pref.getString(getActivity(), U.SH_PHOTO_URI));
-            Glide.with(this)
-                    .load(fi)
-                    .asBitmap()
-                    .placeholder(R.drawable.user)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .centerCrop()
-                    .into(new BitmapImageViewTarget(profilePhoto) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            profilePhoto.setImageDrawable(circularBitmapDrawable);
-                        }
-                    });
-            flip = 1;
-        } else if (requestCode == 190 && resultCode == Activity.RESULT_OK) {
-            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-            edEmail.setText(accountName);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 153: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 1);
-//                    getmaildia();
-                    chooseAccount();
-                } else {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        boolean showRationale = shouldShowRequestPermissionRationale(permissions[0]);
-                        if (!showRationale) {
-                            pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 2);
-                        } else if (Manifest.permission.GET_ACCOUNTS.equals(permissions[0])) {
-                            pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 0);
-                        }
-                    }
-                }
-            }
-            break;
-            case 154: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    pref.putInt(getActivity(), U.SH_PHOTO_PERMISSION_DIA_SHOW, 1);
-                    galleryIntent();
-                } else {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        boolean showRationale = shouldShowRequestPermissionRationale(permissions[0]);
-                        if (!showRationale) {
-                            pref.putInt(getActivity(), U.SH_PHOTO_PERMISSION_DIA_SHOW, 2);
-                        } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permissions[0])) {
-                            pref.putInt(getActivity(), U.SH_PHOTO_PERMISSION_DIA_SHOW, 0);
-                        }
-                    }
-                }
-            }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
     @SuppressLint("SetTextI18n")
-    public void getmaildia() {
+    private void getmaildia() {
         final List<String> mailid = getaccount();
         if (!mailid.isEmpty() && getActivity() != null) {
             final Dialog diagmail = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth);
@@ -814,7 +564,7 @@ public class ContactFragment extends Fragment implements FragmentInterface {
         }
     }
 
-    public List<String> getaccount() {
+    private List<String> getaccount() {
         List<String> mailid = new ArrayList<>();
         mailid.clear();
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
@@ -842,31 +592,544 @@ public class ContactFragment extends Fragment implements FragmentInterface {
         startActivityForResult(intent, 190);
     }
 
-    //--------------------------profile photo ---------------------------------
+    private void imgviewdia() {
+        if (getActivity() != null) {
+            final Dialog viewimgdia = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
+            viewimgdia.setContentView(R.layout.viewimage);
+            ImageView img_vimgback;
+            final TouchImageView img_zview;
+            img_zview = viewimgdia.findViewById(R.id.img_zview);
+            img_vimgback = viewimgdia.findViewById(R.id.img_vimgback);
 
-    public String getStringImage(Bitmap bmp) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.WEBP, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            img_vimgback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewimgdia.dismiss();
+                }
+            });
+
+            if (pref.getString(getActivity(), U.SH_PHOTO).contains(pref.getString(getActivity(), U.SH_MOBILE) + ".webp")) {
+                String photoUri = pref.getString(getActivity(), U.SH_PHOTO);
+                Log.e("photoValue", "" + SU.BASE_URL + pref.getString(getActivity(), U.SH_PHOTO));
+                if (!photoUri.contains("https")) {
+                    Glide.with(this.getActivity())
+                            .load(SU.BASE_URL + photoUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.loading)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(img_zview);
+                } else {
+                    Glide.with(this.getActivity())
+                            .load(photoUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.loading)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(img_zview);
+                }
+
+
+            } else if (!pref.getString(getActivity(), U.SH_PHOTO).equals("")) {
+                String photoUri = pref.getString(getActivity(), U.SH_PHOTO);
+                Log.e("photoValue", "" + pref.getString(getActivity(), U.SH_PHOTO));
+                Glide.with(this.getActivity())
+                        .load(photoUri)
+                        .asBitmap()
+                        .placeholder(R.drawable.loading)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(img_zview);
+            }
+            viewimgdia.show();
+        }
     }
 
-    public Bitmap CompressResizeImage(Bitmap bm) {
-        int bmWidth = bm.getWidth();
-        int bmHeight = bm.getHeight();
-        int ivWidth = profilePhoto.getWidth();
+    private void selectImage() {
+        final CharSequence[] items = {"Take Photo", "Choose from Gallery"};
 
-        int new_height = (int) Math.floor((double) bmHeight * ((double) ivWidth / (double) bmWidth));
-        Bitmap newbitMap = Bitmap.createScaledBitmap(bm, ivWidth, new_height, true);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Attach Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                //boolean result = Utils.checkPermission(getActivity());
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        newbitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
+                if (items[item].equals("Take Photo")) {
+                    // userChoosenTask = "Take Photo";
+                    //if (result)
+                    PIC_SELECT_MODE = 0;
+                    cameraPermissionFun();
 
-        return BitmapFactory.decodeByteArray(b, 0, b.length);
+                } else if (items[item].equals("Choose from Gallery")) {
+                    //  userChoosenTask = "Choose from Library";
+                    // if (result)
+                    PIC_SELECT_MODE = 1;
+                    GalleryPermissionFun();
+
+                }
+            }
+        });
+        builder.show();
+    }
+
+    //--------------------------profile photo ---------------------------------
+
+    private void reselectimg() {
+        final CharSequence[] items = {"View Picture", "Take New Photo", "Choose from Gallery", "Remove Picture"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Please Select");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("View Picture")) {
+                    dialog.dismiss();
+                    imgviewdia();
+                } else if (items[item].equals("Take New Photo")) {
+                    PIC_SELECT_MODE = 0;
+                    cameraPermissionFun();
+                } else if (items[item].equals("Choose from Gallery")) {
+                    PIC_SELECT_MODE = 1;
+                    GalleryPermissionFun();
+                } else if (items[item].equals("Remove Picture")) {
+                    profilePhoto.setImageResource(R.drawable.user);
+                    flip = 0;
+                    pref.putString(getActivity(), U.SH_PHOTO, "");
+                    onRegistrationListener.onPercentageChange();
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void galleryIntent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                File root = Environment.getExternalStorageDirectory();
+                File mydir = new File(root + "/Nithra/Jobs");
+                mydir.mkdirs();
+
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                int SELECT_FILE = 1;
+                startActivityForResult(galleryIntent, SELECT_FILE);
+            } else {
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 154);
+            }
+        } else {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 154);
+        }
+    }
+
+    private void cameraIntent() {
+        try {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File root = Environment.getExternalStorageDirectory();
+            File mydir = new File(root + "/Nithra/Jobs");
+            mydir.mkdirs();
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Nithra/Jobs/ProfilePhoto.jpg";
+            File imageFile = new File(imageFilePath);
+            Uri uri = Uri.fromFile(imageFile); // convert path to Uri
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            startActivityForResult(intent, REQUEST_CAMERA);
+        } catch (ActivityNotFoundException anfe) {
+            String errorMessage = "Whoops - Your Device Doesn't Support Capturing Images!";
+            Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void cameraPermissionFun() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(android.Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth);
+                dialog.setContentView(R.layout.permission_dialog_layout);
+                Button ok = dialog.findViewById(R.id.permission_ok);
+                Button cancel = dialog.findViewById(R.id.permission_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                TextView txt = dialog.findViewById(R.id.text);
+                if (pref.getInt(getActivity(), U.SH_CAMERA_PERMISSION) == 2) {
+                    txt.setText(getResources().getString(R.string.storage_permission_settings_text));
+                } else {
+                    txt.setText(getResources().getString(R.string.storage_permission_text));
+                }
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (pref.getInt(getActivity(), U.SH_CAMERA_PERMISSION) == 2) {
+                            Intent intent = new Intent();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        } else {
+                            requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 155);
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                dialog.show();
+            } else {
+
+                cameraIntent();
+            }
+        } else {
+            cameraIntent();
+        }
+    }
+
+    private void GalleryPermissionFun() {
+        if (getActivity() != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth);
+                    dialog.setContentView(R.layout.permission_dialog_layout);
+                    dialog.setCancelable(false);
+                    TextView txt = dialog.findViewById(R.id.text);
+
+                    if (pref.getInt(getActivity(), U.SH_STORAGE_PERMISSION) == 2) {
+                        txt.setText(getResources().getString(R.string.storage_permission_settings_text));
+                    } else {
+                        txt.setText(getResources().getString(R.string.storage_permission_text));
+                    }
+
+                    Button ok = dialog.findViewById(R.id.permission_ok);
+                    Button cancel = dialog.findViewById(R.id.permission_cancel);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (pref.getInt(getActivity(), U.SH_STORAGE_PERMISSION) == 2) {
+                                Intent intent = new Intent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            } else {
+                                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 154);
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    dialog.show();
+                } else {
+                    galleryIntent();
+                }
+            } else {
+                galleryIntent();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 153: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 1);
+                    chooseAccount();
+                } else {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                        boolean showRationale = shouldShowRequestPermissionRationale(permissions[0]);
+                        if (!showRationale) {
+                            pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 2);
+                        } else if (Manifest.permission.GET_ACCOUNTS.equals(permissions[0])) {
+                            pref.putInt(getActivity(), U.SH_EMAIL_PERMISSION_DIA_SHOW, 0);
+                        }
+                    }
+                }
+            }
+            break;
+            case 154: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pref.putInt(getActivity(), U.SH_STORAGE_PERMISSION, 1);
+                    if (PIC_SELECT_MODE == 0) {
+                        cameraIntent();
+                    } else {
+                        galleryIntent();
+                    }
+                } else {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                        boolean showRationale = shouldShowRequestPermissionRationale(permissions[0]);
+                        if (!showRationale) {
+                            pref.putInt(getActivity(), U.SH_STORAGE_PERMISSION, 2);
+                        } else if (android.Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permissions[0])) {
+                            pref.putInt(getActivity(), U.SH_STORAGE_PERMISSION, 0);
+                        }
+                    }
+                }
+            }
+            break;
+            case 155: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pref.putInt(getActivity(), U.SH_CAMERA_PERMISSION, 1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 154);
+                        }
+                    }
+                } else {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                        boolean showRationale = shouldShowRequestPermissionRationale(permissions[0]);
+                        if (!showRationale) {
+                            pref.putInt(getActivity(), U.SH_CAMERA_PERMISSION, 2);
+                        } else if (android.Manifest.permission.CAMERA.equals(permissions[0])) {
+                            pref.putInt(getActivity(), U.SH_CAMERA_PERMISSION, 0);
+                        }
+                    }
+                }
+
+            }
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (getActivity() != null) {
+            int PIC_CROP = 3;
+            if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+                pref.putString(getActivity(), U.SH_PHOTO, "");
+
+                String root = Environment.getExternalStorageDirectory().toString();
+                File mydir = new File(root + "/Nithra/Jobs");
+                mydir.mkdirs();
+                String fname = "ProfilePhoto.jpg";
+                final File file = new File(mydir, fname);
+                Intent intent1 = new Intent("com.android.camera.action.CROP");
+                intent1.setType("image/*");
+                intent1.setData(data.getData()); // Uri to the image you want to crop
+                intent1.putExtra("scale", true);
+                intent1.putExtra("circleCrop", "");
+                intent1.putExtra("return-data", false);
+                intent1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(intent1, PIC_CROP);
+
+            } else if (requestCode == PIC_CROP && resultCode == Activity.RESULT_OK) {
+
+                File root = Environment.getExternalStorageDirectory();
+                File fil = new File(root.getAbsolutePath() + "/Nithra/Jobs/ProfilePhoto.jpg");
+                RegistrationActivity.photo = fil.getPath();
+                pref.putString(getActivity(), U.SH_PHOTO, RegistrationActivity.photo);
+                Glide.with(this.getActivity())
+                        .load(RegistrationActivity.photo)
+                        .asBitmap()
+                        .placeholder(R.drawable.user)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .centerCrop()
+                        .into(new BitmapImageViewTarget(profilePhoto) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                profilePhoto.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
+
+                pathToBitmap();
+
+                flip = 1;
+
+            } else if (requestCode == 190 && resultCode == Activity.RESULT_OK) {
+                String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                edEmail.setText(accountName);
+            } else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK) {
+
+                File root = Environment.getExternalStorageDirectory();
+                File fil = new File(root.getAbsolutePath() + "/Nithra/Jobs/ProfilePhoto.jpg");
+                RegistrationActivity.photo = fil.getPath();
+
+                pref.putString(getActivity(), U.SH_PHOTO, RegistrationActivity.photo);
+
+                Glide.with(this.getActivity())
+                        .load(RegistrationActivity.photo)
+                        .asBitmap()
+                        .placeholder(R.drawable.user)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .centerCrop()
+                        .into(new BitmapImageViewTarget(profilePhoto) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                profilePhoto.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
+
+                pathToBitmap();
+
+                flip = 1;
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void pathToBitmap() {
+
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgress = new ProgressDialog(getActivity());
+                mProgress.setMessage("Uploading...");
+                mProgress.setCancelable(false);
+                mProgress.show();
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String filePath = RegistrationActivity.photo;
+
+                File fil = new File(filePath);
+                Log.e("compressFilee-photoUri", "" + fil.getPath());
+                long fileSize = fil.length();
+                fileSize = fileSize / 1024;
+                Log.e("compressFileee-photoUri", "" + fileSize + " KB");
+//                fileSize = fileSize/1024;
+//                Log.e("saveLengthh-photoUri",""+fileSize +" MB");
+
+                String imgString = "";
+                if (fileSize > 500) {
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                    File file = new File(filePath);
+                    if (file.exists()) file.delete();
+                    try {
+                        FileOutputStream out = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, 1, out);
+                        out.flush();
+                        out.close();
+                        imgString = bitmap == null ? "" : filePath;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                    imgString = bitmap == null ? "" : filePath;
+                }
+                return imgString;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+
+                RegistrationActivity.photo = result;
+                pref.putString(getActivity(), U.SH_PHOTO, RegistrationActivity.photo);
+                mProgress.dismiss();
+            }
+        }.execute();
     }
 
     @Override
     public void fragmentBecameVisible() {
+
     }
+
+    public interface OnRegistrationListener {
+        void onPercentageChange();
+    }
+
+    public class locationSelectionAdapter extends ArrayAdapter {
+
+        Context context;
+        List<Item> list;
+        LayoutInflater inflater;
+        List<Item> orig;
+
+        locationSelectionAdapter(Context context, int resource, List<Item> list) {
+            super(context, resource, list);
+            this.context = context;
+            this.list = list;
+            orig = new ArrayList<Item>();
+            orig.addAll(list);
+        }
+
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.dialog_list_item, null);
+
+            TextView txt = view.findViewById(R.id.name);
+            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            checkBox.setVisibility(View.GONE);
+//            txt.setTextColor(context.getResources().getColor(R.color.skyblue_thick));
+            txt.setText(list.get(position).getItem());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nativeLocation.setText(list.get(position).getItem());
+                    RegistrationActivity.nativeLocation = "" + list.get(position).getId();
+                    pref.putString(getActivity(), U.SH_NATIVE_LOCATION, RegistrationActivity.nativeLocation);
+                    pref.putString(getActivity(), U.SH_NATIVE_LOCATION_NAME, list.get(position).getItem());
+                    searchView.setQuery("", true);
+                    onRegistrationListener.onPercentageChange();
+                    if (getActivity() != null) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) {
+                            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            });
+            return view;
+        }
+
+
+        public void filter(String charText) {
+
+            charText = charText.toLowerCase(Locale.getDefault());
+            list.clear();
+            if (charText.length() == 0) {
+                list.addAll(orig);
+            } else {
+                for (Item postDetail : orig) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        list.add(postDetail);
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        list.add(postDetail);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
+    }
+
 }

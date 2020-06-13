@@ -20,8 +20,36 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:text="Select Item"
-            android:textColor="@color/voilet"
-            android:textSize="20dp" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/txt_15"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end"
+        android:layout_marginBottom="@dimen/lrtbp_10"
+        android:layout_marginRight="@dimen/lrtbp_15"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/wh_35"
+            android:layout_marginRight="@dimen/lrtbp_10"
+            android:background="@color/orange"
+            android:text="CANCEL" />
+
+        <Button
+            android:id="@+id/set_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/wh_35"
+            android:background="@color/orange"
+            android:text="DONE" />
 
     </LinearLayout>
 
@@ -40,13 +68,13 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <android.support.v7.widget.SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/lrtbp_20"
                 android:layout_marginRight="@dimen/lrtbp_20"
-                android:background="@drawable/rounded_sqr"
+                android:background="@drawable/bg_black_line"
                 android:padding="@dimen/wh_2"
                 app:iconifiedByDefault="false"
                 android:focusable="false"
@@ -62,7 +90,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/skills_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/list_lay"
@@ -93,32 +120,5 @@
                 android:textColor="@color/black" />
         </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/bottom_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:layout_marginBottom="@dimen/lrtbp_10"
-        android:layout_marginRight="@dimen/lrtbp_15"
-        android:gravity="end">
-
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/lrtbp_10"
-            android:background="@color/navi_back"
-            android:text="CANCEL" />
-
-        <Button
-            android:id="@+id/set_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/navi_back"
-            android:text="DONE" />
-
-    </LinearLayout>
 
 </LinearLayout>

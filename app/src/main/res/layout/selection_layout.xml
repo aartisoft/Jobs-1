@@ -1,50 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/main_content"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@id/appbar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.v7.widget.Toolbar xmlns:n2="http://schemas.android.com/apk/res-auto"
-            android:id="@id/toolbar"
-            android:layout_width="fill_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            n2:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <ImageView
-                android:id="@id/action_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginRight="@dimen/lrtbp_10"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:padding="5.0dip"
-                android:src="@drawable/ic_search_white_24dp"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/task"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="Qualification"
-                android:textColor="#ffffffff"
-                android:textSize="15.0dip"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="@color/white">
 
@@ -71,8 +35,8 @@
 
         <LinearLayout
             android:id="@id/list_lay"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@id/checkvalue"
             android:layout_marginBottom="@dimen/wh_50"
             android:background="@color/white"
@@ -80,45 +44,29 @@
             android:visibility="visible">
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 android:orientation="horizontal">
 
-                <ScrollView
-                    android:id="@+id/scrollview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="0.75"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/val_list"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@color/white"
-                        android:orientation="vertical" />
-                </ScrollView>
-
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <android.support.v7.widget.SearchView
-                            android:id="@id/searchview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:iconifiedByDefault="false"
+                        <ListView
+                            android:id="@id/listview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"
                             android:visibility="visible" />
 
                         <CheckBox
@@ -134,33 +82,49 @@
                             android:buttonTint="@color/yellow"
                             android:visibility="visible" />
 
-                        <ListView
-                            android:id="@id/listview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:scrollbars="vertical"
+                        <androidx.appcompat.widget.SearchView
+                            android:id="@id/searchview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:iconifiedByDefault="false"
                             android:visibility="visible" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <ScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/val_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical" />
+                </ScrollView>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@id/bottomlay"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/wh_50"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <Button
                 android:id="@id/set_btn"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/lrtbp_5"
                 android:layout_marginLeft="@dimen/lrtbp_10"
                 android:layout_marginRight="@dimen/lrtbp_10"
                 android:layout_marginTop="@dimen/lrtbp_5"
-                android:background="@drawable/button"
+                android:background="@drawable/bg_red_curve"
                 android:drawableLeft="@drawable/ic_filter_list_white_24dp"
                 android:text="Select"
                 android:textColor="@android:color/white"
@@ -168,7 +132,7 @@
 
             <LinearLayout
                 android:id="@id/adview"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_weight="1.0"
@@ -177,4 +141,53 @@
         </LinearLayout>
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar xmlns:n2="http://schemas.android.com/apk/res-auto"
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            n2:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageView
+                android:id="@id/action_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/lrtbp_10"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:padding="5.0dip"
+                android:src="@drawable/ic_search_white_24dp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/distCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/lrtbp_5"
+                android:text=""
+                android:textColor="#ffffffff"
+                android:textSize="15.0dip"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Qualification"
+                android:textColor="#ffffffff"
+                android:textSize="15.0dip"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

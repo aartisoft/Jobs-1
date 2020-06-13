@@ -10,6 +10,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@id/layoutBottom"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-30dp"
+            android:background="@drawable/bg_circle_yellow"
+            android:padding="5dp"
+            android:src="@drawable/ic_close" />
+
         <LinearLayout
             android:id="@+id/layoutBottom"
             android:layout_width="match_parent"
@@ -21,7 +32,8 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -29,7 +41,40 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/info_text"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/lrtbp_15">
+
+                    <Button
+                        android:layout_height="@dimen/wh_35"
+                        android:id="@+id/updateBtn"
+                        android:layout_width="@dimen/wh_120"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:text="UPDATE"
+                        android:gravity="center"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:layout_height="@dimen/wh_35"
+                        android:id="@+id/later"
+                        android:layout_width="@dimen/wh_120"
+                        android:layout_marginLeft="@dimen/lrtbp_15"
+                        android:background="@color/colorPrimary"
+                        android:text="LATER"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
+
                 <RelativeLayout
+                    android:id="@+id/topLay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
@@ -48,7 +93,6 @@
                             android:src="@drawable/ic_info_outline_white_24dp" />
 
                         <TextView
-                            android:id="@+id/txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txtfd"
@@ -64,6 +108,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:layout_below="@+id/topLay"
                     android:id="@+id/txt2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,60 +119,19 @@
                     android:textStyle="bold" />
 
                 <WebView
+                    android:layout_height="@dimen/wh_240"
                     android:id="@+id/info_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt2"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/info"
                     android:textColor="@color/black"
                     android:textSize="@dimen/lrtbp_15" />
 
-                <RelativeLayout
-                    android:id="@+id/continue_lay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/l"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_margin="@dimen/lrtbp_15">
-
-                    <Button
-                        android:id="@+id/updateBtn"
-                        android:layout_width="@dimen/wh_120"
-                        android:layout_height="@dimen/wh_40"
-                        android:background="@color/colorPrimary"
-                        android:layout_alignParentLeft="true"
-                        android:text="UPDATE"
-                        android:gravity="center"
-                        android:textColor="#fff" />
-
-                    <Button
-                        android:id="@+id/later"
-                        android:layout_width="@dimen/wh_120"
-                        android:layout_height="@dimen/wh_40"
-                        android:background="@color/colorPrimary"
-                        android:text="LATER"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center"
-                        android:textColor="#fff" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/close_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_above="@id/layoutBottom"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="-30dp"
-            android:background="@drawable/lightblue_circle"
-            android:padding="5dp"
-            android:src="@drawable/ic_close" />
 
     </RelativeLayout>
 

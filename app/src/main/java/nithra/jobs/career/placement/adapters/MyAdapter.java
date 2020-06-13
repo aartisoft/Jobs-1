@@ -19,19 +19,13 @@ import nithra.jobs.career.placement.R;
 public class MyAdapter extends BaseAdapter {
 
     PackageManager pm;
-    java.util.List<ResolveInfo>  listApp;
+    java.util.List<ResolveInfo> listApp;
     Context context;
 
-    public MyAdapter(Context context1,PackageManager pManager, java.util.List<ResolveInfo>  listApp1) {
+    public MyAdapter(Context context1, PackageManager pManager, java.util.List<ResolveInfo> listApp1) {
         pm = pManager;
         listApp = listApp1;
         context = context1;
-    }
-
-    class ViewHolder {
-        ImageView ivLogo;
-        TextView tvAppName;
-        TextView tvPackageName;
     }
 
     @Override
@@ -68,6 +62,12 @@ public class MyAdapter extends BaseAdapter {
         holder.tvPackageName.setText(appInfo.activityInfo.packageName);
 
         return convertView;
+    }
+
+    class ViewHolder {
+        ImageView ivLogo;
+        TextView tvAppName;
+        TextView tvPackageName;
     }
 
 }

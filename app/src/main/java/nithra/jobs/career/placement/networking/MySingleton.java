@@ -1,5 +1,6 @@
 package nithra.jobs.career.placement.networking;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -14,20 +15,15 @@ import com.android.volley.toolbox.Volley;
 
 public class MySingleton {
 
+    @SuppressLint("StaticFieldLeak")
     private static MySingleton mInstance;
-    private RequestQueue requestQueue;
+    @SuppressLint("StaticFieldLeak")
     private static Context mCtx;
+    private RequestQueue requestQueue;
 
-    private MySingleton (Context context){
-            mCtx = context;
-            requestQueue = getRequestQue();
-    }
-
-    private RequestQueue getRequestQue() {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
-        }
-        return requestQueue;
+    private MySingleton(Context context) {
+        mCtx = context;
+        requestQueue = getRequestQue();
     }
 
     public static synchronized MySingleton getInstance(Context context) {
@@ -35,6 +31,13 @@ public class MySingleton {
             mInstance = new MySingleton(context);
         }
         return mInstance;
+    }
+
+    private RequestQueue getRequestQue() {
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
+        }
+        return requestQueue;
     }
 
     public <T> void addToRequestQue(Request<T> request) {

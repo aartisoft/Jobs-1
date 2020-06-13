@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,26 +10,47 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include
-            android:visibility="gone"
-            android:id="@+id/dnf"
-            layout="@layout/data_not_found"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_above="@+id/adLayout"
-            android:id="@+id/mRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
 
         <LinearLayout
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/adLayout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/delete_info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/l"
+                android:gravity="center"
+                android:padding="@dimen/wh_2"
+                android:text="(Long press to delete)"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/adLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:minHeight="@dimen/wh_40"
+            android:orientation="horizontal"
+            android:visibility="visible" />
+
+        <include
+            android:id="@+id/dnf"
+            layout="@layout/data_not_found"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

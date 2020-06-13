@@ -2,24 +2,24 @@ package nithra.jobs.career.placement.activity;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.adapters.SubCategoryAdapter;
 import nithra.jobs.career.placement.engine.DBHelper;
+import nithra.jobs.career.placement.utills.SharedPreference;
+import nithra.jobs.career.placement.utills.U;
 
 public class SubCategoryActivity extends AppCompatActivity {
 
@@ -30,6 +30,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     String board;
     TextView title;
     LinearLayout adLayout;
+    SharedPreference pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +38,24 @@ public class SubCategoryActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.recyclerview);
         values = new ArrayList<>();
+        pref = new SharedPreference();
 
         adLayout = findViewById(R.id.adLayout);
-        MainActivity.showAd(this, adLayout,true);
+
+        if (pref.getInt(SubCategoryActivity.this, U.SH_AD_PURCHASED) == 0) {
+            MainActivity.showAd(this, adLayout, true);
+        }
 
         board = getIntent().getStringExtra("board");
 
-        dbHelper=new DBHelper(this);
-        Cursor c=dbHelper.getQry("SELECT DISTINCT exam FROM govtexams where board = '" + board +"'");
+        dbHelper = new DBHelper(this);
+        Cursor c = dbHelper.getQry("SELECT DISTINCT exam FROM govtexams where board = '" + board + "'");
         c.moveToFirst();
-        do{
-            String str=c.getString(c.getColumnIndexOrThrow("exam"));
+        do {
+            String str = c.getString(c.getColumnIndexOrThrow("exam"));
             values.add(str);
 
-        }while(c.moveToNext());
+        } while (c.moveToNext());
         c.close();
 
         createView();
@@ -64,10 +69,10 @@ public class SubCategoryActivity extends AppCompatActivity {
             }
         });
 
-        title =findViewById(R.id.title);
+        title = findViewById(R.id.title);
         title.setText(board);
 
-        mAdapter = new SubCategoryAdapter(SubCategoryActivity.this,values);
+        mAdapter = new SubCategoryAdapter(SubCategoryActivity.this, values);
         mRecyclerView = findViewById(R.id.mRecyclerView);
         if (values != null) {
             if (values.size() != 0) {

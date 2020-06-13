@@ -2,24 +2,24 @@ package nithra.jobs.career.placement.activity;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.adapters.CategoryAdapter;
 import nithra.jobs.career.placement.engine.DBHelper;
+import nithra.jobs.career.placement.utills.SharedPreference;
+import nithra.jobs.career.placement.utills.U;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -29,6 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
     DBHelper dbHelper;
     LinearLayout adLayout;
     TextView title;
+    SharedPreference pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,11 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.recyclerview);
         values = new ArrayList<>();
         adLayout = findViewById(R.id.adLayout);
+        pref = new SharedPreference();
 
-        MainActivity.showAd(this, adLayout, true);
+        if (pref.getInt(CategoryActivity.this, U.SH_AD_PURCHASED) == 0) {
+            MainActivity.showAd(this, adLayout, true);
+        }
 
         dbHelper = new DBHelper(this);
         Cursor c = dbHelper.getQry("SELECT DISTINCT board FROM govtexams");
@@ -62,9 +66,8 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        title =findViewById(R.id.title);
+        title = findViewById(R.id.title);
         title.setText(getResources().getString(R.string.gexams));
-
 
         mAdapter = new CategoryAdapter(CategoryActivity.this, values);
         mRecyclerView = findViewById(R.id.mRecyclerView);

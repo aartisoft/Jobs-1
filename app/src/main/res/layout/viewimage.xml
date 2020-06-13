@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -16,12 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/blue"
+                android:background="@color/colorPrimary"
                 android:elevation="6dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -35,26 +34,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
-                        android:src="@drawable/ic_arrow_back_black_24dp" />
+                        android:src="@drawable/ic_arrow_back_white_24dp" />
 
                     <TextView
-                        android:id="@+id/txt_up"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_weight="1"
-                        android:text="View image"
+                        android:text="View Image"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                 </LinearLayout>
 
-            </android.support.v7.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lin_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/lin_tool"
@@ -67,7 +64,7 @@
                 android:id="@+id/img_zview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/user"/>
+                android:src="@drawable/loading"/>
 
         </LinearLayout>
 

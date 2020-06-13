@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtTitle"
+    <LinearLayout
+        android:id="@+id/adview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:lineSpacingExtra="5dp"
-        android:padding="@dimen/lrtbp_10"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="@dimen/txt_12"
-        android:textStyle="italic|bold" />
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/adview">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:lineSpacingExtra="5dp"
+            android:padding="@dimen/lrtbp_10"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_12"
+            android:textStyle="italic|bold" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtTitle">
+        </androidx.viewpager.widget.ViewPager>
+
+    </RelativeLayout>
+
+</RelativeLayout>

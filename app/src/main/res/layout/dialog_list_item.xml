@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/checkboxLay"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +23,19 @@
            android:textColor="@color/primary_text"
            android:layout_marginLeft="10dp"
            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="3dp"
+            android:text="textview"
+            android:textColor="@color/background"
+            android:textSize="@dimen/txt_10"
+            android:visibility="gone"/>
 
         <CheckBox
             android:id="@+id/checkbox"

@@ -2,10 +2,6 @@ package nithra.jobs.career.placement.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -16,12 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.helper.FlipAnimator;
 import nithra.jobs.career.placement.pojo.Notifications;
@@ -32,50 +28,16 @@ import nithra.jobs.career.placement.pojo.Notifications;
  */
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder> {
+    // index is used to animate only the selected row
+    // dirty fix, find a better solution
+    private static int currentSelectedIndex = -1;
     private Context mContext;
     private List<Notifications> messages;
     private MessageAdapterListener listener;
     private SparseBooleanArray selectedItems;
-
     // array used to perform multiple animation at once
     private SparseBooleanArray animationItemsIndex;
     private boolean reverseAllAnimations = false;
-
-    // index is used to animate only the selected row
-    // dirty fix, find a better solution
-    private static int currentSelectedIndex = -1;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        public TextView from, subject, message, iconText, timestamp;
-        public ImageView iconImp, imgProfile;
-        public LinearLayout messageContainer, lBackground;
-        public RelativeLayout iconContainer, iconBack, iconFront;
-
-        public MyViewHolder(View view) {
-            super(view);
-            from = view.findViewById(R.id.from);
-            lBackground = view.findViewById(R.id.lBackground);
-            subject = view.findViewById(R.id.txt_primary);
-            message = view.findViewById(R.id.txt_secondary);
-            iconText = view.findViewById(R.id.icon_text);
-            timestamp = view.findViewById(R.id.timestamp);
-            iconBack = view.findViewById(R.id.icon_back);
-            iconFront = view.findViewById(R.id.icon_front);
-            iconImp = view.findViewById(R.id.icon_star);
-            imgProfile = view.findViewById(R.id.icon_profile);
-            messageContainer = view.findViewById(R.id.message_container);
-            iconContainer = view.findViewById(R.id.icon_container);
-            view.setOnLongClickListener(this);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            listener.onRowLongClicked(getAdapterPosition());
-            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            return true;
-        }
-    }
-
 
     public MessagesAdapter(Context mContext, List<Notifications> messages, MessageAdapterListener listener) {
         this.mContext = mContext;
@@ -85,27 +47,28 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         animationItemsIndex = new SparseBooleanArray();
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_list_row, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         Notifications message = messages.get(position);
         // displaying text view data
         holder.from.setText(message.getTitle());
-       // holder.subject.setText(message.getMessage());
+        // holder.subject.setText(message.getMessage());
         holder.message.setText(message.getBm());
 
-        holder.timestamp.setText(message.getDate());
-        int count = position+1;
-        holder.iconText.setText(""+count);
+        holder.timestamp.setText(message.getDate() + "   " + convertTime(message.getTime()));
+        int count = position + 1;
+        holder.iconText.setText("" + count);
 
         // displaying the first letter of From in icon text
-      //  holder.iconText.setText(message.ge().substring(0, 1));
+        //  holder.iconText.setText(message.ge().substring(0, 1));
 
         // change the row state to activated
         holder.itemView.setActivated(selectedItems.get(position, false));
@@ -239,7 +202,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
             holder.subject.setTypeface(null, Typeface.BOLD);
             holder.from.setTextColor(ContextCompat.getColor(mContext, R.color.from));
             holder.subject.setTextColor(ContextCompat.getColor(mContext, R.color.subject));*/
-           holder.lBackground.setBackgroundColor(Color.parseColor("#DFDFDF"));
+            holder.lBackground.setBackgroundColor(Color.parseColor("#DFDFDF"));
         }
     }
 
@@ -288,6 +251,31 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         currentSelectedIndex = -1;
     }
 
+    private String convertTime(String time) {
+
+        String[] separated = time.split(":");
+        int HOUR = Integer.parseInt(separated[0]);
+        String MIN = separated[1];
+        String AM_PM = "AM";
+        if (HOUR >= 12) {
+            HOUR = HOUR - 12;
+            AM_PM = "PM";
+        } else {
+            AM_PM = "AM";
+
+        }
+        if (HOUR == 0) {
+            HOUR = 12;
+        }
+        String SOUND = String.valueOf(HOUR);
+        if (String.valueOf(HOUR).length() == 1) {
+            SOUND = ("0" + HOUR);
+        } else {
+            SOUND = String.valueOf(HOUR);
+        }
+        return SOUND + ":" + MIN + " " + AM_PM;
+    }
+
     public interface MessageAdapterListener {
         void onIconClicked(int position);
 
@@ -296,5 +284,36 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         void onMessageRowClicked(int position);
 
         void onRowLongClicked(int position);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+        public TextView from, subject, message, iconText, timestamp;
+        public ImageView iconImp, imgProfile;
+        public LinearLayout messageContainer, lBackground;
+        public RelativeLayout iconContainer, iconBack, iconFront;
+
+        public MyViewHolder(View view) {
+            super(view);
+            from = view.findViewById(R.id.from);
+            lBackground = view.findViewById(R.id.lBackground);
+            subject = view.findViewById(R.id.txt_primary);
+            message = view.findViewById(R.id.txt_secondary);
+            iconText = view.findViewById(R.id.icon_text);
+            timestamp = view.findViewById(R.id.timestamp);
+            iconBack = view.findViewById(R.id.icon_back);
+            iconFront = view.findViewById(R.id.icon_front);
+            iconImp = view.findViewById(R.id.icon_star);
+            imgProfile = view.findViewById(R.id.icon_profile);
+            messageContainer = view.findViewById(R.id.message_container);
+            iconContainer = view.findViewById(R.id.icon_container);
+            view.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            listener.onRowLongClicked(getAdapterPosition());
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            return true;
+        }
     }
 }

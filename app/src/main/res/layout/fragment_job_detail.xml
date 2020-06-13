@@ -1,981 +1,1283 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeContainer"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/progressBar"
-                style="@style/SpinKitView.Large.CubeGrid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                app:SpinKit_Color="@color/colorPrimary" />
-
-            <include
-                android:id="@+id/lError"
-                layout="@layout/error_lay"
-                android:visibility="gone" />
-
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/mNestedScrollView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:descendantFocusability="blocksDescendants"
-                android:visibility="visible">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:id="@+id/layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/mNestedScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants"
+                        android:visibility="visible">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/layout"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@color/shade1"
-                            android:orientation="vertical"
-                            android:padding="@dimen/lrtbp_10">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/txtJobType"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/bg1"
-                                    android:gravity="center"
-                                    android:paddingLeft="@dimen/lrtbp_10"
-                                    android:paddingRight="@dimen/lrtbp_10"
-                                    android:text="Govt"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/lrtbp_10" />
-
-                                <TextView
-                                    android:id="@+id/txtDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="end|center"
-                                    android:paddingLeft="@dimen/lrtbp_20"
-                                    android:paddingRight="@dimen/lrtbp_10"
-                                    android:paddingTop="@dimen/lrtbp_10"
-                                    android:text="10 Apr 2017"
-                                    android:textColor="@color/secondary_text" />
-
-                                <ImageButton
-                                    android:id="@+id/btnLike"
-                                    android:layout_width="@dimen/wh_35"
-                                    android:layout_height="@dimen/wh_35"
-                                    android:layout_gravity="center"
-                                    android:background="@null"
-                                    android:padding="@dimen/lrtbp_10"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/star_off" />
-
-                                <ImageButton
-                                    android:id="@+id/btnReminder"
-                                    android:layout_width="@dimen/wh_35"
-                                    android:layout_height="@dimen/wh_35"
-                                    android:layout_gravity="center"
-                                    android:background="@null"
-                                    android:padding="@dimen/lrtbp_10"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_alarm_black_24dp" />
-
-                                <ImageButton
-                                    android:id="@+id/btnReport"
-                                    android:layout_width="@dimen/wh_35"
-                                    android:layout_height="@dimen/wh_35"
-                                    android:layout_gravity="center"
-                                    android:background="@null"
-                                    android:padding="@dimen/lrtbp_10"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/report"
-                                    android:tint="@color/black" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/txtTitle"
+                                android:id="@+id/detailLay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="Title"
-                                android:textColor="@color/primary_text"
-                                android:textSize="@dimen/txt_16"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/txtCompanyName"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/lrtbp_10"
-                                        android:layout_weight="1"
-                                        android:drawableLeft="@drawable/ic_domain"
-                                        android:drawablePadding="@dimen/lrtbp_10"
-                                        android:gravity="center|left"
-                                        android:text="Company Name"
-                                        android:textColor="@color/primary_text" />
-
-                                    <TextView
-                                        android:id="@+id/btnApply"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="bottom"
-                                        android:layout_marginLeft="@dimen/lrtbp_10"
-                                        android:background="@drawable/buttonshape"
-                                        android:gravity="center"
-                                        android:padding="@dimen/lrtbp_10"
-                                        android:text="Apply"
-                                        android:textColor="@color/colorPrimary"
-                                        android:visibility="gone" />
-
-                                </LinearLayout>
-
-                                <ImageView
-                                    android:id="@+id/imgShare"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="@dimen/lrtbp_10"
-                                    android:src="@drawable/ic_menu_share" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/shade2" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/back"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/lrtbp_10"
-                                android:src="@drawable/back" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tnoofvancancy"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:paddingBottom="@dimen/lrtbp_10"
-                                    android:paddingRight="@dimen/lrtbp_10"
-                                    android:paddingTop="@dimen/lrtbp_10"
-                                    android:text="காலிப்பணியிடங்கள்"
-                                    android:textColor="@color/secondary_text" />
-
-                                <TextView
-                                    android:id="@+id/txtNoOfVacancy"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:drawablePadding="@dimen/lrtbp_10"
-                                    android:gravity="center"
-                                    android:text="10"
-                                    android:textColor="@color/primary_text"
-                                    android:textSize="@dimen/txt_20"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/next"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="@dimen/lrtbp_10"
-                                android:src="@drawable/next" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="@dimen/lrtbp_10">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/shade1"
-                                android:orientation="horizontal">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical"
-                                    android:visibility="gone">
-
-                                    <TextView
-                                        android:id="@+id/tdist"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:drawablePadding="@dimen/lrtbp_10"
-                                        android:gravity="center"
-                                        android:padding="@dimen/lrtbp_10"
-                                        android:text="மாவட்டம்"
-                                        android:textColor="@color/secondary_text" />
-
-                                    <TextView
-                                        android:id="@+id/txtDist"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:drawablePadding="@dimen/lrtbp_10"
-                                        android:gravity="center"
-                                        android:paddingBottom="@dimen/lrtbp_10"
-                                        android:text="District"
-                                        android:textColor="@color/primary_text" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone">
-
-                                    <View
-                                        android:layout_width="1dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@color/shade2" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/ttaluk"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:padding="@dimen/lrtbp_10"
-                                            android:text="தாலுகா"
-                                            android:textColor="@color/secondary_text" />
-
-                                        <TextView
-                                            android:id="@+id/txtTaluk"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:drawablePadding="@dimen/lrtbp_10"
-                                            android:gravity="center"
-                                            android:paddingBottom="@dimen/lrtbp_10"
-                                            android:text="Taluk"
-                                            android:textColor="@color/primary_text" />
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/tcities"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:padding="@dimen/lrtbp_10"
-                                            android:text="இடம்"
-                                            android:textColor="@color/secondary_text" />
-
-                                        <TextView
-                                            android:id="@+id/txtCities"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:drawablePadding="@dimen/lrtbp_10"
-                                            android:gravity="center"
-                                            android:paddingBottom="@dimen/lrtbp_10"
-                                            android:text="Cities"
-                                            android:textColor="@color/primary_text" />
-
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <FrameLayout
-                                android:id="@+id/frame"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"/>
-
-                            <LinearLayout
-                                android:id="@+id/lDate"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:background="@color/shade1"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/lrtbp_10"
+                                android:orientation="vertical"
                                 android:visibility="visible">
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="@dimen/lrtbp_10"
-                                        android:src="@drawable/ic_calendar"
-                                        android:visibility="gone" />
+                                    android:background="@color/shade1"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/lrtbp_10">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical">
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
 
-                                        <TextView
-                                            android:id="@+id/tstarting"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
+                                        <ImageButton
+                                            android:id="@+id/btnLike"
+                                            android:layout_width="@dimen/wh_35"
+                                            android:layout_height="@dimen/wh_35"
+                                            android:layout_gravity="center"
+                                            android:background="@null"
                                             android:padding="@dimen/lrtbp_10"
-                                            android:text="ஆரம்ப தேதி"
-                                            android:textColor="@color/secondary_text" />
+                                            android:scaleType="centerCrop"
+                                            android:src="@drawable/star_off" />
+
+                                        <ImageButton
+                                            android:id="@+id/btnReminder"
+                                            android:layout_width="@dimen/wh_35"
+                                            android:layout_height="@dimen/wh_35"
+                                            android:layout_gravity="center"
+                                            android:background="@null"
+                                            android:padding="@dimen/lrtbp_10"
+                                            android:scaleType="centerCrop"
+                                            android:src="@drawable/ic_alarm_black_24dp" />
+
+                                        <ImageButton
+                                            android:id="@+id/btnReport"
+                                            android:layout_width="@dimen/wh_35"
+                                            android:layout_height="@dimen/wh_35"
+                                            android:layout_gravity="center"
+                                            android:background="@null"
+                                            android:padding="@dimen/lrtbp_10"
+                                            android:scaleType="centerCrop"
+                                            android:src="@drawable/report"
+                                            android:tint="@color/black" />
 
                                         <TextView
-                                            android:id="@+id/txtStarting"
+                                            android:id="@+id/txtWorkmode"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="start|top"
+                                            android:paddingLeft="@dimen/lrtbp_20"
+                                            android:paddingRight="@dimen/lrtbp_10"
+                                            android:text="பகுதி நேரம்"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/txtJobType"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/bg_green"
+                                            android:gravity="center"
+                                            android:paddingLeft="@dimen/lrtbp_10"
+                                            android:paddingRight="@dimen/lrtbp_10"
+                                            android:text="Govt"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/lrtbp_10" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:id="@+id/imgShare"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="@dimen/lrtbp_10"
+                                            android:src="@drawable/ic_menu_share" />
+
+                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:paddingBottom="@dimen/lrtbp_10"
-                                            android:text="Starting Date"
-                                            android:textColor="@color/primary_text" />
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/cmpTxt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/lrtbp_10"
+                                                android:gravity="center|left"
+                                                android:text="நிறுவனம்:-"
+                                                android:textColor="@color/colorPrimary"
+                                                android:textSize="@dimen/txt_10" />
+
+                                            <TextView
+                                                android:id="@+id/txtCompanyName"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignRight="@+id/cmpTxt"
+                                                android:layout_marginLeft="@dimen/lrtbp_5"
+                                                android:layout_marginTop="@dimen/lrtbp_10"
+                                                android:gravity="center|left"
+                                                android:text="Company Name"
+                                                android:textColor="@color/primary_text" />
+
+                                        </LinearLayout>
+
                                     </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/txtTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="Title"
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/txt_16"
+                                        android:textStyle="bold" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:orientation="horizontal">
-
-                                    <View
-                                        android:id="@+id/divider1"
-                                        android:layout_width="1dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@color/shade2" />
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:layout_weight="1"
                                         android:orientation="vertical">
 
                                         <TextView
-                                            android:id="@+id/tending"
+                                            android:id="@+id/tnoofvancancy"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:padding="@dimen/lrtbp_10"
-                                            android:text="கடைசி தேதி"
+                                            android:paddingBottom="@dimen/lrtbp_10"
+                                            android:paddingRight="@dimen/lrtbp_10"
+                                            android:paddingTop="@dimen/lrtbp_10"
+                                            android:text="காலிப்பணியிடங்கள்"
                                             android:textColor="@color/secondary_text" />
 
                                         <TextView
-                                            android:id="@+id/txtEnding"
+                                            android:id="@+id/txtNoOfVacancy"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:drawablePadding="@dimen/lrtbp_10"
                                             android:gravity="center"
-                                            android:paddingBottom="@dimen/lrtbp_10"
-                                            android:text="Ending Date"
-                                            android:textColor="@color/primary_text" />
+                                            android:text="10"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/txt_20"
+                                            android:textStyle="bold" />
+
                                     </LinearLayout>
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/lrtbp_10">
 
-                                    <View
-                                        android:id="@+id/divider2"
-                                        android:layout_width="1dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@color/shade2" />
+                                    <FrameLayout
+                                        android:id="@+id/frame"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp" />
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical">
+                                        android:background="@color/shade1"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical"
+                                            android:visibility="gone">
+
+                                            <TextView
+                                                android:id="@+id/tdist"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:drawablePadding="@dimen/lrtbp_10"
+                                                android:gravity="center"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:text="மாவட்டம்"
+                                                android:textColor="@color/secondary_text" />
+
+                                            <TextView
+                                                android:id="@+id/txtDist"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:drawablePadding="@dimen/lrtbp_10"
+                                                android:gravity="center"
+                                                android:paddingBottom="@dimen/lrtbp_10"
+                                                android:text="District"
+                                                android:textColor="@color/primary_text" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal"
+                                            android:visibility="gone">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/ttaluk"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:padding="@dimen/lrtbp_10"
+                                                    android:text="தாலுகா"
+                                                    android:textColor="@color/secondary_text" />
+
+                                                <TextView
+                                                    android:id="@+id/txtTaluk"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:drawablePadding="@dimen/lrtbp_10"
+                                                    android:gravity="center"
+                                                    android:paddingBottom="@dimen/lrtbp_10"
+                                                    android:text="Taluk"
+                                                    android:textColor="@color/primary_text" />
+                                            </LinearLayout>
+
+                                            <View
+                                                android:layout_width="1dp"
+                                                android:layout_height="match_parent"
+                                                android:background="@color/shade2" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/tcities"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:padding="@dimen/lrtbp_10"
+                                                    android:text="பணியிடம்"
+                                                    android:textColor="@color/secondary_text" />
+
+                                                <TextView
+                                                    android:id="@+id/txtCities"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:drawablePadding="@dimen/lrtbp_10"
+                                                    android:gravity="center"
+                                                    android:paddingBottom="@dimen/lrtbp_10"
+                                                    android:text="Cities"
+                                                    android:textColor="@color/primary_text" />
+
+                                            </LinearLayout>
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/lDate"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:background="@color/shade1"
+                                        android:orientation="horizontal"
+                                        android:padding="@dimen/lrtbp_10"
+                                        android:visibility="visible"
+                                        tools:ignore="UselessParent">
+
+                                        <LinearLayout
+                                            android:id="@+id/startDateLay"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tstarting"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:text="ஆரம்ப தேதி"
+                                                android:textColor="@color/secondary_text" />
+
+                                            <TextView
+                                                android:id="@+id/txtStarting"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:paddingBottom="@dimen/lrtbp_10"
+                                                android:text="Starting Date"
+                                                android:textColor="@color/primary_text" />
+
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/endDateLay"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tending"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:text="கடைசி தேதி"
+                                                android:textColor="@color/secondary_text" />
+
+                                            <TextView
+                                                android:id="@+id/txtEnding"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:drawablePadding="@dimen/lrtbp_10"
+                                                android:gravity="center"
+                                                android:paddingBottom="@dimen/lrtbp_10"
+                                                android:text="Ending Date"
+                                                android:textColor="@color/primary_text" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/examDateLay"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/texamdate"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:text="தேர்வு தேதி"
+                                                android:textColor="@color/secondary_text" />
+
+                                            <TextView
+                                                android:id="@+id/txtExamDate"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:paddingBottom="@dimen/lrtbp_10"
+                                                android:text="Exam Date"
+                                                android:textColor="@color/primary_text" />
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:id="@+id/divider2"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:background="@color/shade2" />
+
+                                        <View
+                                            android:id="@+id/divider1"
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:background="@color/shade2" />
+
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/twebaddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_web_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="முக்கிய இணைய முகவரி :"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/taddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_place_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="முகவரி"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtAddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Address"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tphone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_call_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="தொடர்புக்கு"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/btnApply"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/wh_35"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_gravity="bottom"
+                                        android:layout_margin="@dimen/lrtbp_5"
+                                        android:background="@color/colorPrimaryDark"
+                                        android:gravity="center"
+                                        android:padding="@dimen/lrtbp_5"
+                                        android:text="விண்ணப்பிக்க"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/txt_15"
+                                        android:textStyle="bold"
+                                        android:visibility="gone" />
+
+                                    <TextView
+                                        android:id="@+id/temail"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_gmail"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="மின்னஞ்சல்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/tqualification"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_school_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="தகுதி"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtQualification"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="qualification"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/texp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_flash_on_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="அனுபவம்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtExp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Experience"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/twebsite"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_web_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="அதிகாரப்பூர்வ அறிவிப்பு"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtWebsite"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Website 1"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/twebsite2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_web_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="இணைய முகவரி"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtWebsite2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Website 2"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tGender"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_gender_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="பாலினம்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtGender"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Gender"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tagelimit"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_accessibility_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="வயது வரம்பு"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtAgeLimit"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Age Limit"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tmaritalStatus"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_ring_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="திருமண நிலை"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtmaritalStatus"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="marital Status"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/thowtoapply"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_directions_bike_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="விண்ணப்பிக்கும் முறை"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textIsSelectable="true" />
+
+                                    <TextView
+                                        android:id="@+id/txtHowToApply"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="How to Apply"
+                                        android:textColor="@color/primary_text"
+                                        android:textIsSelectable="true" />
+
+                                    <TextView
+                                        android:id="@+id/tpostaladdress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_place_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="அஞ்சல் முகவரி"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtPostalAddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Postal Address"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tsalary"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_gift"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="சம்பளம்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtSalary"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Salary"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tselection"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_compare_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="தேர்வு நடைமுறை"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtSelection"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Selection Procedure"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tfees"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_currency_inr"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="கட்டணம் விவரங்கள்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtFees"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Fees Details"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/texamcentre"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_touch_app_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="தேர்வு மையம்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtExamCentre"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Exam Center"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tskills"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_wb_incandescent_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="திறன்கள்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtSkills"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/lrtbp_10"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:orientation="vertical"
+                                        android:paddingLeft="@dimen/lrtbp_20"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tdetail"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_description_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="மற்ற விபரங்கள்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtDetail"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/lrtbp_10"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:orientation="vertical"
+                                        android:paddingLeft="@dimen/lrtbp_20"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="other details"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tjobLocation"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_place_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="விண்ணப்பங்கள் வரவேற்கப்படும் மாவட்டங்கள்"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/txtjobLocation"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/lrtbp_10"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:orientation="vertical"
+                                        android:paddingLeft="@dimen/lrtbp_20"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:text="Erode, Nammakal, Tiruvannamalai"
+                                        android:textColor="@color/primary_text" />
+
+                                    <TextView
+                                        android:id="@+id/tBottomphone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/ic_call_black_24dp"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="தொடர்புக்கு"
+                                        android:textColor="@color/colorPrimary" />
+
+                                    <TextView
+                                        android:id="@+id/bottombtnApply"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/wh_35"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_gravity="bottom"
+                                        android:layout_margin="@dimen/lrtbp_5"
+                                        android:background="@color/colorPrimaryDark"
+                                        android:gravity="center"
+                                        android:padding="@dimen/lrtbp_5"
+                                        android:text="விண்ணப்பிக்க"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/txt_15"
+                                        android:textStyle="bold"
+                                        android:visibility="gone" />
+
+                                    <TextView
+                                        android:id="@+id/infoText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="(மேலே குறிப்பிட்டுள்ள வேலைவாய்ப்புக்கு தேவையான அனைத்து தகவல்களையும் படித்து பார்த்துவிட்டு இந்நிறுவனத்திற்கு அழையுங்கள்)"
+                                        android:textColor="@color/grey"
+                                        android:textSize="@dimen/txt_10" />
+
+                                    <WebView
+                                        android:id="@+id/txtwebAddress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:descendantFocusability="blocksDescendants"
+                                        android:drawablePadding="@dimen/lrtbp_10"
+                                        android:focusable="false"
+                                        android:gravity="center|left"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        tools:ignore="WebViewLayout" />
+
+                                    <nithra.jobs.career.placement.utills.FlexboxLayout
+                                        android:id="@+id/txtPhone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        app:alignContent="flex_start"
+                                        app:alignItems="flex_start"
+                                        app:flexDirection="row"
+                                        app:flexWrap="wrap"
+                                        app:justifyContent="flex_start" />
+
+                                    <nithra.jobs.career.placement.utills.FlexboxLayout
+                                        android:id="@+id/txtEmail"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        app:alignContent="flex_start"
+                                        app:alignItems="flex_start"
+                                        app:flexDirection="row"
+                                        app:flexWrap="wrap"
+                                        app:justifyContent="flex_start" />
+
+                                    <nithra.jobs.career.placement.utills.FlexboxLayout
+                                        android:id="@+id/txtBottomPhone"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/lrtbp_25"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        app:alignContent="flex_start"
+                                        app:alignItems="flex_start"
+                                        app:flexDirection="row"
+                                        app:flexWrap="wrap"
+                                        app:justifyContent="flex_start" />
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/shade2" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/shade1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:id="@+id/lProgress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:background="@android:color/white"
+                                        android:gravity="center"
+                                        android:visibility="gone">
+
+                                        <ImageView
+                                            android:id="@+id/imgLoading"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/wh_35"
+                                            android:src="@drawable/loading" />
+
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/tRelatedJobs"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center|left"
+                                        android:paddingBottom="@dimen/lrtbp_10"
+                                        android:paddingLeft="@dimen/lrtbp_10"
+                                        android:paddingRight="@dimen/lrtbp_10"
+                                        android:paddingTop="@dimen/lrtbp_10"
+                                        android:text="Related Jobs :"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/txt_15"
+                                        android:textStyle="bold" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/relatedJobsList"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scrollbars="none" />
+
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/lrtbp_10">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginLeft="5dp"
+                                        android:orientation="horizontal">
 
                                         <TextView
-                                            android:id="@+id/texamdate"
-                                            android:layout_width="match_parent"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:padding="@dimen/lrtbp_10"
-                                            android:text="தேர்வு தேதி"
-                                            android:textColor="@color/secondary_text" />
+                                            android:gravity="center|left"
+                                            android:paddingRight="@dimen/lrtbp_5"
+                                            android:paddingTop="@dimen/lrtbp_10"
+                                            android:text="Job ID:"
+                                            android:textColor="@color/green" />
 
                                         <TextView
-                                            android:id="@+id/txtExamDate"
-                                            android:layout_width="match_parent"
+                                            android:id="@+id/txtJobID"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:paddingBottom="@dimen/lrtbp_10"
-                                            android:text="Exam Date"
+                                            android:layout_marginBottom="@dimen/lrtbp_10"
+                                            android:gravity="left"
+                                            android:orientation="vertical"
+                                            android:paddingRight="@dimen/lrtbp_10"
                                             android:textColor="@color/primary_text" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/postedbylay"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginRight="5dp"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:paddingRight="@dimen/lrtbp_5"
+                                            android:paddingTop="@dimen/lrtbp_10"
+                                            android:text="Posted By:"
+                                            android:textColor="@color/green" />
+
+                                        <TextView
+                                            android:id="@+id/txtPostedBy"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="@dimen/lrtbp_10"
+                                            android:gravity="right"
+                                            android:orientation="vertical"
+                                            android:paddingRight="@dimen/lrtbp_10"
+                                            android:textColor="@color/primary_text" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/shade2" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/imageLay"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:visibility="gone">
+
+                                <LinearLayout
+                                    android:id="@+id/iconsLay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="end"
+                                            android:orientation="horizontal">
+
+                                            <ImageButton
+                                                android:id="@+id/imgbtnLike"
+                                                android:layout_width="@dimen/wh_35"
+                                                android:layout_height="@dimen/wh_35"
+                                                android:layout_gravity="center"
+                                                android:background="@null"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:scaleType="centerCrop"
+                                                android:src="@drawable/star_off" />
+
+                                            <ImageButton
+                                                android:id="@+id/imgbtnReminder"
+                                                android:layout_width="@dimen/wh_35"
+                                                android:layout_height="@dimen/wh_35"
+                                                android:layout_gravity="center"
+                                                android:background="@null"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:scaleType="centerCrop"
+                                                android:src="@drawable/ic_alarm_black_24dp" />
+
+                                            <ImageButton
+                                                android:id="@+id/imgbtnReport"
+                                                android:layout_width="@dimen/wh_35"
+                                                android:layout_height="@dimen/wh_35"
+                                                android:layout_gravity="center"
+                                                android:background="@null"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:scaleType="centerCrop"
+                                                android:src="@drawable/report"
+                                                android:tint="@color/black" />
+
+                                            <ImageView
+                                                android:id="@+id/imggShare"
+                                                android:layout_width="@dimen/wh_35"
+                                                android:layout_height="@dimen/wh_35"
+                                                android:layout_gravity="center"
+                                                android:background="@null"
+                                                android:padding="@dimen/lrtbp_10"
+                                                android:scaleType="centerCrop"
+                                                android:src="@drawable/ic_menu_share" />
+
+
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:id="@+id/imgJobType"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginLeft="@dimen/lrtbp_10"
+                                            android:background="@drawable/bg_green"
+                                            android:gravity="center"
+                                            android:paddingLeft="@dimen/lrtbp_10"
+                                            android:paddingRight="@dimen/lrtbp_10"
+                                            android:text="Govt"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/lrtbp_10" />
 
                                     </LinearLayout>
 
                                 </LinearLayout>
 
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/taddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_place_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="முகவரி"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Address"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tphone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_call_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="தொடர்பு எண்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtPhone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Mobile"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/temail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_gmail"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="மின்னஞ்சல்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtEmail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Email"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tqualification"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_school_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="தகுதி"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtQualification"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="qualification"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/texp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_flash_on_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="அனுபவம்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtExp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Experience"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/twebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_web_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="அதிகாரப்பூர்வ அறிவிப்பு"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtWebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Website 1"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/twebsite2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_web_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="இணைய முகவரி"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtWebsite2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Website 2"
-                                android:textColor="@color/primary_text" />
-
-
-                            <TextView
-                                android:id="@+id/tagelimit"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_accessibility_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="வயது வரம்பு"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtAgeLimit"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Age Limit"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/thowtoapply"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_directions_bike_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="விண்ணப்பிக்கும் முறை"
-                                android:textColor="@color/colorPrimary"
-                                android:textIsSelectable="true" />
-
-                            <TextView
-                                android:id="@+id/txtHowToApply"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="How to Apply"
-                                android:textColor="@color/primary_text"
-                                android:textIsSelectable="true" />
-
-                            <TextView
-                                android:id="@+id/tpostaladdress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_place_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="அஞ்சல் முகவரி"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtPostalAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Postal Address"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tsalary"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_gift"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="சம்பளம்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtSalary"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Salary"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tselection"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_compare_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="தேர்வு நடைமுறை"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtSelection"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Selection Procedure"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tfees"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_currency_inr"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="கட்டணம் விவரங்கள்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtFees"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Fees Details"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/texamcentre"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_touch_app_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingBottom="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="தேர்வு மையம்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtExamCentre"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingLeft="@dimen/lrtbp_10"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="Exam Center"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tskills"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_wb_incandescent_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="திறன்கள்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtSkills"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/lrtbp_10"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:orientation="vertical"
-                                android:paddingLeft="@dimen/lrtbp_20"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:textColor="@color/primary_text" />
-
-                            <TextView
-                                android:id="@+id/tdetail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_description_black_24dp"
-                                android:drawablePadding="@dimen/lrtbp_10"
-                                android:gravity="center|left"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:paddingTop="@dimen/lrtbp_10"
-                                android:text="மற்ற விபரங்கள்"
-                                android:textColor="@color/colorPrimary" />
-
-                            <TextView
-                                android:id="@+id/txtDetail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/lrtbp_10"
-                                android:layout_marginLeft="@dimen/lrtbp_25"
-                                android:orientation="vertical"
-                                android:paddingLeft="@dimen/lrtbp_20"
-                                android:paddingRight="@dimen/lrtbp_10"
-                                android:text="other details"
-                                android:textColor="@color/primary_text" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/shade1"
-                            android:orientation="vertical">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/shade2" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/lrtbp_10">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:orientation="horizontal">
+                                    android:layout_below="@+id/iconsLay">
 
                                     <TextView
+                                        android:id="@+id/click_zoom"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:gravity="center|left"
-                                        android:paddingRight="@dimen/lrtbp_5"
-                                        android:paddingTop="@dimen/lrtbp_10"
-                                        android:text="Job ID:"
-                                        android:textColor="@color/green" />
+                                        android:layout_alignParentRight="true"
+                                        android:background="#88494747"
+                                        android:gravity="center"
+                                        android:padding="@dimen/lrtbp_5"
+                                        android:text="Tap To Zoom"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="@dimen/txt_12" />
 
-                                    <TextView
-                                        android:id="@+id/txtJobID"
-                                        android:layout_width="wrap_content"
+                                    <nithra.jobs.career.placement.utills.TouchImageView
+                                        android:id="@+id/imageJob"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginBottom="@dimen/lrtbp_10"
-                                        android:gravity="left"
-                                        android:orientation="vertical"
-                                        android:paddingRight="@dimen/lrtbp_10"
-                                        android:textColor="@color/primary_text" />
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/trans_back" />
 
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/postedbylay"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginRight="5dp"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:paddingRight="@dimen/lrtbp_5"
-                                        android:paddingTop="@dimen/lrtbp_10"
-                                        android:text="PostedBy:"
-                                        android:textColor="@color/green" />
-
-                                    <TextView
-                                        android:id="@+id/txtPostedBy"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="@dimen/lrtbp_10"
-                                        android:gravity="right"
-                                        android:orientation="vertical"
-                                        android:paddingRight="@dimen/lrtbp_10"
-                                        android:textColor="@color/primary_text" />
-
-                                </LinearLayout>
+                                </RelativeLayout>
 
                             </RelativeLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </androidx.core.widget.NestedScrollView>
 
-                </LinearLayout>
+                </RelativeLayout>
 
-            </android.support.v4.widget.NestedScrollView>
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/progressBar"
+                    style="@style/SpinKitView.Large.CubeGrid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    app:SpinKit_Color="@color/colorPrimary" />
 
-        </RelativeLayout>
+                <include
+                    android:id="@+id/lError"
+                    layout="@layout/error_lay"
+                    android:visibility="gone" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

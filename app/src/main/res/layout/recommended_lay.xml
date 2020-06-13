@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:layout_height="fill_parent">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@id/ads"
-        android:layout_weight="1">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ads">
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@id/swipeContainer"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="visible">
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/front_lay"
@@ -32,7 +29,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -42,7 +38,7 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_margin="@dimen/wh_2"
@@ -56,9 +52,9 @@
                                     android:src="@drawable/recommanded_job"
                                     android:tint="@color/white" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -76,7 +72,7 @@
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
                         </LinearLayout>
 
                         <LinearLayout
@@ -86,7 +82,7 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_margin="@dimen/wh_2"
@@ -100,9 +96,9 @@
                                     android:src="@drawable/near_by_jobs"
                                     android:tint="@color/white" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -120,7 +116,7 @@
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
                         </LinearLayout>
 
                         <LinearLayout
@@ -130,7 +126,7 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_margin="@dimen/wh_2"
@@ -144,9 +140,9 @@
                                     android:src="@drawable/reccomend_skills"
                                     android:tint="@color/white" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -164,7 +160,7 @@
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
                         </LinearLayout>
 
                         <LinearLayout
@@ -174,7 +170,7 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_margin="@dimen/wh_2"
@@ -188,9 +184,9 @@
                                     android:src="@drawable/recommend_qualification"
                                     android:tint="@color/white" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
-                            <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                            <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
@@ -208,18 +204,18 @@
                                     android:textColor="@color/black"
                                     android:textStyle="bold" />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
+                    <androidx.cardview.widget.CardView xmlns:n2="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/lrtbp_10"
                         android:layout_weight="1"
-                        n2:cardElevation="@dimen/lrtbp_5"
-                        n2:cardBackgroundColor="@color/dark_yellow">
+                        n2:cardBackgroundColor="@color/dark_yellow"
+                        n2:cardElevation="@dimen/lrtbp_5">
 
                         <TextView
                             android:id="@+id/btnBrowse"
@@ -234,7 +230,7 @@
                             android:textColor="@color/white"
                             android:textStyle="bold" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -244,18 +240,48 @@
                     android:background="@drawable/bgg"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:id="@id/logo"
-                        android:layout_width="@dimen/wh_240"
+                    <Button
+                        android:id="@id/btnEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/wh_50"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_height="@dimen/wh_200"
-                        android:src="@drawable/rjob" />
+                        android:layout_marginBottom="@dimen/lrtbp_20"
+                        android:background="@drawable/bg_button"
+                        android:padding="@dimen/lrtbp_10"
+                        android:text=""
+                        android:textSize="@dimen/txt_12"
+                        android:textColor="@color/white" />
 
-                    <WebView
-                        android:id="@id/txtStatus"
+                    <RelativeLayout
+                        android:id="@+id/img_lay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/logo"
+                        android:layout_centerHorizontal="true">
+
+                        <ImageView
+                            android:id="@id/logo"
+                            android:layout_width="@dimen/wh_240"
+                            android:layout_height="@dimen/wh_200"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/rjob" />
+
+                        <ImageView
+                            android:id="@+id/block"
+                            android:layout_width="@dimen/wh_100"
+                            android:layout_height="@dimen/wh_200"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/block"
+                            android:tint="@color/yellow"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                    <WebView
+                        android:id="@+id/txtStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_lay"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="@dimen/lrtbp_15"
                         android:layout_marginRight="@dimen/lrtbp_15"
@@ -263,23 +289,11 @@
                         android:padding="@dimen/lrtbp_5"
                         android:scrollbars="none"
                         android:text="description" />
-
-                    <Button
-                        android:id="@id/btnEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/wh_35"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/lrtbp_20"
-                        android:background="@drawable/button_back"
-                        android:padding="@dimen/lrtbp_10"
-                        android:text=""
-                        android:textColor="@color/white" />
                 </RelativeLayout>
 
             </RelativeLayout>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:n6="http://schemas.android.com/apk/res-auto"
             android:id="@id/progressBar"
@@ -313,4 +327,4 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:visibility="gone" />
-</LinearLayout>
+</RelativeLayout>

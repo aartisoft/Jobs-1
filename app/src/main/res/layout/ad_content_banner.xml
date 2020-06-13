@@ -12,8 +12,7 @@ android:background="#fff">
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@color/white"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -33,7 +32,6 @@ android:background="#fff">
                 android:layout_toStartOf="@+id/prac_cat_text" />
 
             <LinearLayout
-                android:id="@+id/lin2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -61,7 +59,7 @@ android:background="#fff">
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/contentad_call_to_action"
             android:layout_width="70dp"
             android:layout_height="35dp"
@@ -78,7 +76,6 @@ android:background="#fff">
             android:layout_alignParentEnd="true" />
 
         <ImageView
-            android:id="@+id/ad_batch"
             android:layout_width="25dp"
             android:layout_height="15dp"
             android:src="@drawable/ic_ad_badgeblue" />

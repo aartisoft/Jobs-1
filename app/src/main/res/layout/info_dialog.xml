@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentLay"
     android:layout_width="match_parent"
     android:background="@color/trans_black"
     android:layout_height="match_parent"
@@ -12,7 +13,22 @@
         android:padding="@dimen/lrtbp_20"
         android:layout_centerInParent="true"/>
 
+    <Button
+        android:layout_marginRight="@dimen/lrtbp_20"
+        android:layout_marginLeft="@dimen/lrtbp_20"
+        android:layout_height="@dimen/wh_50"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/wh_100"
+        android:id="@+id/btn_close"
+        android:text="சரி"
+        android:background="@drawable/bg_trans_black"
+        android:layout_width="@dimen/wh_100"
+        android:textSize="@dimen/txt_20" />
+
     <TextView
+        android:id="@+id/text"
         android:textSize="@dimen/txt_20"
         android:textStyle="bold"
         android:gravity="center"
@@ -22,18 +38,5 @@
         android:text="@string/swipe_side"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:layout_marginRight="@dimen/lrtbp_20"
-        android:layout_marginLeft="@dimen/lrtbp_20"
-        android:layout_marginBottom="@dimen/lrtbp_20"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/white"
-        android:background="@drawable/rectangle_guide"
-        android:id="@+id/btn_close"
-        android:text="சரி"
-        android:layout_width="@dimen/wh_100"
-        android:layout_height="@dimen/wh_35" />
 
 </RelativeLayout>

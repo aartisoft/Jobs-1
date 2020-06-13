@@ -2,23 +2,15 @@ package nithra.jobs.career.placement.activity;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,19 +18,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Filter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -46,33 +33,27 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.VideoController;
-import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.formats.MediaView;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeAppInstallAd;
-import com.google.android.gms.ads.formats.NativeAppInstallAdView;
-import com.google.android.gms.ads.formats.NativeContentAd;
-import com.google.android.gms.ads.formats.NativeContentAdView;
-
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.networking.MySingleton;
 import nithra.jobs.career.placement.pojo.Item;
+import nithra.jobs.career.placement.utills.L;
 import nithra.jobs.career.placement.utills.SU;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
@@ -80,7 +61,6 @@ import nithra.jobs.career.placement.utills.U;
 /**
  * Created by nithra-apps on 6/7/17.
  */
-
 public class FilterActivity extends AppCompatActivity {
 
     LinearLayout jobModeLay, skillsLay, locationLay, categoryLay, workmodeLay, qualificationLay, experienceLay;
@@ -98,19 +78,26 @@ public class FilterActivity extends AppCompatActivity {
     WorkModeSelectionAdapter workmodeAdapter;
     JobModeSelectionAdapter jobmodeAdapter;
     SharedPreference sp;
-    Button setFilter;
-    ImageView infoBtn,refreshBtn;
+    Button setFilter, networkRetry;
+    ImageView infoBtn, refreshBtn;
     String skills = "", location = "", jobCat = "", jobMode = "", workMode = "", qualification = "", experience = "";
     Toolbar toolbar;
     LinearLayout adLayout;
+
+    int SH_SKILLS_CLICKED, SH_LOCATION_CLICKED, SH_CATEGORY_CLICKED, SH_WORKMODE_CLICKED, SH_EXPERIENCE_CLICKED, SH_QUALIFICATION_CLICKED, SH_JOBMODE_CLICKED;
+    SharedPreference pref;
+    LinearLayout lError, listLay;
+    TextView txtError1;
+    SpinKitView progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_layout);
-        setStatusBarTranslucent(false);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        pref = new SharedPreference();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -119,6 +106,11 @@ public class FilterActivity extends AppCompatActivity {
         setFilter = findViewById(R.id.set_btn);
         infoBtn = findViewById(R.id.info_btn);
         refreshBtn = findViewById(R.id.refresh_btn);
+        lError = findViewById(R.id.lError);
+        listLay = findViewById(R.id.listLay);
+        networkRetry = findViewById(R.id.network_retry);
+        txtError1 = findViewById(R.id.txtError1);
+        progressBar = findViewById(R.id.progressBar);
 
         jobModeLay = findViewById(R.id.job_mode);
         skillsLay = findViewById(R.id.skills);
@@ -153,13 +145,24 @@ public class FilterActivity extends AppCompatActivity {
 
         setupSearchView();
 
-        loadJSON(SU.GETJOBTYPE);
-        loadJSON(SU.GETSKILLS);
-        loadJSON(SU.GETDISTRICT);
-        loadJSON(SU.GETJOBSCAT);
-        loadJSON(SU.GETEXPERIENCE);
-        loadJSON(SU.GETQUALIFICATION);
-        loadJSON(SU.GETWORKMODE);
+        if (U.isNetworkAvailable(FilterActivity.this)) {
+            preLoading();
+            loadJSON(SU.GETJOBTYPE);
+        } else {
+            errorView(U.INA);
+        }
+
+        networkRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (U.isNetworkAvailable(FilterActivity.this)) {
+                    preLoading();
+                    loadJSON(SU.GETJOBTYPE);
+                } else {
+                    errorView(U.INA);
+                }
+            }
+        });
 
         if (sp.getInt(FilterActivity.this, U.SH_FILTER_INFO_SHOW) == 0) {
             sp.putInt(FilterActivity.this, U.SH_FILTER_INFO_SHOW, 1);
@@ -185,14 +188,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_LOCATION_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                jobModeLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                jobModeLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -203,7 +206,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.GONE);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 1);
+                SH_JOBMODE_CLICKED = 1;
                 jobmodeAdapter = new JobModeSelectionAdapter(FilterActivity.this, R.layout.filter_layout, jobmodeList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(jobmodeAdapter);
@@ -213,14 +216,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_LOCATION_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                skillsLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                skillsLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 jobModeLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -231,7 +234,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 1);
+                SH_SKILLS_CLICKED = 1;
                 SkillAdapter = new SkillsSelectionAdapter(FilterActivity.this, R.layout.filter_layout, skillsList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(SkillAdapter);
@@ -241,14 +244,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                locationLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                locationLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 jobModeLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -259,7 +262,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 1);
+                SH_LOCATION_CLICKED = 1;
                 locAdapter = new LocationSelectionAdapter(FilterActivity.this, R.layout.filter_layout, locationList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(locAdapter);
@@ -269,14 +272,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
+                SH_LOCATION_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                categoryLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                categoryLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 jobModeLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -287,7 +290,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 1);
+                SH_CATEGORY_CLICKED = 1;
                 catAdapter = new CategorySelectionAdapter(FilterActivity.this, R.layout.filter_layout, jobCatList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(catAdapter);
@@ -297,14 +300,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_LOCATION_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                workmodeLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                workmodeLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -315,7 +318,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.GONE);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 1);
+                SH_WORKMODE_CLICKED = 1;
                 workmodeAdapter = new WorkModeSelectionAdapter(FilterActivity.this, R.layout.filter_layout, workmodeList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(workmodeAdapter);
@@ -326,14 +329,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_LOCATION_CLICKED = 0;
+                SH_EXPERIENCE_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
 
-                qualificationLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                qualificationLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -348,10 +351,15 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        searchView.setQuery("",false);
+                        searchView.setQuery("", false);
                         int item = qualificationList.get(position).getId();
-                        loadQualificationJSON(SU.GETCOURSE, String.valueOf(item));
+                        if (U.isNetworkAvailable(FilterActivity.this)) {
+                            loadQualificationJSON(SU.GETCOURSE, String.valueOf(item));
+                        } else {
+                            L.t(FilterActivity.this, U.INA);
+                        }
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -359,7 +367,7 @@ public class FilterActivity extends AppCompatActivity {
 
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 1);
+                SH_QUALIFICATION_CLICKED = 1;
                 qualificationAdapter = new QualificationSelectionAdapter(FilterActivity.this, R.layout.filter_layout, courseList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(qualificationAdapter);
@@ -369,14 +377,14 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchView.setQuery("", true);
-                sp.putInt(FilterActivity.this, U.SH_SKILLS_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_LOCATION_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_WORKMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_CATEGORY_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_JOBMODE_CLICKED, 0);
-                sp.putInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED, 0);
+                SH_SKILLS_CLICKED = 0;
+                SH_LOCATION_CLICKED = 0;
+                SH_WORKMODE_CLICKED = 0;
+                SH_CATEGORY_CLICKED = 0;
+                SH_JOBMODE_CLICKED = 0;
+                SH_QUALIFICATION_CLICKED = 0;
 
-                experienceLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_sqr));
+                experienceLay.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_black_line));
                 categoryLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 skillsLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
                 locationLay.setBackgroundColor(getResources().getColor(R.color.light_orange));
@@ -387,7 +395,7 @@ public class FilterActivity extends AppCompatActivity {
                 qualificationSpinner.setVisibility(View.GONE);
                 filterList.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
-                sp.putInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED, 1);
+                SH_EXPERIENCE_CLICKED = 1;
                 experienceAdapter = new ExperienceSelectionAdapter(FilterActivity.this, R.layout.filter_layout, experienceList);
                 filterList.setTextFilterEnabled(true);
                 filterList.setAdapter(experienceAdapter);
@@ -403,56 +411,56 @@ public class FilterActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (sp.getInt(FilterActivity.this, U.SH_SKILLS_CLICKED) == 1) {
+                if (SH_SKILLS_CLICKED == 1) {
                     try {
                         SkillAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_LOCATION_CLICKED) == 1) {
+                if (SH_LOCATION_CLICKED == 1) {
                     try {
                         locAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_CATEGORY_CLICKED) == 1) {
+                if (SH_CATEGORY_CLICKED == 1) {
                     try {
                         catAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED) == 1) {
+                if (SH_QUALIFICATION_CLICKED == 1) {
                     try {
                         qualificationAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_EXPERIENCE_CLICKED) == 1) {
+                if (SH_EXPERIENCE_CLICKED == 1) {
                     try {
                         experienceAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_WORKMODE_CLICKED) == 1) {
+                if (SH_WORKMODE_CLICKED == 1) {
                     try {
                         workmodeAdapter.filter(newText.trim());
                     } catch (Exception e) {
 
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_JOBMODE_CLICKED) == 1) {
+                if (SH_JOBMODE_CLICKED == 1) {
                     try {
                         jobmodeAdapter.filter(newText.trim());
                     } catch (Exception e) {
                         Log.e("Error", "" + e);
                     }
                 }
-                if (sp.getInt(FilterActivity.this, U.SH_QUALIFICATION_CLICKED) == 1) {
+                if (SH_QUALIFICATION_CLICKED == 1) {
                     try {
                         qualificationAdapter.filter(newText.trim());
                     } catch (Exception e) {
@@ -588,21 +596,25 @@ public class FilterActivity extends AppCompatActivity {
         });
     }
 
-    protected void setStatusBarTranslucent(boolean makeTranslucent) {
-        if (makeTranslucent) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            else {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            }
-        }
+    private void errorView(String msg1) {
+        txtError1.setText(msg1);
+        lError.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        listLay.setVisibility(View.GONE);
+        networkRetry.setVisibility(View.VISIBLE);
+    }
+
+    private void preLoading() {
+        listLay.setVisibility(View.GONE);
+        lError.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void postLoading() {
+        categoryClick();
+        lError.setVisibility(View.GONE);
+        listLay.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -634,18 +646,7 @@ public class FilterActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Toast.makeText(FilterActivity.this, "Request Time Out Please Try again later", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof AuthFailureError) {
-                            Toast.makeText(FilterActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ServerError) {
-                            Toast.makeText(FilterActivity.this, "Server Not Connected", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof NetworkError) {
-                            Toast.makeText(FilterActivity.this, "Internet Not Available", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ParseError) {
-                            Toast.makeText(FilterActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        errorHandling(error);
                     }
                 }) {
 
@@ -653,6 +654,11 @@ public class FilterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("action", param);
+                params.put("user_type", pref.getString(FilterActivity.this, U.SH_USER_TYPE));
+                params.put("employee_id", pref.getString(FilterActivity.this, U.SH_EMPLOYEE_ID));
+                params.put("android_id", U.getAndroidId(FilterActivity.this));
+                params.put("vcode", String.valueOf(U.versioncode_get(FilterActivity.this)));
+                Log.e("paramsresponse", "" + params);
                 return params;
             }
         };
@@ -660,137 +666,177 @@ public class FilterActivity extends AppCompatActivity {
         MySingleton.getInstance(FilterActivity.this).addToRequestQue(stringRequest);
     }
 
+    private void errorHandling(VolleyError error) {
+        String e;
+        if (error instanceof TimeoutError || error instanceof AuthFailureError || error instanceof ServerError)
+            e = U.SERVER_ERROR;
+        else if (error instanceof NetworkError)
+            e = U.INA;
+        else if (error instanceof ParseError)
+            e = U.ERROR;
+        else
+            e = U.ERROR;
+        errorView(e);
+    }
+
     private void showJSON(String param, String json) {
         JSONObject jsonObject = null;
         JSONArray jsonArray = null;
-        if (param.equals(SU.GETSKILLS)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                skillsList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("skills"));
-                    skillsList.add(data);
+        switch (param) {
+            case SU.GETSKILLS:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    skillsList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("skills"));
+                        skillsList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETDISTRICT)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                locationList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("dist"));
-                    locationList.add(data);
+
+                loadJSON(SU.GETJOBSDIST);
+                break;
+            case SU.GETJOBSDIST:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    locationList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(i);
+                        data.setItem(jo.getString("district"));
+                        locationList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETJOBSCAT)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                jobCatList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("job-cat"));
-                    data.setCount(jo.getString("jobCount"));
-                    jobCatList.add(data);
+
+                loadJSON(SU.GETJOBSCAT);
+
+                break;
+            case SU.GETJOBSCAT:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    jobCatList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("job-cat"));
+                        data.setCount(jo.getString("jobCount"));
+                        jobCatList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETEXPERIENCE)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                experienceList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("experience"));
-                    experienceList.add(data);
+
+                loadJSON(SU.GETEXPERIENCE);
+
+                break;
+            case SU.GETEXPERIENCE:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    experienceList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("experience"));
+                        experienceList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETQUALIFICATION)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                qualificationList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("qualification"));
-                    qualificationList.add(data);
+
+                loadJSON(SU.GETQUALIFICATION);
+
+                break;
+            case SU.GETQUALIFICATION:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    qualificationList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("qualification"));
+                        qualificationList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETWORKMODE)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                workmodeList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("workmode"));
-                    workmodeList.add(data);
+
+                loadJSON(SU.GETWORKMODE);
+
+                break;
+            case SU.GETWORKMODE:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    workmodeList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("workmode"));
+                        workmodeList.add(data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (param.equals(SU.GETCOURSE)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                courseList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("course"));
-                    courseList.add(data);
+
+                postLoading();
+
+                break;
+            case SU.GETCOURSE:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    courseList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("course"));
+                        courseList.add(data);
+                    }
+                    qualificationAdapter = new QualificationSelectionAdapter(FilterActivity.this, R.layout.filter_layout, courseList);
+                    filterList.setTextFilterEnabled(true);
+                    filterList.setAdapter(qualificationAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                qualificationAdapter = new QualificationSelectionAdapter(FilterActivity.this, R.layout.filter_layout, courseList);
-                filterList.setTextFilterEnabled(true);
-                filterList.setAdapter(qualificationAdapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (param.equals(SU.GETJOBTYPE)) {
-            try {
-                jsonObject = new JSONObject(json);
-                jsonArray = jsonObject.getJSONArray("list");
-                jobmodeList.clear();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Item data = new Item();
-                    data.setId(jo.getInt("id"));
-                    data.setItem(jo.getString("english"));
-                    jobmodeList.add(data);
+                break;
+            case SU.GETJOBTYPE:
+                try {
+                    jsonObject = new JSONObject(json);
+                    jsonArray = jsonObject.getJSONArray("list");
+                    jobmodeList.clear();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Item data = new Item();
+                        data.setId(jo.getInt("id"));
+                        data.setItem(jo.getString("english"));
+                        jobmodeList.add(data);
+                    }
+                    jobmodeAdapter = new JobModeSelectionAdapter(FilterActivity.this, R.layout.filter_layout, jobmodeList);
+                    filterList.setTextFilterEnabled(true);
+                    filterList.setAdapter(jobmodeAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                jobmodeAdapter = new JobModeSelectionAdapter(FilterActivity.this, R.layout.filter_layout, jobmodeList);
-                filterList.setTextFilterEnabled(true);
-                filterList.setAdapter(jobmodeAdapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+                loadJSON(SU.GETSKILLS);
+                break;
         }
     }
 
@@ -806,18 +852,7 @@ public class FilterActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Toast.makeText(FilterActivity.this, "Request Time Out Please Try again later", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof AuthFailureError) {
-                            Toast.makeText(FilterActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ServerError) {
-                            Toast.makeText(FilterActivity.this, "Server Not Connected", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof NetworkError) {
-                            Toast.makeText(FilterActivity.this, "Internet Not Available", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ParseError) {
-                            Toast.makeText(FilterActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        errorHandling(error);
                     }
                 }) {
 
@@ -826,11 +861,63 @@ public class FilterActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("action", param);
                 params.put("qualification", courseid);
+                params.put("user_type", pref.getString(FilterActivity.this, U.SH_USER_TYPE));
+                params.put("employee_id", pref.getString(FilterActivity.this, U.SH_EMPLOYEE_ID));
+                params.put("android_id", U.getAndroidId(FilterActivity.this));
+                params.put("vcode", String.valueOf(U.versioncode_get(FilterActivity.this)));
+                Log.e("paramsresponse", "" + params);
                 return params;
             }
         };
 
         MySingleton.getInstance(FilterActivity.this).addToRequestQue(stringRequest);
+    }
+
+    public void showInfoDialog() {
+        final Dialog dialog = new Dialog(FilterActivity.this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar_MinWidth);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.info_popup);
+        WebView infoText = dialog.findViewById(R.id.info_text);
+        infoText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+
+        String info = "<b><meta charset=\"utf-8\"><font color=purple size=2>\n" +
+                getResources().getString(R.string.filter_info) + "<br><br></font></b>";
+
+        U.webview(FilterActivity.this, info, infoText);
+
+        dialog.findViewById(R.id.text_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void categoryClick() {
+        if (SH_SKILLS_CLICKED == 1) {
+            skillsLay.performClick();
+        } else if (SH_LOCATION_CLICKED == 1) {
+            locationLay.performClick();
+        } else if (SH_CATEGORY_CLICKED == 1) {
+            categoryLay.performClick();
+        } else if (SH_WORKMODE_CLICKED == 1) {
+            workmodeLay.performClick();
+        } else if (SH_EXPERIENCE_CLICKED == 1) {
+            experienceLay.performClick();
+        } else if (SH_QUALIFICATION_CLICKED == 1) {
+            qualificationLay.performClick();
+        } else if (SH_JOBMODE_CLICKED == 1) {
+            jobModeLay.performClick();
+        } else {
+            jobModeLay.performClick();
+        }
     }
 
     public class SkillsSelectionAdapter extends ArrayAdapter {
@@ -858,13 +945,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedSkills.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -919,21 +1019,46 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
-            if (selectedLocation.contains("" + list.get(position).getId())) {
+
+            String distStr = "";
+            try {
+                distStr = URLEncoder.encode(list.get(position).getItem(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if (selectedLocation.contains(distStr)) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    String distStr = "";
+                    try {
+                        distStr = URLEncoder.encode(list.get(position).getItem(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     if (isChecked) {
-                        selectedLocation.add("" + list.get(position).getId());
+                        selectedLocation.add("" + distStr);
                     } else {
-                        selectedLocation.remove("" + list.get(position).getId());
+                        selectedLocation.remove("" + distStr);
                     }
                 }
             });
@@ -948,9 +1073,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -980,13 +1105,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedCategory.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -1009,9 +1147,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -1041,13 +1179,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedQualification.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -1070,9 +1221,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -1102,13 +1253,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedExperience.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -1131,9 +1295,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -1163,13 +1327,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedWorkmode.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -1192,9 +1369,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -1224,13 +1401,26 @@ public class FilterActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_list_item, null);
 
             TextView txt = view.findViewById(R.id.name);
-            CheckBox checkBox = view.findViewById(R.id.checkbox);
+            final CheckBox checkBox = view.findViewById(R.id.checkbox);
             txt.setText(list.get(position).getItem());
             if (selectedJobmode.contains("" + list.get(position).getId())) {
                 checkBox.setChecked(true);
             } else {
                 checkBox.setChecked(false);
             }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+
+                }
+            });
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -1253,9 +1443,9 @@ public class FilterActivity extends AppCompatActivity {
                 list.addAll(orig);
             } else {
                 for (Item postDetail : orig) {
-                    if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
-                    } else if (charText.length() != 0 && postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (postDetail.getItem().toLowerCase(Locale.getDefault()).contains(charText)) {
                         list.add(postDetail);
                     }
                 }
@@ -1298,33 +1488,6 @@ public class FilterActivity extends AppCompatActivity {
             txt.setText(list.get(position).getItem());
             return view;
         }
-    }
-
-    public void showInfoDialog(){
-        final Dialog dialog = new Dialog(FilterActivity.this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar_MinWidth);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.info_popup);
-        WebView infoText = dialog.findViewById(R.id.info_text);
-        infoText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return true;
-            }
-        });
-
-        String info = "<b><meta charset=\"utf-8\"><font color=purple size=2>\n" +
-                getResources().getString(R.string.filter_info) + "<br><br></font></b>";
-
-        U.webview(FilterActivity.this,info,infoText);
-
-        dialog.findViewById(R.id.text_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
 }

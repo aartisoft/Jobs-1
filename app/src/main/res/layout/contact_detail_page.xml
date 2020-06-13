@@ -73,7 +73,7 @@
                         android:textColor="@color/red"
                         android:textSize="20dp" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -88,7 +88,7 @@
                             android:maxLines="1"
                             android:singleLine="true" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -107,7 +107,7 @@
                         android:textColor="@color/red"
                         android:textSize="20dp" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
@@ -123,8 +123,37 @@
                             android:maxLines="1"
                             android:singleLine="true" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:gravity="left"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/livingcity"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/wh_35"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_grey"
+                        android:drawablePadding="@dimen/lrtbp_30"
+                        android:drawableRight="@drawable/ic_place_black_24dp"
+                        android:gravity="center|left"
+                        android:hint="Living City"
+                        android:inputType="textAutoComplete"
+                        android:maxLines="1"
+                        android:singleLine="true" />
                 </LinearLayout>
 
                 <TextView
@@ -132,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/wh_35"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/layout_bg"
+                    android:background="@drawable/bg_grey"
                     android:drawablePadding="@dimen/lrtbp_30"
                     android:drawableRight="@drawable/ic_call_black_24dp"
                     android:gravity="center|left"
@@ -141,7 +170,7 @@
                     android:maxLines="1"
                     android:singleLine="true" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
@@ -158,21 +187,7 @@
                         android:maxLines="1"
                         android:singleLine="true" />
 
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/livingcity"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/wh_35"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/layout_bg"
-                    android:drawablePadding="@dimen/lrtbp_30"
-                    android:drawableRight="@drawable/ic_place_black_24dp"
-                    android:gravity="center|left"
-                    android:hint="Living City"
-                    android:inputType="textAutoComplete"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

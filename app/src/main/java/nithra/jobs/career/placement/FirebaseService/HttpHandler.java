@@ -1,7 +1,7 @@
 package nithra.jobs.career.placement.FirebaseService;
 
 /**
- * Created by PRABHA on 4/7/2017.
+ * Created by VANMATHI on 4/7/2017.
  */
 
 import android.util.Log;
@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -44,7 +45,7 @@ public class HttpHandler {
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
+                    new OutputStreamWriter(os, StandardCharsets.UTF_8));
             writer.write(getPostDataString(postDataParams));
 
             writer.flush();
@@ -58,7 +59,7 @@ public class HttpHandler {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(
                                 conn.getInputStream()));
-                StringBuffer sb = new StringBuffer("");
+                StringBuffer sb = new StringBuffer();
                 String line = "";
 
                 while ((line = in.readLine()) != null) {
@@ -72,7 +73,7 @@ public class HttpHandler {
                 return sb.toString();
 
             } else {
-                return new String("false : " + responseCode);
+                return "false : " + responseCode;
             }
 
            /* InputStream in = new BufferedInputStream(conn.getInputStream());

@@ -1,34 +1,25 @@
 package nithra.jobs.career.placement.activity;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -37,18 +28,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.VideoController;
-import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.formats.MediaView;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeAppInstallAd;
-import com.google.android.gms.ads.formats.NativeAppInstallAdView;
-import com.google.android.gms.ads.formats.NativeContentAd;
-import com.google.android.gms.ads.formats.NativeContentAdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,11 +40,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.networking.MySingleton;
 import nithra.jobs.career.placement.pojo.Item;
 import nithra.jobs.career.placement.utills.SU;
+import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
 
 /*
@@ -80,17 +61,21 @@ public class OldPostActivity extends AppCompatActivity {
     OldPostAdapter adapter;
     String message;
     String title;
-    ImageView closeBtn,back;
+    ImageView closeBtn, back;
     SpinKitView progressBar;
-    LinearLayout lError,adLayout;
+    LinearLayout lError, adLayout;
     Button networkRetry;
-    TextView txtError1;
+    TextView txtError1, titleTxt;
+    SharedPreference pref;
+    LinearLayout parentLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.listview);
+        pref = new SharedPreference();
+
         oldPostList = new ArrayList<>();
         list = findViewById(R.id.listview);
         back = findViewById(R.id.back);
@@ -99,13 +84,17 @@ public class OldPostActivity extends AppCompatActivity {
         txtError1 = findViewById(R.id.txtError1);
         closeBtn = findViewById(R.id.close_btn);
         adLayout = findViewById(R.id.adLayout);
+        titleTxt = findViewById(R.id.title);
         networkRetry = findViewById(R.id.network_retry);
+
+        titleTxt.setText(getResources().getString(R.string.oldpost));
 
         load();
 
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) { }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -127,21 +116,10 @@ public class OldPostActivity extends AppCompatActivity {
             }
         });
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(U.isNetworkAvailable(OldPostActivity.this)) {
-                    loadJSON("1", "" + oldPostList.get(position).getId());
-                }else{
-                    Toast.makeText(OldPostActivity.this, U.INA, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
 
@@ -165,14 +143,10 @@ public class OldPostActivity extends AppCompatActivity {
     }
 
     private void errorHandling(VolleyError error) {
-        String e = "";
-        if (error instanceof TimeoutError)
-            e = "Request TimeOut";
-        else if (error instanceof AuthFailureError)
-            e = "AuthFailureError";
-        else if (error instanceof ServerError)
-            e = "ServerError";
-        else if (error instanceof NetworkError || error instanceof NoConnectionError)
+        String e;
+        if (error instanceof TimeoutError || error instanceof AuthFailureError || error instanceof ServerError)
+            e = U.SERVER_ERROR;
+        else if (error instanceof NetworkError)
             e = U.INA;
         else if (error instanceof ParseError)
             e = U.ERROR;
@@ -244,7 +218,7 @@ public class OldPostActivity extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                errorView(U.INA);
+                errorView(U.ERROR);
             }
         } else if (flag.equals("1")) {
             try {
@@ -266,29 +240,32 @@ public class OldPostActivity extends AppCompatActivity {
                 intent.putExtra("idd", uid);
                 intent.putExtra("Noti_add", 1);
                 startActivity(intent);
+                parentLay.setEnabled(true);
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                errorView(U.INA);
+                errorView(U.ERROR);
             }
         }
-
     }
 
-    public void load(){
+    public void load() {
         preLoading();
         loadJSON("0", "0");
-        MainActivity.showAd(OldPostActivity.this,adLayout,true);
+        if (pref.getInt(OldPostActivity.this, U.SH_AD_PURCHASED) == 0) {
+            MainActivity.showAd(OldPostActivity.this, adLayout, true);
+        }
+
         adapter = new OldPostAdapter(OldPostActivity.this, R.layout.filter_layout, oldPostList);
         list.setAdapter(adapter);
     }
 
     public class OldPostAdapter extends ArrayAdapter {
 
+        public TextView title, number;
         Context context;
         List<Item> list;
         LayoutInflater inflater;
-        public TextView title, number;
 
         public OldPostAdapter(Context context, int resource, List<Item> list) {
             super(context, resource, list);
@@ -306,11 +283,23 @@ public class OldPostActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.oldpost_list_row, null);
             title = view.findViewById(R.id.title);
             number = view.findViewById(R.id.number);
+            parentLay = view.findViewById(R.id.parentLay);
             int pos = position + 1;
             number.setText("" + pos);
             GradientDrawable bgShape = (GradientDrawable) number.getBackground();
             bgShape.setColor(context.getResources().getColor(R.color.skyblue_thick));
             title.setText(list.get(position).getItem());
+            parentLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    parentLay.setEnabled(false);
+                    if (U.isNetworkAvailable(OldPostActivity.this)) {
+                        loadJSON("1", "" + oldPostList.get(position).getId());
+                    } else {
+                        Toast.makeText(OldPostActivity.this, U.INA, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             return view;
         }
 

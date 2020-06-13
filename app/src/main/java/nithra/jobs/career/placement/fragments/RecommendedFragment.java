@@ -5,13 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +33,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.activity.RegistrationActivity;
@@ -52,21 +52,21 @@ public class RecommendedFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     public static LinearLayout ads, fragHolder, frontLay;
     AlertDialog alertDialog;
-    TextView btnBrowse;
-    Button btnEdit;
-    String btnStatus = "";
-    RelativeLayout header;
-    LinearLayout lError, cardLocation, cardQualification, cardRecommend, cardSkills;
-    ImageView logo;
     int flag = 0;
     SharedPreference pref;
-    String profileStatus = "";
     SpinKitView progressBar;
-    SwipeRefreshLayout swipeContainer;
     TextView txtError1;
-    WebView infotext;
     View view;
     Button networkRetry;
+    private TextView btnBrowse;
+    private Button btnEdit;
+    private String btnStatus = "";
+    private RelativeLayout header;
+    private LinearLayout lError, cardLocation, cardQualification, cardRecommend, cardSkills;
+    private ImageView logo, block;
+    private String profileStatus = "";
+    private SwipeRefreshLayout swipeContainer;
+    private WebView infotext;
 
     public static RecommendedFragment newInstance() {
         return new RecommendedFragment();
@@ -93,6 +93,7 @@ public class RecommendedFragment extends Fragment {
         btnEdit = paramView.findViewById(R.id.btnEdit);
         infotext = paramView.findViewById(R.id.txtStatus);
         logo = paramView.findViewById(R.id.logo);
+        block = paramView.findViewById(R.id.block);
         cardRecommend = paramView.findViewById(R.id.cardRecommand);
         cardLocation = paramView.findViewById(R.id.cardLocation);
         cardSkills = paramView.findViewById(R.id.cardSkills);
@@ -107,8 +108,13 @@ public class RecommendedFragment extends Fragment {
         super.onActivityCreated(paramBundle);
         MainActivity.homePagePosition = U.RECOMMENDED_PAGE;
 
-        ads.setVisibility(View.VISIBLE);
-        MainActivity.showAd(getActivity(), ads, false);
+        if (getActivity() != null)
+            if (pref.getInt(getActivity(), U.SH_AD_PURCHASED) == 0) {
+                if (U.isNetworkAvailable(getActivity())) {
+                    ads.setVisibility(View.VISIBLE);
+                    MainActivity.showAd(getActivity(), ads, false);
+                }
+            }
 
         load();
 
@@ -185,6 +191,7 @@ public class RecommendedFragment extends Fragment {
                 }
             }
         });
+
         networkRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,7 +221,7 @@ public class RecommendedFragment extends Fragment {
         if (fragmentManager != null) {
             fragmentTransaction = fragmentManager.beginTransaction();
             JobListFragment cat = JobListFragment.newInstance(action, skill, location, qualification,
-                    empId, gender, marital_status, "" + checkFirstTime(key), title);
+                    empId, gender, marital_status, checkFirstTime(key), title);
             if (fragmentTransaction != null) {
                 fragmentTransaction.replace(R.id.fragment_container, cat, "HELLO");
                 fragmentTransaction.commit();
@@ -278,13 +285,9 @@ public class RecommendedFragment extends Fragment {
     }
 
     private void errorHandling(VolleyError error) {
-        String e ;
-        if (error instanceof TimeoutError)
-            e = "Request TimeOut";
-        else if (error instanceof AuthFailureError)
-            e = "AuthFailureError";
-        else if (error instanceof ServerError)
-            e = "ServerError";
+        String e;
+        if (error instanceof TimeoutError || error instanceof AuthFailureError || error instanceof ServerError)
+            e = U.SERVER_ERROR;
         else if (error instanceof NetworkError)
             e = U.INA;
         else if (error instanceof ParseError)
@@ -295,11 +298,13 @@ public class RecommendedFragment extends Fragment {
     }
 
     public void load() {
-        if (U.isNetworkAvailable(getActivity())) {
-            preLoading();
-            checkUserAvailability(pref.getString(getActivity(), U.SH_MOBILE));
-        } else {
-            errorView(U.INA);
+        if (getActivity() != null) {
+            if (U.isNetworkAvailable(getActivity())) {
+                preLoading();
+                checkUserAvailability(pref.getString(getActivity(), U.SH_MOBILE));
+            } else {
+                errorView(U.INA);
+            }
         }
     }
 
@@ -308,86 +313,74 @@ public class RecommendedFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e("checkResponse", "" + response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String status = jsonObject.getString("status");
+                        if (getActivity() != null) {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("checkResponse", "" + response);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String status = jsonObject.getString("status");
 
-                            switch (status) {
-                                case "No Mobile Number":
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
-                                    profileStatus = getResources().getString(R.string.rjobs_text);
-                                    btnStatus = getResources().getString(R.string.signup);
-                                    setProfileStatus("", profileStatus, btnStatus);
-
-                                    break;
-                                case "user_blocked":
-
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, true);
-                                    profileStatus = getResources().getString(R.string.blocked_user) + getResources().getString(R.string.user_query);
-                                    btnStatus = getResources().getString(R.string.retry);
-                                    setProfileStatus(U.SH_BLOCKED_USER, profileStatus, btnStatus);
-
-
-                                    break;
-                                case "completed":
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
-                                    pref.putString(getActivity(), U.SH_COMPLETED_JSON, jsonObject.toString());
-                                    pref.putBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS, true);
-                                    if (pref.getBoolean(getActivity(), U.SH_OTP_SUCCESS) && pref.getBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS)) {
-                                        frontLay.setVisibility(View.VISIBLE);
-                                        fragHolder.setVisibility(View.GONE);
-                                        header.setVisibility(View.GONE);
-                                        ads.setVisibility(View.VISIBLE);
-                                    } else {
-//                                    profileStatus = getResources().getString(R.string.otp_verification);
-//                                    btnStatus = getResources().getString(R.string.otp_pending);
+                                switch (status) {
+                                    case "No Mobile Number":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
                                         profileStatus = getResources().getString(R.string.rjobs_text);
                                         btnStatus = getResources().getString(R.string.signup);
                                         setProfileStatus("", profileStatus, btnStatus);
-                                    }
-
-                                    break;
-                                case "In-complete":
-
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
-                                    pref.putString(getActivity(), U.SH_EMPLOYEE_ID, jsonObject.getString("employee_id"));
-                                    if (pref.getBoolean(getActivity(), U.SH_OTP_SUCCESS)) {
-                                        profileStatus = getResources().getString(R.string.fill_blanks);
-                                        btnStatus = getResources().getString(R.string.contiue);
-                                    } else {
-//                                    profileStatus = getResources().getString(R.string.otp_verification);
-//                                    btnStatus = getResources().getString(R.string.otp_pending);
+                                        break;
+                                    case "user_blocked":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, true);
+                                        profileStatus = getResources().getString(R.string.blocked_user) + getResources().getString(R.string.user_query);
+                                        btnStatus = getResources().getString(R.string.retry);
+                                        setProfileStatus(U.SH_BLOCKED_USER, profileStatus, btnStatus);
+                                        break;
+                                    case "completed":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
+                                        pref.putString(getActivity(), U.SH_COMPLETED_JSON, jsonObject.toString());
+                                        pref.putBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS, true);
+                                        if (pref.getBoolean(getActivity(), U.SH_OTP_SUCCESS) && pref.getBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS)) {
+                                            frontLay.setVisibility(View.VISIBLE);
+                                            fragHolder.setVisibility(View.GONE);
+                                            header.setVisibility(View.GONE);
+                                            ads.setVisibility(View.VISIBLE);
+                                        } else {
+                                            profileStatus = getResources().getString(R.string.rjobs_text);
+                                            btnStatus = getResources().getString(R.string.signup);
+                                            setProfileStatus("", profileStatus, btnStatus);
+                                        }
+                                        break;
+                                    case "In-complete":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
+                                        pref.putString(getActivity(), U.SH_EMPLOYEE_ID, jsonObject.getString("employee_id"));
+                                        if (pref.getBoolean(getActivity(), U.SH_OTP_SUCCESS)) {
+                                            profileStatus = getResources().getString(R.string.fill_blanks);
+                                            btnStatus = getResources().getString(R.string.contiue);
+                                        } else {
+                                            profileStatus = getResources().getString(R.string.rjobs_text);
+                                            btnStatus = getResources().getString(R.string.signup);
+                                        }
+                                        setProfileStatus("", profileStatus, btnStatus);
+                                        break;
+                                    case "New_user":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
+                                        pref.putString(getActivity(), U.SH_EMPLOYEE_ID, jsonObject.getString("employee_id"));
                                         profileStatus = getResources().getString(R.string.rjobs_text);
                                         btnStatus = getResources().getString(R.string.signup);
-                                    }
-                                    setProfileStatus("", profileStatus, btnStatus);
-
-                                    break;
-                                case "New_user":
-
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
-                                    pref.putString(getActivity(), U.SH_EMPLOYEE_ID, jsonObject.getString("employee_id"));
-                                    profileStatus = getResources().getString(R.string.rjobs_text);
-                                    btnStatus = getResources().getString(R.string.signup);
-                                    setProfileStatus("", profileStatus, btnStatus);
-
-                                    break;
-                                case "invalid_user":
+                                        setProfileStatus("", profileStatus, btnStatus);
+                                        break;
+                                    case "invalid_user":
+                                        pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
+                                        pref.putBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS, false);
+                                        pref.putBoolean(getActivity(), U.SH_OTP_SUCCESS, false);
+                                        profileStatus = getResources().getString(R.string.profile_expired);
+                                        btnStatus = getResources().getString(R.string.signup);
+                                        setProfileStatus(U.SH_BLOCKED_USER, profileStatus, btnStatus);
+                                        break;
+                                }
 
 
-                                    pref.putBoolean(getActivity(), U.SH_BLOCKED_USER, false);
-                                    pref.putBoolean(getActivity(), U.SH_SIGN_UP_SUCCESS, false);
-                                    pref.putBoolean(getActivity(), U.SH_OTP_SUCCESS, false);
-                                    profileStatus = getResources().getString(R.string.profile_expired);
-                                    btnStatus = getResources().getString(R.string.signup);
-                                    setProfileStatus(U.SH_BLOCKED_USER, profileStatus, btnStatus);
-                                    break;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -404,6 +397,10 @@ public class RecommendedFragment extends Fragment {
                     params.put("employee_id", "" + pref.getString(getActivity(), U.SH_EMPLOYEE_ID));
                     params.put("send_otp", "0");
                     params.put("mobile1", mobileno);
+                    params.put("user_type", pref.getString(getActivity(), U.SH_USER_TYPE));
+                    params.put("android_id", U.getAndroidId(getActivity()));
+                    params.put("vcode", String.valueOf(U.versioncode_get(getActivity())));
+                    Log.e("paramsresponse", "" + params);
                 }
                 return params;
             }
@@ -415,9 +412,11 @@ public class RecommendedFragment extends Fragment {
 
         if (status.equals(U.SH_BLOCKED_USER)) {
             btnEdit.setVisibility(View.GONE);
-            logo.setImageResource(R.drawable.block);
+            logo.setVisibility(View.GONE);
+            block.setVisibility(View.VISIBLE);
         } else {
-            logo.setImageResource(R.drawable.rjob);
+            block.setVisibility(View.GONE);
+            logo.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.VISIBLE);
         }
 

@@ -1,8 +1,5 @@
 package nithra.jobs.career.placement.pojo;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

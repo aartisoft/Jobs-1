@@ -1,73 +1,51 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:layout_margin="@dimen/lrtbp_15"
+            android:background="@color/white"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtTitle"
-                android:padding="@dimen/lrtbp_20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="center"
-                android:text="உங்கள் கருத்தை பகிரவும்"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/txt_20" />
 
             <EditText
                 android:id="@+id/edEmail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/lrtbp_20"
-                android:background="@drawable/layout_bg1"
+                android:layout_height="@dimen/wh_45"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:background="@drawable/black_line_circle"
                 android:gravity="left"
-                android:hint="உங்களது மின்னஞ்சலை தட்டச்சு செய்யவும்"
-                android:inputType="textEmailAddress|textMultiLine"
-                android:paddingTop="@dimen/lrtbp_10" />
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/lrtbp_10" />
 
             <EditText
                 android:id="@+id/edphone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/lrtbp_20"
-                android:background="@drawable/layout_bg1"
-                android:inputType="number"
+                android:layout_height="@dimen/wh_45"
+                android:layout_marginTop="@dimen/lrtbp_15"
+                android:background="@drawable/black_line_circle"
                 android:gravity="left"
-                android:hint="கைப்பேசி எண்"
-                android:paddingTop="@dimen/lrtbp_10" />
+                android:hint="@string/mobileno"
+                android:inputType="number"
+                android:padding="@dimen/lrtbp_10" />
 
             <EditText
                 android:id="@+id/edFeed"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/wh_180"
-                android:layout_margin="@dimen/lrtbp_20"
-                android:background="@drawable/layout_bg1"
+                android:layout_marginTop="@dimen/lrtbp_15"
+                android:background="@drawable/bg_light_grey"
                 android:gravity="left"
                 android:hint="உங்களது கருத்துக்களை தட்டச்சு செய்யவும்"
                 android:inputType="textCapSentences|textMultiLine"
                 android:paddingTop="@dimen/lrtbp_10" />
-
-            <TextView
-                android:id="@+id/txtPrivacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/lrtbp_10"
-                android:text="@string/privacy_policy"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/txt_16" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,7 +53,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/txtCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,13 +63,14 @@
                     android:padding="@dimen/lrtbp_20"
                     android:text="CANCEL"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/txt_16" />
+                    android:textSize="@dimen/txt_16"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:visibility="gone"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/white"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtSend"
@@ -102,14 +80,37 @@
                     android:background="@color/colorPrimary"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
-                    android:padding="@dimen/lrtbp_20"
+                    android:padding="@dimen/lrtbp_10"
                     android:text="@string/send"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_16" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtPrivacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/lrtbp_5"
+                android:text="@string/privacy_policy"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_12" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:padding="@dimen/lrtbp_10"
+                android:text="உங்கள் கருத்தை பகிரவும்"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_15"
+                android:textStyle="bold"/>
+
         </LinearLayout>
 
     </ScrollView>
-
 
 </FrameLayout>

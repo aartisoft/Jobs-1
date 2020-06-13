@@ -48,13 +48,3 @@ public class TestAdapter {
         }
     }
 }
-
-
-
-/* Location:           C:\Users\PRABHA\Desktop\jobs_ver21_24_03_18@4_20\classes_dex2jar.jar
-
- * Qualified Name:     nithra.jobs.career.placement.adapters.TestAdapter
-
- * JD-Core Version:    0.7.0.1
-
- */

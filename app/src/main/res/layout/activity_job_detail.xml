@@ -1,44 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <RelativeLayout
+        android:id="@+id/title_lay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/wh_50"
         android:background="@color/white"
-        android:theme="@style/MyMaterialTheme.Base">
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/prevNextLay"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="@dimen/lrtbp_25"
+                android:layout_height="@dimen/lrtbp_25"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/lrtbp_10"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/lrtbp_10"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/prev"
+                    android:layout_width="@dimen/lrtbp_25"
+                    android:layout_height="@dimen/wh_35"
+                    android:src="@drawable/back"
+                    android:tint="@color/colorPrimary"/>
+
+                <ImageView
+                    android:id="@+id/next"
+                    android:layout_width="@dimen/lrtbp_25"
+                    android:layout_height="@dimen/wh_35"
+                    android:src="@drawable/next"
+                    android:tint="@color/colorPrimary"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtToolTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:layout_alignLeft="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/wh_35"
                 android:text="@string/title_activity_job_detail"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="@dimen/txt_15"
                 android:textStyle="bold" />
 
-        </android.support.v7.widget.Toolbar>
+        </RelativeLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <android.support.v4.view.ViewPager
+        <nithra.jobs.career.placement.utills.CustomViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,4 +88,4 @@
 
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

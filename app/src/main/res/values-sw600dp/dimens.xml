@@ -2,17 +2,8 @@
 
     <!-- sw600dp -->
 
-    <dimen name="croll_app_width">550dp</dimen>
-    <dimen name="croll_app_height">170dp</dimen>
-    <dimen name="croll_insbut_width">120dp</dimen>
-    <dimen name="croll_insbut_height">45dp</dimen>
-     <dimen name="but_height">75dp</dimen>
-    
 
-  
-    
-    
-      <dimen name="lrtbp_5">8dp</dimen>  
+    <dimen name="lrtbp_5">8dp</dimen>
      <dimen name="lrtbp_10">20dp</dimen> 
       <dimen name="lrtbp_15">30dp</dimen> 
      <dimen name="lrtbp_20">20dp</dimen> 
@@ -43,12 +34,8 @@
            <dimen name="txt_12">16dp</dimen>
     <dimen name="txt_15">20dp</dimen>
          <dimen name="txt_16">25dp</dimen>
-    <dimen name="txt_17">26dp</dimen>
-          <dimen name="txt_18">28dp</dimen>
+    <dimen name="txt_18">28dp</dimen>
            <dimen name="txt_20">32dp</dimen>
-           <dimen name="txt_22">28dp</dimen>
-           <dimen name="txt_24">36dp</dimen>
-           <dimen name="txt_25">38dp</dimen>
-            <dimen name="txt_50">76dp</dimen>
+    <dimen name="txt_25">38dp</dimen>
 
 </resources>

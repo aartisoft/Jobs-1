@@ -1,18 +1,14 @@
 package nithra.jobs.career.placement.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -30,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,10 +42,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.fragments.JobListFragment;
 import nithra.jobs.career.placement.pojo.Item;
@@ -59,33 +57,33 @@ import nithra.jobs.career.placement.utills.CustomEditText;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
 
-
 public class SearchActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 1234;
+    public static int searchEmptyCount = 0;
     CustomEditText edSearch;
     String search = "";
     Toolbar toolbar;
     ImageView voiceSearch, back;
     LinearLayout textSearch;
-    private static final int REQUEST_CODE = 1234;
     Dialog match_text_dialog;
     ListView textlist, listview;
     ArrayList<String> matches_text;
-    RelativeLayout container;
-    public static int searchEmptyCount = 0;
+    RelativeLayout container, listlay, searchHistoryLay;
     SharedPreference pref;
     TagSelectionAdapter itemsAdapter;
     List<Item> list;
-    LinearLayout lError;
+    LinearLayout lError, recentSearchHistory;
     Button networkRetry;
     TextView txtError1;
     SpinKitView progressBar;
     SwipeRefreshLayout swipeContainer;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarTranslucent(false);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_adv_search);
         pref = new SharedPreference();
         list = new ArrayList<>();
@@ -96,7 +94,13 @@ public class SearchActivity extends AppCompatActivity {
         edSearch = findViewById(R.id.edSearch);
 
         swipeContainer = findViewById(R.id.swipeContainer);
+        recentSearchHistory = findViewById(R.id.recent_search_history);
+        searchHistoryLay = findViewById(R.id.search_history_lay);
 
+        showRecentSearches();
+
+        listlay = findViewById(R.id.listlay);
+        listlay.setVisibility(View.GONE);
         textSearch = findViewById(R.id.text_search);
         voiceSearch = findViewById(R.id.voice_search);
         container = findViewById(R.id.container);
@@ -132,11 +136,20 @@ public class SearchActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
+                if (container.getVisibility() == View.VISIBLE) {
+                    edSearch.setText("");
+                    container.setVisibility(View.GONE);
+                    listlay.setVisibility(View.GONE);
+                    if (list.size() == 0) {
+                        loadFirebseTags();
+                    }
+                } else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
+                    }
+                    finish();
                 }
-                finish();
             }
         });
 
@@ -162,7 +175,12 @@ public class SearchActivity extends AppCompatActivity {
 //                itemsAdapter.getFilter().filter(cs);
 //                container.setVisibility(View.GONE);
                 try {
-                    itemsAdapter.filter(""+cs);
+                    if (cs.length() == 0) {
+                        listlay.setVisibility(View.GONE);
+                    } else {
+                        listlay.setVisibility(View.VISIBLE);
+                    }
+                    itemsAdapter.filter("" + cs);
                     container.setVisibility(View.GONE);
                 } catch (Exception e) {
                     Log.e("Error", "" + e);
@@ -187,6 +205,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(DrawablePosition target) {
                 switch (target) {
                     case RIGHT:
+                        listlay.setVisibility(View.GONE);
                         edSearch.setText("");
                         container.setVisibility(View.GONE);
                         break;
@@ -212,13 +231,17 @@ public class SearchActivity extends AppCompatActivity {
         voiceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isConnected()) {
-                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                    startActivityForResult(intent, REQUEST_CODE);
-                } else {
-                    Toast.makeText(getApplicationContext(), U.INA, Toast.LENGTH_LONG).show();
+                try {
+                    if (isConnected()) {
+                        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                        startActivityForResult(intent, REQUEST_CODE);
+                    } else {
+                        Toast.makeText(getApplicationContext(), U.INA, Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -262,25 +285,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    protected void setStatusBarTranslucent(boolean makeTranslucent) {
-        if (makeTranslucent) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            else {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            }
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) super.onBackPressed();
@@ -321,6 +325,7 @@ public class SearchActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        listlay.setVisibility(View.GONE);
         container.setVisibility(View.VISIBLE);
         String keyValue;
         if (mode == 1) {
@@ -341,22 +346,22 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                if (container.getVisibility() == View.VISIBLE) {
-                    edSearch.setText("");
-                    container.setVisibility(View.GONE);
-                    if (list.size() == 0) {
-                        loadFirebseTags();
-                    }
-                } else {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
-                    }
-                    finish();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (container.getVisibility() == View.VISIBLE) {
+                edSearch.setText("");
+                container.setVisibility(View.GONE);
+                listlay.setVisibility(View.GONE);
+                if (list.size() == 0) {
+                    loadFirebseTags();
                 }
-                return true;
+            } else {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
+                }
+                finish();
+            }
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -379,11 +384,9 @@ public class SearchActivity extends AppCompatActivity {
                     item.setItem(title);
                     item.setCount(key);
                     list.add(item);
-//                    itemsAdapter.notifyDataSetChanged();
                     itemsAdapter = new TagSelectionAdapter(SearchActivity.this, R.layout.activity_adv_search, list);
                     listview.setAdapter(itemsAdapter);
                     postLoading();
-                    Log.e("tag", title);
                 }
 
                 @Override
@@ -391,11 +394,8 @@ public class SearchActivity extends AppCompatActivity {
                     String title = (String) dataSnapshot.child("key_word").getValue();
                     Log.e("title", title);
                     String key = dataSnapshot.getKey();
-//                    int index = keys.indexOf(key);
-//                    list.set(index, title);
-//                    itemsAdapter.notifyDataSetChanged();
                     for (int i = 0; i < list.size(); i++) {
-                        if(list.get(i).getCount().equals(key)){
+                        if (list.get(i).getCount().equals(key)) {
                             Item item = new Item();
                             item.setItem(title);
                             item.setCount(key);
@@ -411,7 +411,7 @@ public class SearchActivity extends AppCompatActivity {
                     String title = (String) dataSnapshot.child("key_word").getValue();
 
                     for (int i = 0; i < list.size(); i++) {
-                        if(list.get(i).getItem().equals(title)){
+                        if (list.get(i).getItem().equals(title)) {
                             list.remove(i);
                         }
                     }
@@ -427,7 +427,6 @@ public class SearchActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     errorview(U.ERROR);
                 }
-
             });
 
         } else {
@@ -459,6 +458,35 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
+    @SuppressLint("SetTextI18n")
+    public void showRecentSearches() {
+        if (!pref.getString(SearchActivity.this, U.SH_RECENT_SEARCH_KEYS).equals("")) {
+            searchHistoryLay.setVisibility(View.VISIBLE);
+            String ss = pref.getString(SearchActivity.this, U.SH_RECENT_SEARCH_KEYS);
+            String[] categoryArray = ss.split(",");
+            ArrayList<String> recentList = new ArrayList<>(Arrays.asList(categoryArray));
+            for (int i = recentList.size(); i > 0; i--) {
+                final TextView tv = new TextView(this);
+                tv.setText(" " + recentList.get(i - 1).replace("+", " "));
+                tv.setTextSize(15);
+                tv.setPadding(5, 15, 5, 5);
+                tv.setTextColor(getResources().getColor(R.color.black));
+                tv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_history), null, null, null);
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        edSearch.setText(tv.getText().toString().trim());
+                        edSearch.setSelection(tv.getText().toString().trim().length());
+                        textSearch.performClick();
+                    }
+                });
+                recentSearchHistory.addView(tv);
+            }
+        } else {
+            searchHistoryLay.setVisibility(View.GONE);
+        }
+    }
+
     public class TagSelectionAdapter extends ArrayAdapter {
 
         Context context;
@@ -466,7 +494,7 @@ public class SearchActivity extends AppCompatActivity {
         LayoutInflater inflater;
         List<Item> orig;
 
-        public TagSelectionAdapter(Context context, int resource, List<Item> list) {
+        TagSelectionAdapter(Context context, int resource, List<Item> list) {
             super(context, resource, list);
             this.context = context;
             this.list = list;
@@ -516,5 +544,4 @@ public class SearchActivity extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
-
 }

@@ -1,61 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "/home/vanmathi/Desktop/Jobs_03_03_18_ver19_backup/Jobs/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-km/values-km.xml",
+            "outputFile": "/media/nithra/DRIVE-D/Jobs_28_04_2020/Jobs/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-km/values-km.xml",
             "map": [
                 {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.1.aar/21e29e8f1d2c8dbdc988710e446a6a91/res/values-km/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "245,345,532,651,754,975,1097,1244,1378,1595,1699,1901,2024,2228,2412,2502,2586",
-                        "endColumns": "99,186,118,102,220,121,146,133,216,103,201,122,203,183,89,83,101",
-                        "endOffsets": "344,531,650,753,974,1096,1243,1377,1594,1698,1900,2023,2227,2411,2501,2585,2687"
-                    },
-                    "to": {
-                        "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "1860,1964,2151,2274,2381,2602,2728,2879,3225,3442,3550,3752,3879,4083,4271,4365,4453",
-                        "endColumns": "103,186,122,106,220,125,150,137,216,107,201,126,203,187,93,87,105",
-                        "endOffsets": "1959,2146,2269,2376,2597,2723,2874,3012,3437,3545,3747,3874,4078,4266,4360,4448,4554"
-                    }
-                },
-                {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/71505684db2269510e5c87380b52a148/res/values-km/values-km.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "46",
-                        "startColumns": "4",
-                        "startOffsets": "5399",
-                        "endColumns": "100",
-                        "endOffsets": "5495"
-                    }
-                },
-                {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/firebase-messaging-17.0.0.aar/c16e5285ea07162fc51a58a17660a5dc/res/values-km/values.xml",
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/caf44f81c90b546a4603b0bbe2895730/jetified-firebase-messaging-20.2.0/res/values-km/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
-                        "startOffsets": "205",
+                        "startOffsets": "207",
                         "endColumns": "100",
-                        "endOffsets": "305"
+                        "endOffsets": "307"
                     },
                     "to": {
-                        "startLines": "37",
+                        "startLines": "51",
                         "startColumns": "4",
-                        "startOffsets": "4559",
+                        "startOffsets": "5930",
                         "endColumns": "104",
-                        "endOffsets": "4659"
+                        "endOffsets": "6030"
                     }
                 },
                 {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/play-services-basement-15.0.1.aar/7700ad4efc781c80be1f8870b82b3206/res/values-km/values.xml",
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/2ffbbd38f71d2fab93a7a089e11e5ae5/jetified-play-services-basement-17.2.1/res/values-km/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -64,45 +30,96 @@
                         "endOffsets": "454"
                     },
                     "to": {
-                        "startLines": "27",
+                        "startLines": "37",
                         "startColumns": "4",
-                        "startOffsets": "3017",
+                        "startOffsets": "3950",
                         "endColumns": "207",
-                        "endOffsets": "3220"
+                        "endOffsets": "4153"
                     }
                 },
                 {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/24414bfc102add9c55da9b7aac8601d3/res/values-km/values-km.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,208,308,420,507,611,729,806,883,966,1070,1175,1275,1385,1492,1600,1762,1860",
-                        "endColumns": "102,99,111,86,103,117,76,76,82,103,104,99,109,106,107,161,97,82",
-                        "endOffsets": "203,303,415,502,606,724,801,878,961,1065,1170,1270,1380,1487,1595,1757,1855,1938"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,45",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,208,308,420,507,611,729,806,883,966,1070,1175,1275,1385,1492,1600,1762,5316",
-                        "endColumns": "102,99,111,86,103,117,76,76,82,103,104,99,109,106,107,161,97,82",
-                        "endOffsets": "203,303,415,502,606,724,801,878,961,1065,1170,1270,1380,1487,1595,1757,1855,5394"
-                    }
-                },
-                {
-                    "source": "/home/vanmathi/.gradle/caches/transforms-1/files-1.1/play-services-ads-15.0.1.aar/1bb06a616600083029a27c7a3ee8e77d/res/values-km/values.xml",
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/e72bc7f8f189acc57d7f9b836758081d/jetified-play-services-ads-19.1.0/res/values-km/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10",
                         "startColumns": "0,0,0,0,0,0,0",
-                        "startOffsets": "197,269,397,462,526,619,744",
+                        "startOffsets": "199,271,399,464,528,621,746",
                         "endColumns": "71,127,64,63,92,124,76",
-                        "endOffsets": "268,396,461,525,618,743,820"
+                        "endOffsets": "270,398,463,527,620,745,822"
                     },
                     "to": {
-                        "startLines": "38,39,40,41,42,43,44",
+                        "startLines": "52,53,54,55,56,57,58",
                         "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "4664,4740,4872,4941,5009,5106,5235",
+                        "startOffsets": "6035,6111,6243,6312,6380,6477,6606",
                         "endColumns": "75,131,68,67,96,128,80",
-                        "endOffsets": "4735,4867,4936,5004,5101,5230,5311"
+                        "endOffsets": "6106,6238,6307,6375,6472,6601,6682"
+                    }
+                },
+                {
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/663210140a868d1e52c74dd3abb47a3f/browser-1.2.0/res/values-km/values-km.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,152,249,382",
+                        "endColumns": "96,96,132,98",
+                        "endOffsets": "147,244,377,476"
+                    },
+                    "to": {
+                        "startLines": "47,48,49,50",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "5504,5601,5698,5831",
+                        "endColumns": "96,96,132,98",
+                        "endOffsets": "5596,5693,5826,5925"
+                    }
+                },
+                {
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/6d79eadb82c8d6fd49530c3687aa44a6/core-1.2.0/res/values-km/values-km.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "60",
+                        "startColumns": "4",
+                        "startOffsets": "6770",
+                        "endColumns": "100",
+                        "endOffsets": "6866"
+                    }
+                },
+                {
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/95c27f1e561f59170f577bf124144243/appcompat-1.1.0/res/values-km/values-km.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,207,306,416,503,606,727,805,882,973,1065,1157,1251,1352,1445,1540,1634,1725,1816,1898,2002,2106,2206,2315,2424,2533,2695,2793",
+                        "endColumns": "101,98,109,86,102,120,77,76,90,91,91,93,100,92,94,93,90,90,81,103,103,99,108,108,108,161,97,82",
+                        "endOffsets": "202,301,411,498,601,722,800,877,968,1060,1152,1246,1347,1440,1535,1629,1720,1811,1893,1997,2101,2201,2310,2419,2528,2690,2788,2871"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,59",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,207,306,416,503,606,727,805,882,973,1065,1157,1251,1352,1445,1540,1634,1725,1816,1898,2002,2106,2206,2315,2424,2533,2695,6687",
+                        "endColumns": "101,98,109,86,102,120,77,76,90,91,91,93,100,92,94,93,90,90,81,103,103,99,108,108,108,161,97,82",
+                        "endOffsets": "202,301,411,498,601,722,800,877,968,1060,1152,1246,1347,1440,1535,1629,1720,1811,1893,1997,2101,2201,2310,2419,2528,2690,2788,6765"
+                    }
+                },
+                {
+                    "source": "/home/nithra/.gradle/caches/transforms-2/files-2.1/ae2853b72aee74489f3582c26555b0ae/jetified-play-services-base-17.2.1/res/values-km/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "245,345,532,651,754,975,1097,1244,1378,1595,1711,1913,2036,2240,2424,2514,2598",
+                        "endColumns": "99,186,118,102,220,121,146,133,216,115,201,122,203,183,89,83,101",
+                        "endOffsets": "344,531,650,753,974,1096,1243,1377,1594,1710,1912,2035,2239,2423,2513,2597,2699"
+                    },
+                    "to": {
+                        "startLines": "29,30,31,32,33,34,35,36,38,39,40,41,42,43,44,45,46",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "2793,2897,3084,3207,3314,3535,3661,3812,4158,4375,4495,4697,4824,5028,5216,5310,5398",
+                        "endColumns": "103,186,122,106,220,125,150,137,216,119,201,126,203,187,93,87,105",
+                        "endOffsets": "2892,3079,3202,3309,3530,3656,3807,3945,4370,4490,4692,4819,5023,5211,5305,5393,5499"
                     }
                 }
             ]

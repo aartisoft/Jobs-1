@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/light_yellow"
@@ -19,12 +18,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/wh_40"
-            android:background="@drawable/half_circle"
+            android:background="@drawable/shape_bottom_half_circle"
             android:layout_gravity="center"
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/photo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -66,7 +64,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/nativel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -101,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_back"
+                    android:background="@drawable/bg_button"
                     android:text="@string/yes"
                     android:textColor="@color/white" />
 
@@ -110,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_back"
+                    android:background="@drawable/bg_button"
                     android:text="@string/no"
                     android:textColor="@color/white" />
 
@@ -120,14 +117,4 @@
 
     </LinearLayout>
 
-    <!-- <ImageView
-         android:id="@+id/photo"
-         android:layout_width="@dimen/wh_40"
-         android:layout_height="@dimen/wh_40"
-         android:layout_marginLeft="@dimen/lrtbp_5"
-         android:background="@drawable/lightblue_circle"
-         android:gravity="center"
-         android:padding="@dimen/lrtbp_10"
-         android:src="@drawable/exclamation_sign" />-->
-
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

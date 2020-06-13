@@ -3,7 +3,6 @@ package nithra.jobs.career.placement.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.activity.DetailActivity;
 import nithra.jobs.career.placement.engine.DBHelper;
@@ -22,20 +22,9 @@ import nithra.jobs.career.placement.engine.DBHelper;
  */
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.MyViewHolder> {
+    DBHelper dbHelper;
     private Context mContext;
     private List<String> values;
-    DBHelper dbHelper;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView title;
-        public RelativeLayout parentLay;
-
-        public MyViewHolder(View view) {
-            super(view);
-            title = view.findViewById(R.id.title);
-            parentLay = view.findViewById(R.id.parent_lay);
-        }
-    }
 
     public SubCategoryAdapter(Context mContext, List<String> values) {
         this.mContext = mContext;
@@ -56,13 +45,14 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         holder.parentLay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.parentLay.setEnabled(false);
                 String str;
-                Cursor c=dbHelper.getQry("SELECT details FROM govtexams where exam = '" + values.get(position) +"'");
+                Cursor c = dbHelper.getQry("SELECT details FROM govtexams where exam = '" + values.get(position) + "'");
                 c.moveToFirst();
-                do{
-                    str=c.getString(c.getColumnIndexOrThrow("details"));
+                do {
+                    str = c.getString(c.getColumnIndexOrThrow("details"));
 
-                }while(c.moveToNext());
+                } while (c.moveToNext());
                 c.close();
 
                 Intent intent = new Intent(mContext, DetailActivity.class);
@@ -72,6 +62,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 intent.putExtra("idd", "");
                 intent.putExtra("Noti_add", 1);
                 mContext.startActivity(intent);
+                holder.parentLay.setEnabled(true);
             }
         });
     }
@@ -84,6 +75,17 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public int getItemCount() {
         return values.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public RelativeLayout parentLay;
+
+        public MyViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.title);
+            parentLay = view.findViewById(R.id.parent_lay);
+        }
     }
 
 }

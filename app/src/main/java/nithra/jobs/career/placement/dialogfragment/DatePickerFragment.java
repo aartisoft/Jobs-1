@@ -1,13 +1,14 @@
 package nithra.jobs.career.placement.dialogfragment;
 
 import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Created by arunrk on 27/5/17.
@@ -16,6 +17,7 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
     OnDateSetListener ondateSet;
+    private int year, month, day;
 
     public DatePickerFragment() {
     }
@@ -23,8 +25,6 @@ public class DatePickerFragment extends DialogFragment {
     public void setCallBack(OnDateSetListener ondate) {
         ondateSet = ondate;
     }
-
-    private int year, month, day;
 
     @Override
     public void setArguments(Bundle args) {

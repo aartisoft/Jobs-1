@@ -14,12 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="textview"
-            android:layout_marginTop="3dp"
             android:textStyle="bold"
-            android:textColor="@color/primary_text"
-            android:layout_marginLeft="15dp"
-            android:layout_alignParentLeft="true"/>
-
+            android:textColor="@color/primary_text" />
     </RelativeLayout>
 
 </RelativeLayout>

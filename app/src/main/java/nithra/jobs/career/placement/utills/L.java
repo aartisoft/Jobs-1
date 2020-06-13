@@ -1,4 +1,3 @@
-
 package nithra.jobs.career.placement.utills;
 
 import android.content.Context;
@@ -9,8 +8,8 @@ import android.widget.Toast;
  */
 
 public class L {
-    public static void t(Context context, String message){
-        if(message == null) message = "";
+    public static void t(Context context, String message) {
+        if (message == null) message = "";
         if (context != null) Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

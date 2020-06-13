@@ -39,7 +39,7 @@
         android:layout_width="75dp"
         android:layout_height="50dp"
         android:textColor="@color/white"
-        android:background="@drawable/rectangle_guide"
+        android:background="@drawable/bg_trans_black"
         android:layout_marginTop="50dp"
         android:text="@string/ok"
         android:gravity="center"

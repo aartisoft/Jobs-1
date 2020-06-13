@@ -5,12 +5,9 @@ package nithra.jobs.career.placement;
  */
 
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
-
-
-import nithra.jobs.career.placement.R;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 
 public class App_analytics extends MultiDexApplication {

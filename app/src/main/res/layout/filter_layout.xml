@@ -1,48 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <ImageView
-                android:id="@+id/info_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/ic_info_black_24dp"
-                android:tint="@color/white"
-                android:padding="10dp" />
-
-            <ImageView
-                android:id="@+id/refresh_btn"
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/refresh"
-                android:tint="@color/white" />
-
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,7 +46,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/mode_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -110,7 +71,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/skills_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -136,7 +96,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/location_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -163,7 +122,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/category_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -189,7 +147,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/workmode_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -215,7 +172,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/qualification_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -241,7 +197,6 @@
                             android:tint="@color/primary_text" />
 
                         <TextView
-                            android:id="@+id/experience_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -257,10 +212,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.30"
+                    android:gravity="center"
                     android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/listLay"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -273,7 +230,7 @@
                             android:popupTheme="@style/AppTheme.NoActionBar"
                             android:visibility="gone" />
 
-                        <android.support.v7.widget.SearchView
+                        <androidx.appcompat.widget.SearchView
                             android:id="@+id/searchview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -289,6 +246,20 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
+
+                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/progressBar"
+                        style="@style/SpinKitView.Large.CubeGrid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        app:SpinKit_Color="@color/colorPrimary" />
+
+                    <include
+                        android:id="@+id/lError"
+                        layout="@layout/error_lay"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -307,7 +278,7 @@
                     android:layout_marginRight="@dimen/lrtbp_10"
                     android:layout_marginTop="@dimen/lrtbp_5"
                     android:layout_marginBottom="@dimen/lrtbp_5"
-                    android:background="@drawable/button"
+                    android:background="@drawable/bg_red_curve"
                     android:drawableLeft="@drawable/ic_filter_list_white_24dp"
                     android:text="Filter"
                     android:visibility="visible"
@@ -328,4 +299,42 @@
 
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageView
+                android:id="@+id/info_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/ic_info_black_24dp"
+                android:tint="@color/white"
+                android:padding="10dp" />
+
+            <ImageView
+                android:id="@+id/refresh_btn"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/refresh"
+                android:tint="@color/white" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

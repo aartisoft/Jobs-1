@@ -14,45 +14,51 @@ import java.util.List;
  */
 public class FlexLine {
 
-    FlexLine() {
-    }
-
-    /** @see {@link #getLeft()} */
+    /**
+     * @see {@link #getLeft()}
+     */
     int mLeft = Integer.MAX_VALUE;
-
-    /** @see {@link #getTop()} */
+    /**
+     * @see {@link #getTop()}
+     */
     int mTop = Integer.MAX_VALUE;
-
-    /** @see {@link #getRight()} */
+    /**
+     * @see {@link #getRight()}
+     */
     int mRight = Integer.MIN_VALUE;
-
-    /** @see {@link #getBottom()} */
+    /**
+     * @see {@link #getBottom()}
+     */
     int mBottom = Integer.MIN_VALUE;
-
-    /** @see {@link #getMainSize()} */
+    /**
+     * @see {@link #getMainSize()}
+     */
     int mMainSize;
-
     /**
      * The sum of the lengths of dividers along the main axis. This value should be lower or
      * than than the value of {@link #mMainSize}.
      */
     int mDividerLengthInMainSize;
-
-    /** @see {@link #getCrossSize()} */
+    /**
+     * @see {@link #getCrossSize()}
+     */
     int mCrossSize;
-
-    /** @see {@link #getItemCount()} */
+    /**
+     * @see {@link #getItemCount()}
+     */
     int mItemCount;
-
-    /** Holds the count of the views whose visibilities are gone */
+    /**
+     * Holds the count of the views whose visibilities are gone
+     */
     int mGoneItemCount;
-
-    /** @see {@link #getTotalFlexGrow()} */
+    /**
+     * @see {@link #getTotalFlexGrow()}
+     */
     float mTotalFlexGrow;
-
-    /** @see {@link #getTotalFlexShrink()} */
+    /**
+     * @see {@link #getTotalFlexShrink()}
+     */
     float mTotalFlexShrink;
-
     /**
      * The largest value of the individual child's baseline (obtained by View#getBaseline()
      * if the {@link FlexboxLayout#mAlignItems} value is not
@@ -64,18 +70,19 @@ public class FlexLine {
      * (Calculated as view.getMeasuredHeight() - view.getBaseline - LayoutParams.bottomMargin)
      */
     int mMaxBaseline;
-
     /**
      * The sum of the cross size used before this flex line.
      */
     int mSumCrossSizeBefore;
-
     /**
      * Store the indices of the children views whose alignSelf property is stretch.
      * The stored indices are the absolute indices including all children in the Flexbox,
      * not the relative indices in this flex line.
      */
     List<Integer> mIndicesAlignSelfStretch = new ArrayList<>();
+
+    FlexLine() {
+    }
 
     /**
      * @return the distance in pixels from the top edge of this view's parent

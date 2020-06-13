@@ -13,24 +13,26 @@
         android:layout_gravity="center"
         android:src="@drawable/ic_empty_white_box" />
 
+    <Button
+        android:id="@+id/network_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/wh_35"
+        android:layout_marginTop="@dimen/lrtbp_10"
+        android:paddingLeft="@dimen/lrtbp_10"
+        android:paddingRight="@dimen/lrtbp_10"
+        android:background="@color/colorPrimary"
+        android:text = "@string/retry"
+        android:textColor="@color/white"/>
+
     <TextView
         android:id="@+id/txtError1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/lrtbp_10"
         android:gravity="center"
+        android:lineSpacingMultiplier="1.2"
         android:text="Something went wrong"
         android:textColor="@color/secondary_text" />
-
-    <Button
-        android:id="@+id/network_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/lrtbp_10"
-        android:padding="@dimen/lrtbp_10"
-        android:background="@color/colorPrimary"
-        android:text = "@string/retry"
-        android:textColor="@color/white"/>
 
 </LinearLayout>
 

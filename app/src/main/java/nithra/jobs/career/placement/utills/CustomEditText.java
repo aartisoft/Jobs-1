@@ -15,16 +15,14 @@ import android.widget.EditText;
 
 public class CustomEditText extends EditText {
 
+    int actionX, actionY;
     private Drawable drawableRight;
     private Drawable drawableLeft;
     private Drawable drawableTop;
     private Drawable drawableBottom;
-
-    int actionX, actionY;
-
     private DrawableClickListener clickListener;
 
-    public CustomEditText (Context context, AttributeSet attrs) {
+    public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         // this Contructure required when you are using this view in xml
     }
@@ -85,15 +83,15 @@ public class CustomEditText extends EditText {
                 bounds = drawableLeft.getBounds();
 
                 int x, y;
-                int extraTapArea = (int) (13 * getResources().getDisplayMetrics().density  + 0.5);
+                int extraTapArea = (int) (13 * getResources().getDisplayMetrics().density + 0.5);
 
                 x = actionX;
                 y = actionY;
 
                 if (!bounds.contains(actionX, actionY)) {
                     /** Gives the +20 area for tapping. */
-                    x = (int) (actionX - extraTapArea);
-                    y = (int) (actionY - extraTapArea);
+                    x = actionX - extraTapArea;
+                    y = actionY - extraTapArea;
 
                     if (x <= 0)
                         x = actionX;
@@ -130,25 +128,25 @@ public class CustomEditText extends EditText {
                  * BOUND. - this process help to increase the tappable area of
                  * the rectangle.
                  */
-                x = (int) (actionX + extraTapArea);
-                y = (int) (actionY - extraTapArea);
+                x = actionX + extraTapArea;
+                y = actionY - extraTapArea;
 
                 /**Since this is right drawable subtract the value of x from the width
                  * of view. so that width - tappedarea will result in x co-ordinate in drawable bound.
                  */
                 x = getWidth() - x;
 
-                 /*x can be negative if user taps at x co-ordinate just near the width.
+                /*x can be negative if user taps at x co-ordinate just near the width.
                  * e.g views width = 300 and user taps 290. Then as per previous calculation
                  * 290 + 13 = 303. So subtract X from getWidth() will result in negative value.
                  * So to avoid this add the value previous added when x goes negative.
                  */
 
-                if(x <= 0){
+                if (x <= 0) {
                     x += extraTapArea;
                 }
 
-                 /* If result after calculating for extra tappable area is negative.
+                /* If result after calculating for extra tappable area is negative.
                  * assign the original value so that after subtracting
                  * extratapping area value doesn't go into negative value.
                  */
@@ -186,8 +184,9 @@ public class CustomEditText extends EditText {
 
     public interface DrawableClickListener {
 
-        public static enum DrawablePosition { TOP, BOTTOM, LEFT, RIGHT };
-        public void onClick(DrawablePosition target);
+        void onClick(DrawablePosition target);
+
+        enum DrawablePosition {TOP, BOTTOM, LEFT, RIGHT}
     }
 
 }

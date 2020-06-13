@@ -2,18 +2,8 @@
 
     <!-- MDPI-sw320dp -->
 
-    <dimen name="croll_app_width">280dp</dimen>
-    <dimen name="croll_app_height">95dp</dimen>
-    <dimen name="croll_insbut_width">80dp</dimen>
-    <dimen name="croll_insbut_height">35dp</dimen>
-     <dimen name="but_height">55dp</dimen>
 
-
-    <dimen name="activity_horizontal_margin1">52dp</dimen>
-    <dimen name="tab_max_width1">170dp</dimen>
-    
-
-     <dimen name="lrtbp_5">5dp</dimen>  
+    <dimen name="lrtbp_5">5dp</dimen>
      <dimen name="lrtbp_10">10dp</dimen> 
       <dimen name="lrtbp_15">15dp</dimen> 
      <dimen name="lrtbp_20">20dp</dimen> 
@@ -44,12 +34,8 @@
           <dimen name="txt_12">12dp</dimen>
     <dimen name="txt_15">15dp</dimen>
          <dimen name="txt_16">16dp</dimen>
-    <dimen name="txt_17">17dp</dimen>
-          <dimen name="txt_18">18dp</dimen>
+    <dimen name="txt_18">18dp</dimen>
            <dimen name="txt_20">20dp</dimen>
-            <dimen name="txt_22">22dp</dimen>
-           <dimen name="txt_24">24dp</dimen>
-           <dimen name="txt_25">25dp</dimen>
- <dimen name="txt_50">50dp</dimen>
-           
+    <dimen name="txt_25">25dp</dimen>
+
 </resources>

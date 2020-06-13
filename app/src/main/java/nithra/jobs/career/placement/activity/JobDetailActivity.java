@@ -1,100 +1,89 @@
 package nithra.jobs.career.placement.activity;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.VideoController;
-import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.formats.MediaView;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeAppInstallAd;
-import com.google.android.gms.ads.formats.NativeAppInstallAdView;
-import com.google.android.gms.ads.formats.NativeContentAd;
-import com.google.android.gms.ads.formats.NativeContentAdView;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
+import nithra.jobs.career.placement.fragments.JobListFragment;
 import nithra.jobs.career.placement.fragments.PlaceholderFragment;
+import nithra.jobs.career.placement.utills.CustomViewPager;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
 
-public class JobDetailActivity extends AppCompatActivity{
+public class JobDetailActivity extends AppCompatActivity {
 
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * {@link FragmentStatePagerAdapter}.
      */
-    public static SectionsPagerAdapter mSectionsPagerAdapter;
-    public static List<String> rowList;
-    int point = 0;
-    public static int position = 0;
-    String task = "";
+
+    SectionsPagerAdapter mSectionsPagerAdapter;
+    List<String> rowList;
+    String point;
+    int position = 0;
+    String task = "", value;
     SharedPreference pref;
     String key = "";
-    public static int adCount = 0;
     LinearLayout adview;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    public static ViewPager mViewPager;
-    Toolbar toolbar;
-    public static InterstitialAd interstitialAd;
+    TextView txtToolTitle;
+    CustomViewPager mViewPager;
+    PublisherInterstitialAd interstitialAd_noti;
     boolean isGCM = false;
+    ImageView back, prev, next;
+    RelativeLayout prevNextLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarTranslucent(false);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_job_detail);
-        toolbar = findViewById(R.id.toolbar);
+        back = findViewById(R.id.back);
+        prev = findViewById(R.id.prev);
+        next = findViewById(R.id.next);
+
+        prevNextLay = findViewById(R.id.prevNextLay);
+
+        txtToolTitle = findViewById(R.id.txtToolTitle);
         pref = new SharedPreference();
-        loadInDusAd();
+
         pref.putInt(this, U.SH_BACK_AD_COUNT, pref.getInt(this, U.SH_BACK_AD_COUNT) + 1);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+        if (pref.getInt(this, U.SH_BACK_AD_COUNT) > 5) {
+            if (pref.getInt(JobDetailActivity.this, U.SH_AD_PURCHASED) == 0) {
+                ads_manager_interstistial();
+            }
+        }
+
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -104,35 +93,89 @@ public class JobDetailActivity extends AppCompatActivity{
         Bundle bundle = getIntent().getExtras();
         key = bundle.getString("key");
         task = bundle.getString("task");
-        Log.e("task",task);
+        value = bundle.getString("value");
         isGCM = bundle.getBoolean("gcm");
-        point = bundle.getInt("point");
+        point = bundle.getString("point");
         position = bundle.getInt("position");
-        System.out.println("Deeplinking not called");
+
+        callData();
 
         if (pref.getInt(this, U.SH_INFO_DIALOG) == 0) infoDialog();
 
-        if(task.equals(U.GCM)){
+        if (task.equals(U.GCM)) {
             String notifyId = bundle.getString("Notifyid");
-
             SQLiteDatabase myDB = openOrCreateDatabase("myDB", 0, null);
             String query = "update noti_cal set isclose='1' where id='" + notifyId + "'";
             myDB.execSQL(query);
-
         }
-        callData();
+
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+            }
+        });
+
+        mViewPager.setOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    prev.setVisibility(View.GONE);
+                    next.setVisibility(View.VISIBLE);
+                } else if (position == rowList.size() - 1) {
+                    prev.setVisibility(View.VISIBLE);
+                    next.setVisibility(View.GONE);
+                } else {
+                    prev.setVisibility(View.VISIBLE);
+                    next.setVisibility(View.VISIBLE);
+                }
+
+                if (rowList.get(position).contains("-")) {
+                    txtToolTitle.setText("வேலைவாய்ப்பு");
+                } else {
+                    txtToolTitle.setText(getResources().getString(R.string.title_activity_job_detail));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     private void infoDialog() {
-        pref.putInt(this, U.SH_INFO_DIALOG, 1);
         final Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.info_dialog);
-                dialog.show();
-                dialog.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
+        dialog.show();
+        dialog.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pref.putInt(JobDetailActivity.this, U.SH_INFO_DIALOG, 1);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.parentLay).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                pref.putInt(JobDetailActivity.this, U.SH_INFO_DIALOG, 1);
+                dialog.dismiss();
+                return false;
             }
         });
     }
@@ -143,43 +186,59 @@ public class JobDetailActivity extends AppCompatActivity{
 
         adview = findViewById(R.id.adview);
 
-        MainActivity.showAd(this, adview,true);
+        if (pref.getInt(JobDetailActivity.this, U.SH_AD_PURCHASED) == 0) {
+            MainActivity.showAd(this, adview, true);
+        }
+
         mViewPager = findViewById(R.id.viewPager);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        String vid = rowList.indexOf(point + "") + "".trim();
+        String vid = rowList.indexOf(point) + "".trim();
         mViewPager.setCurrentItem(Integer.parseInt(vid));
+        Log.e("response_data", "" + key);
     }
 
-    public void loadInDusAd() {
-        //INDUS ADD
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(U.INDUS_AD_CAT);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        interstitialAd.loadAd(adRequest);
-        // ---- END ---
+
+    public void ads_manager_interstistial() {
+        interstitialAd_noti = new PublisherInterstitialAd(this);
+        interstitialAd_noti.setAdUnitId("/21634001759/JOBS001");
+        interstitialAd_noti.loadAd(new PublisherAdRequest.Builder().build());
+        interstitialAd_noti.setAdListener(new com.google.android.gms.ads.AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                finish();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+        });
     }
 
     public void showIndus() {
-        if (interstitialAd.isLoaded()) {
-            interstitialAd.show();
+        if (interstitialAd_noti != null && interstitialAd_noti.isLoaded()) {
+            interstitialAd_noti.show();
             pref.removeInt(this, U.SH_BACK_AD_COUNT);
-            interstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                }
-            });
         }
     }
 
     private void close() {
-        if (isGCM) {
-            showIndus();
-            finish();
+        if (pref.getInt(this, U.SH_BACK_AD_COUNT) > 5) {
+            if (pref.getInt(JobDetailActivity.this, U.SH_AD_PURCHASED) == 0) {
+                showIndus();
+            } else {
+                finish();
+            }
         } else {
-            if (pref.getInt(this, U.SH_BACK_AD_COUNT) > 5) showIndus();
             finish();
         }
     }
@@ -192,41 +251,49 @@ public class JobDetailActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        adCount = 0;
     }
 
-    protected void setStatusBarTranslucent(boolean makeTranslucent) {
-        if (makeTranslucent) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            else {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            }
-        }
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position,task);
+
+            if (rowList.size() == 1) {
+                prev.setVisibility(View.GONE);
+                next.setVisibility(View.GONE);
+            } else if (position == 0) {
+                prev.setVisibility(View.GONE);
+                next.setVisibility(View.VISIBLE);
+            } else if (position == rowList.size() - 1) {
+                prev.setVisibility(View.VISIBLE);
+                next.setVisibility(View.GONE);
+            } else {
+                prev.setVisibility(View.VISIBLE);
+                next.setVisibility(View.VISIBLE);
+            }
+
+            if (rowList.get(position).contains("-")) {
+                txtToolTitle.setText("வேலைவாய்ப்பு");
+                return JobListFragment.newInstance(U.GROUPJOBS, rowList.get(position).trim().replace("-", ","), task);
+            } else {
+                txtToolTitle.setText(getResources().getString(R.string.title_activity_job_detail));
+                return PlaceholderFragment.newInstance(position, task, key, value);
+            }
         }
 
         @Override
@@ -234,5 +301,4 @@ public class JobDetailActivity extends AppCompatActivity{
             return rowList.size();
         }
     }
-
 }

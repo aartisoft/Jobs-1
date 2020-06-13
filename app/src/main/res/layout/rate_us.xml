@@ -1,70 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="visible">
 
     <LinearLayout
-        android:background="@android:color/white"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/wh_50"
+        android:orientation="vertical">
 
-        <TextView
-            android:padding="@dimen/lrtbp_10"
-            android:gravity="center"
-            android:fontFamily="sans-serif-condensed"
-            android:text="தங்களது எதிர்கால வாழ்க்கைக்கு சிறப்பான வேலைவாய்ப்பு தகவல்களை அளிக்கும் நமது செயலியை ஊக்குவிக்க 5 நட்சத்திர குறியீடு வழங்க அன்புடன் கேட்டுக்கொள்கிறோம்."
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/txt_20"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <ImageView
-            android:id="@+id/imgRating"
-            android:layout_margin="@dimen/lrtbp_10"
-            android:background="@android:color/white"
-            android:scaleType="fitCenter"
-            android:src="@drawable/five_star"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/wh_50" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtRateUs"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:padding="@dimen/lrtbp_20"
-                android:fontFamily="sans-serif-smallcaps"
-                android:textSize="@dimen/txt_16"
-                android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:text="@string/rating"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/lrtbp_5"
+            android:layout_marginLeft="@dimen/lrtbp_5"
+            android:layout_marginRight="@dimen/lrtbp_5"
+            app:cardElevation="@dimen/lrtbp_15"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="@dimen/lrtbp_5"
+            card_view:cardUseCompatPadding="false">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/lrtbp_5"
+                android:layout_marginLeft="@dimen/lrtbp_5"
+                android:layout_marginRight="@dimen/lrtbp_5"
+                android:layout_marginTop="@dimen/wh_35"
+                android:orientation="vertical">
 
-            <TextView
-                android:background="@android:color/white"
-                android:layout_width="1dp"
-                android:layout_height="match_parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtFeedBack"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:padding="@dimen/lrtbp_20"
-                android:fontFamily="sans-serif-smallcaps"
-                android:textSize="@dimen/txt_16"
-                android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:text="@string/feed_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtRateUs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center"
+                        android:padding="@dimen/lrtbp_10"
+                        android:text="@string/rating"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/txt_16" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/txtFeedBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center"
+                        android:padding="@dimen/lrtbp_10"
+                        android:text="@string/feed_back"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/txt_16" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.5"
+                    android:padding="@dimen/lrtbp_10"
+                    android:text="@string/rateus_text"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/txt_15" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
+
+     <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/wh_100"
+            android:layout_marginBottom="@dimen/wh_2"
+            android:layout_marginLeft="@dimen/wh_50"
+            android:layout_marginRight="@dimen/wh_50"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/lrtbp_15"
+                android:paddingRight="@dimen/lrtbp_15"
+                android:scaleType="fitXY"
+                android:src="@drawable/starrrr" />
+
+        </LinearLayout>
 
 </RelativeLayout>

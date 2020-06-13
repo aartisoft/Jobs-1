@@ -2,17 +2,18 @@ package nithra.jobs.career.placement.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -21,13 +22,17 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-import nithra.jobs.career.placement.FragmentInterface;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import nithra.jobs.career.placement.Interface.FragmentInterface;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.activity.RegistrationActivity;
 import nithra.jobs.career.placement.dialogfragment.DatePickerFragment;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
-import static android.support.v4.view.ViewCompat.jumpDrawablesToCurrentState;
+
+import static androidx.core.view.ViewCompat.jumpDrawablesToCurrentState;
 
 /**
  * Created by nithra-apps on 14/11/17.
@@ -39,10 +44,47 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
     RadioGroup genderGroup, MaritalStatus;
     RadioButton male, female, married, unMarried;
     ImageView datePicker;
-    //Pinview pinDay, pinMonth, pinYear;
-    TextView pinAge,pinDay,pinMonth,pinYear;
-    int yearVal=0;int monthVal=0;int dayVal=0;
+    TextView age;
+    int yearVal = 0;
+    int monthVal = 0;
+    int dayVal = 0;
     LinearLayout doblay;
+    EditText d1, m1, y1;
+    OnRegistrationListener onRegistrationListener;
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            int month = monthOfYear + 1;
+            RegistrationActivity.dob = U.s2d(dayOfMonth) + "-" + U.s2d(month) + "-" + year;
+            RegistrationActivity.age = getAge(dayOfMonth, month, year);
+
+            Log.e("check picker log", "picker result called");
+            Log.e("check picker d", "" + dayOfMonth);
+            Log.e("check picker m", "" + month);
+            Log.e("check picker y", "" + year);
+            Log.e("check picker ageval", "" + RegistrationActivity.age);
+
+            yearVal = year;
+            monthVal = Integer.parseInt(U.s2d(month));
+            dayVal = Integer.parseInt(U.s2d(dayOfMonth));
+
+            d1.setText(U.s2d(dayOfMonth));
+            m1.setText(U.s2d(month));
+            y1.setText(String.valueOf(year));
+
+            age.setText(RegistrationActivity.age);
+
+            if (!RegistrationActivity.dob.isEmpty()) {
+                pref.putString(getActivity(), U.SH_DOB, RegistrationActivity.dob);
+            }
+
+            if (!RegistrationActivity.age.isEmpty()) {
+                pref.putString(getActivity(), U.SH_AGE, RegistrationActivity.age);
+            }
+
+            onRegistrationListener.onPercentageChange();
+        }
+    };
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -55,6 +97,7 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onRegistrationListener = (OnRegistrationListener) context;
     }
 
     @Override
@@ -65,9 +108,14 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
+
+        if (getActivity() != null) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        }
+
         return inflater.inflate(R.layout.personal_details_page, container, false);
     }
 
@@ -80,11 +128,7 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
         MaritalStatus = view.findViewById(R.id.marital_statusgroup);
         doblay = view.findViewById(R.id.doblay);
 
-        pinDay = view.findViewById(R.id.pinview_day);
-        pinMonth = view.findViewById(R.id.pinview_month);
-        pinYear = view.findViewById(R.id.pinview_year);
-        pinAge = view.findViewById(R.id.pinview_age);
-        pinAge = view.findViewById(R.id.pinview_age);
+        age = view.findViewById(R.id.pinview_age);
 
         datePicker = view.findViewById(R.id.datepick_image);
 
@@ -93,12 +137,23 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
 
         married = view.findViewById(R.id.married);
         unMarried = view.findViewById(R.id.unmarried);
-
+        d1 = view.findViewById(R.id.d1);
+        m1 = view.findViewById(R.id.m1);
+        y1 = view.findViewById(R.id.y1);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getActivity().getCurrentFocus();
+        if (view == null) {
+            view = new View(getActivity());
+        }
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -107,6 +162,7 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
                 View radioButton = group.findViewById(radioButtonID);
                 RegistrationActivity.gender = String.valueOf(group.indexOfChild(radioButton));
                 pref.putString(getActivity(), U.SH_GENDER, RegistrationActivity.gender);
+                onRegistrationListener.onPercentageChange();
             }
         });
 
@@ -117,39 +173,126 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
                 View radioButton = group.findViewById(radioButtonID);
                 RegistrationActivity.maritalStatus = String.valueOf(group.indexOfChild(radioButton));
                 pref.putString(getActivity(), U.SH_MARITAL_STATUS, RegistrationActivity.maritalStatus);
+                onRegistrationListener.onPercentageChange();
             }
         });
 
-
-       /* pinDay.setPinViewEventListener(new Pinview.PinViewEventListener() {
+        d1.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataEntered(Pinview pinview, boolean fromUser) {
-                dayVal = Integer.parseInt(pinview.getValue());
-                pinMonth.requestPinEntryFocus();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (d1.length() == 2) {
+                    setFocusTo(m1);
+                }
             }
         });
 
-        pinMonth.setPinViewEventListener(new Pinview.PinViewEventListener() {
+        m1.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataEntered(Pinview pinview, boolean fromUser) {
-                monthVal = Integer.parseInt(pinview.getValue());
-                pinYear.requestPinEntryFocus();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (m1.length() == 2) {
+                    setFocusTo(y1);
+                }
             }
         });
 
-        pinYear.setPinViewEventListener(new Pinview.PinViewEventListener() {
+        y1.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataEntered(Pinview pinview, boolean fromUser) {
-                yearVal = Integer.parseInt(pinview.getValue());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                Log.e("check ypin log","year pin function called");
-                Log.e("check ypin d",""+dayVal);
-                Log.e("check ypin m",""+monthVal);
-                Log.e("check ypin y",""+yearVal);
-
-                check(dayVal,monthVal,yearVal);
             }
-        });*/
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (y1.length() == 4) {
+                    try {
+                        if (d1.getText().toString().isEmpty() || m1.getText().toString().isEmpty()) {
+                            y1.setText("");
+                            d1.requestFocus();
+                            U.toast_center(getActivity(), "Kindly Enter correct values");
+                        } else {
+                            int dayOfMonth = Integer.parseInt(d1.getText().toString());
+                            int month = Integer.parseInt(m1.getText().toString());
+                            int year = Integer.parseInt(y1.getText().toString());
+                            RegistrationActivity.dob = U.s2d(dayOfMonth) + "-" + U.s2d(month) + "-" + year;
+
+                            Log.e("validate", "" + validate(RegistrationActivity.dob));
+                            if (validate(RegistrationActivity.dob)) {
+                                RegistrationActivity.age = getAge(dayOfMonth, month, year);
+                                age.setText(RegistrationActivity.age);
+
+                                if (!RegistrationActivity.dob.isEmpty()) {
+                                    pref.putString(getActivity(), U.SH_DOB, RegistrationActivity.dob);
+                                }
+
+                                if (!RegistrationActivity.age.isEmpty()) {
+                                    pref.putString(getActivity(), U.SH_AGE, RegistrationActivity.age);
+                                }
+
+                                onRegistrationListener.onPercentageChange();
+
+                            } else {
+                                U.toast_center(getActivity(), "Invalid DOB! Kindly Enter correct values");
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        y1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    //this is for backspace
+                    if (y1.length() == 0) {
+                        setFocusTo(m1);
+                    }
+                }
+                return false;
+            }
+        });
+        m1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    //this is for backspace
+                    if (m1.length() == 0) {
+                        setFocusTo(d1);
+                    }
+                }
+                return false;
+            }
+        });
 
         doblay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,15 +333,16 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
             String day = ageArray[0];
             String month = ageArray[1];
             String year = ageArray[2];
+            Log.e("value", day + month + year);
 
-            pinYear.setText(String.valueOf(year));
-            pinMonth.setText(U.s2d(Integer.parseInt(month)));
-            pinDay.setText(U.s2d(Integer.parseInt(day)));
+            d1.setText(U.s2d(Integer.parseInt(day)));
+            m1.setText(U.s2d(Integer.parseInt(month)));
+            y1.setText(String.valueOf(year));
         }
 
         if (!pref.getString(getActivity(), U.SH_AGE).equals("")) {
             RegistrationActivity.age = pref.getString(getActivity(), U.SH_AGE);
-            pinAge.setText(RegistrationActivity.age);
+            age.setText(RegistrationActivity.age);
         }
 
     }
@@ -206,6 +350,12 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
     @Override
     public void onStop() {
         super.onStop();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(d1.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(m1.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(y1.getWindowToken(), 0);
+        }
     }
 
     private void showDatePicker() {
@@ -216,93 +366,20 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
         args.putInt("day", 1);
         date.setArguments(args);
         date.setCallBack(ondate);
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             date.show(getActivity().getSupportFragmentManager(), "Date Picker");
         }
     }
 
-    /*private void check(int day, int month, int year){
-        if(day!=0 && month!=0 && year!=0){
-            RegistrationActivity.dob = U.s2d(day) + "-" + U.s2d(month)
-                    + "-" + String.valueOf(year);
-            RegistrationActivity.age = getAge(day,month,year);
-            Log.e("check log","check function called");
-            Log.e("check d",""+day);
-            Log.e("check m",""+month);
-            Log.e("check y",""+year);
-            Log.e("check ageval",""+RegistrationActivity.age);
-
-            pinAge.setText(RegistrationActivity.age);
-
-            if (!RegistrationActivity.dob.isEmpty()) {
-                pref.putString(getActivity(), U.SH_DOB, RegistrationActivity.dob);
-            }else{
-                pref.putString(getActivity(), U.SH_DOB, "");
-            }
-
-            if (!RegistrationActivity.age.isEmpty()) {
-                pref.putString(getActivity(), U.SH_AGE, RegistrationActivity.age);
-            }else{
-                pref.putString(getActivity(), U.SH_AGE, "");
-            }
-
-        }else if(day == 0 && month == 0 && year== 0){
-            Toast.makeText(getActivity(), "Enter your Date of Birth", Toast.LENGTH_SHORT).show();
-        }else if(day == 0){
-            Toast.makeText(getActivity(), "Enter your birth day", Toast.LENGTH_SHORT).show();
-        }else if(month == 0){
-            Toast.makeText(getActivity(), "Enter your birth month", Toast.LENGTH_SHORT).show();
-        }else if(year== 0){
-            Toast.makeText(getActivity(), "Enter your birth year", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            int month = monthOfYear+1;
-            RegistrationActivity.dob =  U.s2d(dayOfMonth) + "-" + U.s2d(month) + "-" +String.valueOf(year);
-            RegistrationActivity.age = getAge(dayOfMonth,month,year);
-
-            Log.e("check picker log","picker result called");
-            Log.e("check picker d",""+dayOfMonth);
-            Log.e("check picker m",""+month);
-            Log.e("check picker y",""+year);
-            Log.e("check picker ageval",""+RegistrationActivity.age);
-
-            yearVal = year;
-            monthVal = Integer.parseInt(U.s2d(month));
-            dayVal = Integer.parseInt(U.s2d(dayOfMonth));
-
-            pinYear.setText(String.valueOf(year));
-            pinMonth.setText(U.s2d(month));
-            pinDay.setText(U.s2d(dayOfMonth));
-            pinAge.setText(RegistrationActivity.age);
-
-            if (!RegistrationActivity.dob.isEmpty()) {
-                pref.putString(getActivity(), U.SH_DOB, RegistrationActivity.dob);
-            }
-
-            if (!RegistrationActivity.age.isEmpty()) {
-                pref.putString(getActivity(), U.SH_AGE, RegistrationActivity.age);
-            }
-        }
-    };
-
     private String getAge(int day, int month, int year) {
-
-        Log.e("check age log","Age function called");
-        Log.e("check age d",""+day);
-        Log.e("check age m",""+month);
-        Log.e("check age y",""+year);
 
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
 
-        dob.set(year, month-1, day);
+        dob.set(year, month - 1, day);
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-        Log.e("check compare age",""+today.get(Calendar.YEAR)+"-"+dob.get(Calendar.YEAR)+"="+age);
+        Log.e("check compare age", "" + today.get(Calendar.YEAR) + "-" + dob.get(Calendar.YEAR) + "=" + age);
 
         if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
             age--;
@@ -310,12 +387,49 @@ public class PersonalFragment extends Fragment implements FragmentInterface {
 
         int ageInt = age;
 
-        Log.e("check age ageval",""+ U.s2d(ageInt));
-        return  U.s2d(ageInt);
+        return U.s2d(ageInt);
+    }
+
+    private boolean validate(final String date) {
+        int currentyear = Calendar.getInstance().get(Calendar.YEAR);
+        String[] ageArray = date.split("-");
+        String day = ageArray[0];
+        String month = ageArray[1];
+        int year = Integer.parseInt(ageArray[2]);
+        if (day.equals("31") &&
+                (month.equals("4") || month.equals("6") || month.equals("9") ||
+                        month.equals("11") || month.equals("04") || month.equals("06") ||
+                        month.equals("09"))) {
+            return false; // only 1,3,5,7,8,10,12 has 31 days
+        } else if (month.equals("2") || month.equals("02")) {
+            //leap year
+            if (year % 4 == 0) {
+                return !day.equals("30") && !day.equals("31");//return true
+            } else {
+                return !day.equals("29") && !day.equals("30") && !day.equals("31");//return true
+            }
+        } else return Integer.parseInt(day) <= 31 && Integer.parseInt(month) <= 12 && year < currentyear;
     }
 
     @Override
     public void fragmentBecameVisible() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(d1.getWindowToken(), 0);
+        }
+    }
 
+    private void setFocusTo(EditText view) {
+        if (getActivity() != null) {
+            view.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
+    }
+
+    public interface OnRegistrationListener {
+        void onPercentageChange();
     }
 }

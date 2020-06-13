@@ -4,9 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -148,128 +146,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/doblay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/lrtbp_10"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <!--<nithra.jobs.career.placement.utills.Pinview
-                        android:visibility="gone"
-                        android:id="@+id/pinview_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cursorVisible="false"
-                        app:forceKeyboard="false"
-                        app:hint="d"
-                        app:inputType="number"
-                        app:password="false"
-                        app:pinBackground="@drawable/pin_background"
-                        app:pinHeight="30dp"
-                        app:pinLength="2"
-                        app:pinWidth="30dp"
-                        app:splitWidth="5dp" />-->
-
-                    <TextView
-                        android:id="@+id/pinview_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/lrtbp_10"
-                        android:gravity="center"
-                        android:background="@drawable/pin_background"
-                        android:hint="dd"
-                        android:textColor="@color/black"
-                        android:textSize="15dp" />
-
-                    <View
-                        android:layout_width="@dimen/lrtbp_5"
-                        android:layout_height="@dimen/wh_2"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/lrtbp_10"
-                        android:layout_marginRight="@dimen/lrtbp_10"
-                        android:background="@color/black" />
-
-                   <!-- <nithra.jobs.career.placement.utills.Pinview
-                        android:visibility="gone"
-                        android:id="@+id/pinview_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cursorVisible="false"
-                        app:forceKeyboard="false"
-                        app:hint="m"
-                        app:inputType="number"
-                        app:password="false"
-                        app:pinBackground="@drawable/pin_background"
-                        app:pinHeight="30dp"
-                        app:pinLength="2"
-                        app:pinWidth="30dp"
-                        app:splitWidth="5dp" />-->
-
-                    <TextView
-                        android:id="@+id/pinview_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="@dimen/lrtbp_10"
-                        android:hint="mm"
-                        android:background="@drawable/pin_background"
-                        android:textColor="@color/black"
-                        android:textSize="15dp" />
-
-                    <View
-                        android:layout_width="@dimen/lrtbp_5"
-                        android:layout_height="@dimen/wh_2"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/lrtbp_10"
-                        android:layout_marginRight="@dimen/lrtbp_10"
-                        android:background="@color/black" />
-
-                    <!--<nithra.jobs.career.placement.utills.Pinview
-                        android:visibility="gone"
-                        android:id="@+id/pinview_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cursorVisible="false"
-                        app:forceKeyboard="false"
-                        app:hint="y"
-                        app:inputType="number"
-                        app:password="false"
-                        app:pinBackground="@drawable/pin_background"
-                        app:pinHeight="30dp"
-                        app:pinLength="4"
-                        app:pinWidth="30dp"
-                        app:splitWidth="5dp" />-->
-
-                    <TextView
-                        android:id="@+id/pinview_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:hint="yyyy"
-                        android:padding="@dimen/lrtbp_10"
-                        android:background="@drawable/pin_background"
-                        android:textColor="@color/black"
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/datepick_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_date_range_black_24dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/lrtbp_20"
@@ -290,15 +166,111 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/lrtbp_10"
-                    android:background="@drawable/pin_background"
+                    android:background="@drawable/bg_underscore"
                     android:padding="@dimen/lrtbp_10"
                     android:gravity="center"
                     android:text=""
                     android:hint="--"
                     android:textColor="@color/black"
-                    android:textSize="15dp" />
+                    android:textSize="@dimen/txt_15" />
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lrtbp_10"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/lrtbp_10">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/d1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_underscore"
+                            android:gravity="center"
+                            android:hint="DD"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:padding="@dimen/lrtbp_5"
+                            android:textSize="@dimen/txt_15" />
+
+                        <EditText
+                            android:id="@+id/m1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="@dimen/lrtbp_5"
+                            android:background="@drawable/bg_underscore"
+                            android:gravity="center"
+                            android:hint="MM"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:padding="@dimen/lrtbp_5"
+                            android:textSize="@dimen/txt_15" />
+
+                        <EditText
+                            android:id="@+id/y1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="@dimen/lrtbp_5"
+                            android:background="@drawable/bg_underscore"
+                            android:gravity="center"
+                            android:hint="YYYY"
+                            android:inputType="number"
+                            android:maxLength="4"
+                            android:padding="@dimen/lrtbp_5"
+                            android:textSize="@dimen/txt_15" />
+
+                        <View
+                            android:layout_width="@dimen/lrtbp_5"
+                            android:layout_height="@dimen/wh_2"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/lrtbp_10"
+                            android:layout_marginRight="@dimen/lrtbp_10"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="@dimen/lrtbp_5"
+                            android:layout_height="@dimen/wh_2"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/lrtbp_10"
+                            android:layout_marginRight="@dimen/lrtbp_10"
+                            android:background="@color/black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/doblay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lrtbp_15">
+
+                    <ImageView
+                        android:id="@+id/datepick_image"
+                        android:layout_width="@dimen/lrtbp_25"
+                        android:layout_height="@dimen/lrtbp_25"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_date_range_black_24dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

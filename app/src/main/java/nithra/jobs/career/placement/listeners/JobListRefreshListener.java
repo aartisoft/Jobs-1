@@ -6,18 +6,14 @@ package nithra.jobs.career.placement.listeners;
 
 public class JobListRefreshListener {
 
-    public interface OnCustomStateListener {
-        void stateChanged();
-    }
-
     private static JobListRefreshListener mInstance;
     private OnCustomStateListener mListener;
     private boolean mState;
-
-    private JobListRefreshListener() {}
+    private JobListRefreshListener() {
+    }
 
     public static JobListRefreshListener getInstance() {
-        if(mInstance == null) {
+        if (mInstance == null) {
             mInstance = new JobListRefreshListener();
         }
         return mInstance;
@@ -28,7 +24,7 @@ public class JobListRefreshListener {
     }
 
     public void changeState(boolean state) {
-        if(mListener != null) {
+        if (mListener != null) {
             mState = state;
             notifyStateChange();
         }
@@ -40,6 +36,10 @@ public class JobListRefreshListener {
 
     private void notifyStateChange() {
         mListener.stateChanged();
+    }
+
+    public interface OnCustomStateListener {
+        void stateChanged();
     }
 
 }

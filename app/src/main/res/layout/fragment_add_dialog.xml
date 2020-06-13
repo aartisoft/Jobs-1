@@ -1,48 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:scrollbars="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/lrtbp_5">
 
-        <TextView
-            android:visibility="gone"
-            android:gravity="center"
-            android:textColor="@color/primary_text"
-            android:fontFamily="sans-serif-smallcaps"
-            android:textStyle="bold"
-            android:id="@+id/title"
-            android:layout_marginBottom="5dp"
-            android:textSize="20sp"
-            android:text="Task"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnAdd"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateControl"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:text="Add Reminder"
+            android:textColor="@color/green" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_below="@id/title"
-            android:id="@+id/ti_old_password"
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateControl"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:text="Cancel"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnRemove"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateControl"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/btnCancel"
+            android:text="Remove"
+            android:textColor="@color/timestamp" />
+
+        <LinearLayout
+            android:id="@+id/dateControl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/green">
+            android:layout_below="@+id/ti_new_password"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Reminder Name"
-                android:inputType="textCapSentences"
-                android:textColor="@color/primary_text"/>
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        </android.support.design.widget.TextInputLayout>
+                <ImageButton
+                    android:id="@+id/btnDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="@dimen/lrtbp_10"
+                    android:src="@drawable/ic_date_range_black_24dp" />
 
-        <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/lrtbp_10"
+                    android:text="Date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="@dimen/lrtbp_10"
+                    android:src="@drawable/ic_alarm_black_24dp" />
+
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/lrtbp_10"
+                    android:text="Time" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:text="Task"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnAdd"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="gone" />
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_new_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,101 +136,28 @@
                 android:layout_height="wrap_content"
                 android:hint="Description"
                 android:inputType="textMultiLine"
-                android:textColor="@color/primary_text"/>
+                android:textColor="@color/primary_text" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/dateControl"
-            android:layout_below="@+id/ti_new_password"
-            android:orientation="vertical"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_old_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:gravity="center"
-                android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="20dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/green">
+
+            <EditText
+                android:id="@+id/edTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/txtDate"
-                    android:padding="@dimen/lrtbp_10"
-                    android:gravity="center|left"
-                    android:layout_weight="1"
-                    android:text="Date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageButton
-                    android:id="@+id/btnDate"
-                    android:padding="@dimen/lrtbp_10"
-                    android:background="@null"
-                    android:src="@drawable/ic_date_range_black_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/txtTime"
-                    android:padding="@dimen/lrtbp_10"
-                    android:gravity="center|left"
-                    android:layout_weight="1"
-                    android:text="Time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageButton
-                    android:id="@+id/btnTime"
-                    android:padding="@dimen/lrtbp_10"
-                    android:background="@null"
-                    android:src="@drawable/ic_alarm_black_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:hint="Reminder Name"
+                android:inputType="textCapSentences"
+                android:textColor="@color/primary_text" />
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dateControl"
-            android:layout_alignParentRight="true"
-            android:text="Add Reminder"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/green"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
-
-        <Button
-            android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dateControl"
-            android:text="Cancel"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="10dp"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
-
-        <Button
-            android:id="@+id/btnRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dateControl"
-            android:layout_toRightOf="@+id/btnCancel"
-            android:text="Remove"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/timestamp"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
-
-        <TextView
-            android:id="@+id/tv_message"
-            android:visibility="gone"
-            android:layout_below="@+id/btnAdd"
-            android:layout_centerHorizontal="true"
-            android:textColor="@android:color/holo_red_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </RelativeLayout>

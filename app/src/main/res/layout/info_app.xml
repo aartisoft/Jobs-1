@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/trans_back"
     android:gravity="center"
     android:orientation="vertical">
@@ -12,63 +12,107 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/lrtbp_10">
 
-    <TextView
-        android:id="@+id/txtfd"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:lineSpacingExtra="5dp"
-        android:padding="@dimen/lrtbp_10"
-        android:src="@drawable/ic_info_black_24dp"
-        android:text="வணக்கம்!"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/txt_18"
-        android:textStyle="italic|bold"
-        android:tint="@color/white" />
+        <RelativeLayout
+            android:id="@+id/topLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-    <WebView
-        android:id="@+id/info_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/txtfd"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:layout_above="@+id/bottom_lay"
-        android:gravity="center"
-        android:text="@string/info"
-        android:scrollbars="none"
-        android:textSize="@dimen/lrtbp_15" />
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="@dimen/wh_50"
+                android:layout_height="@dimen/wh_50"
+                android:layout_gravity="center"
+                android:padding="@dimen/lrtbp_5"
+                android:scaleType="fitXY"
+                android:src="@drawable/jobs_rect_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/lrtbp_5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lineSpacingExtra="5dp"
+                    android:src="@drawable/ic_info_black_24dp"
+                    android:text="Nithra Jobs"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/txt_18"
+                    android:textStyle="bold"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lineSpacingExtra="5dp"
+                    android:src="@drawable/ic_info_black_24dp"
+                    android:text="வணக்கம்!"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/txt_15"
+                    android:textStyle="italic|bold"
+                    android:tint="@color/white" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/bottom_lay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/wh_80"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/bottom_shape">
+            android:background="@drawable/shape_right_curve">
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="@dimen/wh_200"
+            <LinearLayout
+                android:id="@+id/detailshowlay"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/lrtbp_20"
-                android:textStyle="bold|italic"
-                android:text="இன்றைய (அ)லட்சியம், நாளைய (ஏ)மாற்றம்."
-                android:textColor="@color/white"
-                android:textSize="@dimen/txt_12" />
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/wh_100"
+                android:orientation="horizontal">
 
-            <android.support.design.widget.FloatingActionButton
+                <CheckBox
+                    android:id="@+id/info_agree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/white"
+                    android:text="மேலே உள்ள அனைத்து தகவல்களையும் படித்துவிட்டேன்"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/text_ok"
-                android:layout_height="@dimen/wh_100"
                 android:layout_width="@dimen/wh_100"
-                app:backgroundTint="@color/thick_yellow"
-                app:layout_anchorGravity="top|right"
-                android:layout_alignParentRight="true"
+                android:layout_height="@dimen/wh_100"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/lrtbp_10"
-                android:layout_marginBottom="@dimen/wh_20"/>
+                android:layout_marginBottom="@dimen/wh_20"
+                app:backgroundTint="@color/thick_yellow"
+                app:layout_anchorGravity="top|right" />
 
         </RelativeLayout>
+
+        <WebView
+            android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_lay"
+            android:layout_below="@+id/topLay"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:scrollbars="none"
+            android:textSize="@dimen/lrtbp_15" />
 
     </RelativeLayout>
 

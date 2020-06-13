@@ -5,32 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/empty_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/wh_20"
-        android:gravity="center"
-        android:text="+ button-ஐ கிளிக் செய்து உங்கள் கல்வித்தகுதியை தேர்வு செய்யவும்."
-        android:textColor="@color/lightblue"
-        android:textSize="15dp" />
-
-    <ImageView
-        android:id="@+id/point_arrow"
-        android:layout_width="@dimen/wh_40"
-        android:layout_height="@dimen/wh_40"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/wh_40"
-        android:layout_marginRight="@dimen/wh_50"
-        android:rotation="45"
-        android:src="@drawable/push_hand"
-        android:tint="@color/skincolor" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/lrtbp_10"
         android:orientation="vertical">
 
         <ImageView
@@ -39,16 +17,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginRight="@dimen/wh_20"
-            android:layout_marginTop="@dimen/lrtbp_10"
+            android:layout_marginTop="@dimen/lrtbp_5"
             android:src="@drawable/ic_info_black_24dp"
             android:tint="@color/quiz_que" />
 
         <LinearLayout
-            android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/lrtbp_15"
-            android:layout_marginTop="@dimen/lrtbp_10"
+            android:layout_marginTop="@dimen/lrtbp_15"
             android:orientation="horizontal">
 
             <TextView
@@ -63,10 +39,50 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/wh_35"
+                android:layout_weight="1"
                 android:gravity="center|left"
-                android:text="Qualification : "
+                android:text="Qualification :"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/txtQualification"
+                android:layout_width="@dimen/wh_35"
+                android:layout_height="@dimen/wh_35"
+                android:layout_gravity="right"
+                android:background="@color/bacg"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lrtbp_15"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wh_35"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:text="Certification Courses (If Any) :"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/txtCertificationCourses"
+                android:layout_width="@dimen/wh_35"
+                android:layout_height="@dimen/wh_35"
+                android:layout_gravity="right"
+                android:background="@color/bacg"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
 
         </LinearLayout>
 
@@ -79,7 +95,9 @@
                 android:id="@+id/fbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lin"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingTop="8dp"
                 app:alignContent="flex_start"
                 app:alignItems="flex_start"
                 app:flexDirection="row"
@@ -88,19 +106,37 @@
 
         </ScrollView>
 
-    </LinearLayout>
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="@dimen/wh_40"
-        android:layout_height="@dimen/wh_40"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/wh_50"
-        android:layout_marginRight="@dimen/lrtbp_25"
-        android:src="@drawable/plus"
-        android:tint="@color/white"
-        app:backgroundTint="@color/green"
-        app:elevation="0dp" />
+            <nithra.jobs.career.placement.utills.FlexboxLayout
+                android:id="@+id/fblCertifiedCourses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingTop="8dp"
+                app:alignContent="flex_start"
+                app:alignItems="flex_start"
+                app:flexDirection="row"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start" />
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/lrtbp_15"
+            android:gravity="center"
+            android:text="+ button-ஐ கிளிக் செய்து உங்கள் கல்வித்தகுதியை தேர்வு செய்யவும்."
+            android:textColor="@color/lightblue"
+            android:textSize="15dp" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>

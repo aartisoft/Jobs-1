@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="@dimen/wh_65"
+        android:layout_height="@dimen/wh_65"
+        android:src="@drawable/jobs_round_logo_black"
+        android:layout_marginTop="@dimen/lrtbp_5"
+        android:layout_marginLeft="@dimen/wh_20" />
 
     <RelativeLayout
         android:id="@+id/parent_lay"
@@ -13,7 +20,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="@dimen/lrtbp_25">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view"
@@ -51,16 +58,8 @@
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="@dimen/wh_65"
-        android:layout_height="@dimen/wh_65"
-        android:src="@drawable/nithra_round"
-        android:layout_marginTop="@dimen/lrtbp_5"
-        android:layout_marginLeft="@dimen/wh_20" />
 
 </RelativeLayout>

@@ -10,14 +10,11 @@ public class RefreshListener {
     private OnCustomStateListener mListener;
     private boolean mState;
 
-    public interface OnCustomStateListener {
-        void stateChanged();
+    private RefreshListener() {
     }
 
-    private RefreshListener() {}
-
     public static RefreshListener getInstance() {
-        if(mInstance == null) {
+        if (mInstance == null) {
             mInstance = new RefreshListener();
         }
         return mInstance;
@@ -28,7 +25,7 @@ public class RefreshListener {
     }
 
     public void changeState(boolean state) {
-        if(mListener != null) {
+        if (mListener != null) {
             mState = state;
             notifyStateChange();
         }
@@ -40,5 +37,9 @@ public class RefreshListener {
 
     private void notifyStateChange() {
         mListener.stateChanged();
+    }
+
+    public interface OnCustomStateListener {
+        void stateChanged();
     }
 }

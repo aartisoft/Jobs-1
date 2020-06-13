@@ -6,7 +6,118 @@
     android:layout_height="match_parent"
     tools:context="nithra.jobs.career.placement.activity.SearchActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <RelativeLayout
+            android:id="@+id/search_history_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/recent_search_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tsearch"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:orientation="vertical"/>
+
+            <TextView
+                android:id="@+id/tsearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:gravity="left"
+                android:text="Recent Search :"
+                android:textColor="@color/light_green_dark"
+                android:textSize="@dimen/txt_15"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/listlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_history_lay"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tpopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="@dimen/lrtbp_5"
+                android:gravity="left"
+                android:text="Related Search Tags :"
+                android:textColor="@color/light_green_dark"
+                android:textSize="@dimen/txt_15"
+                android:textStyle="bold"/>
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tpopular"
+                android:divider="@color/white"
+                android:scrollbars="none"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+       <!-- <TextView
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:textSize="@dimen/txt_15"
+            android:text="Loading Related Tags..."
+            android:visibility="visible"
+            android:textColor="@color/colorPrimary" />
+-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@id/swipeContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <include
+                android:id="@+id/lError"
+                layout="@layout/error_lay"
+                android:visibility="gone" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/progressBar"
+            style="@style/SpinKitView.Large.CubeGrid"
+            android:layout_width="@dimen/wh_50"
+            android:layout_height="@dimen/wh_50"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:SpinKit_Color="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/adview"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +126,7 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -78,77 +189,8 @@
                 android:maxLines="1"
                 android:singleLine="true" />
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
-    </android.support.design.widget.AppBarLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@id/swipeContainer"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <include
-                android:id="@+id/lError"
-                layout="@layout/error_lay"
-                android:visibility="gone" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/progressBar"
-            style="@style/SpinKitView.Large.CubeGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:SpinKit_Color="@color/colorPrimary" />
-
-        <RelativeLayout
-            android:id="@+id/listlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tpopular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="@dimen/lrtbp_5"
-                android:gravity="left"
-                android:text="Popular Search Tags :"
-                android:textColor="@color/light_green_dark"
-                android:textSize="@dimen/txt_15"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/tpopular"
-                android:divider="@color/white"
-                android:scrollbars="none"
-                android:visibility="visible" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/adview"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 </RelativeLayout>

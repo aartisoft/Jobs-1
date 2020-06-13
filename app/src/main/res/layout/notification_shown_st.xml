@@ -3,42 +3,36 @@
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:padding="2dp" >
-    <ImageView android:id="@+id/image"
+    android:background="#fff"
+    android:padding="2dp">
+
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="?android:attr/actionBarSize"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
         android:layout_marginRight="10dp"
-        android:src="@mipmap/ic_launcher"/>
-    <TextView android:id="@+id/time"
-        android:visibility="gone"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_toRightOf="@id/image"
-        android:text="testtesttes"
-        android:textSize="@dimen/txt_10"
-        android:textColor="@color/primary_text"
-        android:gravity="center|right"
-        />
-    <TextView android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
-        android:text="testtesttesttesttesttesttesttesghfhfhfhghfhgfhgfghfgfhfghfhgfhgfhfhhfhgfghfhgfhfhfhfhfhfhfhfhgfhgfgfhfhfhfhfhfhfhfhft"
-        android:layout_below="@+id/time"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/primary_text"
         android:gravity="center|left|top"
-        android:minLines="2"
         android:maxLines="2"
-        />
-    <TextView android:id="@+id/text"
+        android:minLines="2"
+        android:text="testtesttesttesttesttesttesttesghfhfhfhghfhgfhgfghfgfhfghfhgfhgfhfhhfhgfghfhgfhfhfhfhfhfhfhfhgfhgfgfhfhfhfhfhfhfhfhft"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
         android:layout_below="@id/title"
-        android:visibility="gone"
-         />
+        android:layout_toRightOf="@id/image"
+        android:visibility="gone" />
 </RelativeLayout>

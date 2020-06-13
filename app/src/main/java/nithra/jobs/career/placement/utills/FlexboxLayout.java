@@ -8,10 +8,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MarginLayoutParamsCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -26,6 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.core.view.MarginLayoutParamsCompat;
+import androidx.core.view.ViewCompat;
 import nithra.jobs.career.placement.R;
 
 /**
@@ -33,7 +33,7 @@ import nithra.jobs.career.placement.R;
  * CSS Flexible Box Layout Module.
  * This class extends the {@link ViewGroup} like other layout classes such as {@link LinearLayout}
  * or {@link RelativeLayout}, the attributes can be specified from a layout XML or from code.
- *
+ * <p>
  * The supported attributes that you can use are:
  * <ul>
  * <li>{@code flexDirection}</li>
@@ -49,7 +49,7 @@ import nithra.jobs.career.placement.R;
  * <li>{@code dividerDrawableVertical}</li>
  * </ul>
  * for the FlexboxLayout.
- *
+ * <p>
  * And for the children of the FlexboxLayout, you can use:
  * <ul>
  * <li>{@code layout_order}</li>
@@ -66,21 +66,45 @@ import nithra.jobs.career.placement.R;
  */
 public class FlexboxLayout extends ViewGroup {
 
-    @IntDef({FLEX_DIRECTION_ROW, FLEX_DIRECTION_ROW_REVERSE, FLEX_DIRECTION_COLUMN,
-            FLEX_DIRECTION_COLUMN_REVERSE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface FlexDirection {
-
-    }
-
     public static final int FLEX_DIRECTION_ROW = 0;
-
     public static final int FLEX_DIRECTION_ROW_REVERSE = 1;
-
     public static final int FLEX_DIRECTION_COLUMN = 2;
-
     public static final int FLEX_DIRECTION_COLUMN_REVERSE = 3;
-
+    public static final int FLEX_WRAP_NOWRAP = 0;
+    public static final int FLEX_WRAP_WRAP = 1;
+    public static final int FLEX_WRAP_WRAP_REVERSE = 2;
+    public static final int JUSTIFY_CONTENT_FLEX_START = 0;
+    public static final int JUSTIFY_CONTENT_FLEX_END = 1;
+    public static final int JUSTIFY_CONTENT_CENTER = 2;
+    public static final int JUSTIFY_CONTENT_SPACE_BETWEEN = 3;
+    public static final int JUSTIFY_CONTENT_SPACE_AROUND = 4;
+    public static final int ALIGN_ITEMS_FLEX_START = 0;
+    public static final int ALIGN_ITEMS_FLEX_END = 1;
+    public static final int ALIGN_ITEMS_CENTER = 2;
+    public static final int ALIGN_ITEMS_BASELINE = 3;
+    public static final int ALIGN_ITEMS_STRETCH = 4;
+    public static final int ALIGN_CONTENT_FLEX_START = 0;
+    public static final int ALIGN_CONTENT_FLEX_END = 1;
+    public static final int ALIGN_CONTENT_CENTER = 2;
+    public static final int ALIGN_CONTENT_SPACE_BETWEEN = 3;
+    public static final int ALIGN_CONTENT_SPACE_AROUND = 4;
+    public static final int ALIGN_CONTENT_STRETCH = 5;
+    /**
+     * Constant to how no dividers
+     */
+    public static final int SHOW_DIVIDER_NONE = 0;
+    /**
+     * Constant to show a divider at the beginning of the flex lines (or flex items).
+     */
+    public static final int SHOW_DIVIDER_BEGINNING = 1;
+    /**
+     * Constant to show dividers between flex lines or flex items.
+     */
+    public static final int SHOW_DIVIDER_MIDDLE = 1 << 1;
+    /**
+     * Constant to show a divider at the end of the flex lines or flex items.
+     */
+    public static final int SHOW_DIVIDER_END = 1 << 2;
     /**
      * The direction children items are placed inside the Flexbox layout, it determines the
      * direction of the main axis (and the cross axis, perpendicular to the main axis).
@@ -109,20 +133,6 @@ public class FlexboxLayout extends ViewGroup {
      * The default value is {@link #FLEX_DIRECTION_ROW}.
      */
     private int mFlexDirection;
-
-
-    @IntDef({FLEX_WRAP_NOWRAP, FLEX_WRAP_WRAP, FLEX_WRAP_WRAP_REVERSE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface FlexWrap {
-
-    }
-
-    public static final int FLEX_WRAP_NOWRAP = 0;
-
-    public static final int FLEX_WRAP_WRAP = 1;
-
-    public static final int FLEX_WRAP_WRAP_REVERSE = 2;
-
     /**
      * This attribute controls whether the flex container is single-line or multi-line, and the
      * direction of the cross axis.
@@ -135,152 +145,60 @@ public class FlexboxLayout extends ViewGroup {
      * The default value is {@link #FLEX_WRAP_NOWRAP}.
      */
     private int mFlexWrap;
-
-
-    @IntDef({JUSTIFY_CONTENT_FLEX_START, JUSTIFY_CONTENT_FLEX_END, JUSTIFY_CONTENT_CENTER,
-            JUSTIFY_CONTENT_SPACE_BETWEEN, JUSTIFY_CONTENT_SPACE_AROUND})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface JustifyContent {
-
-    }
-
-    public static final int JUSTIFY_CONTENT_FLEX_START = 0;
-
-    public static final int JUSTIFY_CONTENT_FLEX_END = 1;
-
-    public static final int JUSTIFY_CONTENT_CENTER = 2;
-
-    public static final int JUSTIFY_CONTENT_SPACE_BETWEEN = 3;
-
-    public static final int JUSTIFY_CONTENT_SPACE_AROUND = 4;
-
     /**
      * This attribute controls the alignment along the main axis.
      * The default value is {@link #JUSTIFY_CONTENT_FLEX_START}.
      */
     private int mJustifyContent;
-
-
-    @IntDef({ALIGN_ITEMS_FLEX_START, ALIGN_ITEMS_FLEX_END, ALIGN_ITEMS_CENTER,
-            ALIGN_ITEMS_BASELINE, ALIGN_ITEMS_STRETCH})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AlignItems {
-
-    }
-
-    public static final int ALIGN_ITEMS_FLEX_START = 0;
-
-    public static final int ALIGN_ITEMS_FLEX_END = 1;
-
-    public static final int ALIGN_ITEMS_CENTER = 2;
-
-    public static final int ALIGN_ITEMS_BASELINE = 3;
-
-    public static final int ALIGN_ITEMS_STRETCH = 4;
-
     /**
      * This attribute controls the alignment along the cross axis.
      * The default value is {@link #ALIGN_ITEMS_STRETCH}.
      */
     private int mAlignItems;
-
-
-    @IntDef({ALIGN_CONTENT_FLEX_START, ALIGN_CONTENT_FLEX_END, ALIGN_CONTENT_CENTER,
-            ALIGN_CONTENT_SPACE_BETWEEN, ALIGN_CONTENT_SPACE_AROUND, ALIGN_CONTENT_STRETCH})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AlignContent {
-
-    }
-
-    public static final int ALIGN_CONTENT_FLEX_START = 0;
-
-    public static final int ALIGN_CONTENT_FLEX_END = 1;
-
-    public static final int ALIGN_CONTENT_CENTER = 2;
-
-    public static final int ALIGN_CONTENT_SPACE_BETWEEN = 3;
-
-    public static final int ALIGN_CONTENT_SPACE_AROUND = 4;
-
-    public static final int ALIGN_CONTENT_STRETCH = 5;
-
     /**
      * This attribute controls the alignment of the flex lines in the flex container.
      * The default value is {@link #ALIGN_CONTENT_STRETCH}.
      */
     private int mAlignContent;
-
     /**
-     * The int definition to be used as the arguments for the {@link #setShowDivider(int)},
-     * {@link #setShowDividerHorizontal(int)} or {@link #setShowDividerVertical(int)}.
-     * One or more of the values (such as
-     * {@link #SHOW_DIVIDER_BEGINNING} | {@link #SHOW_DIVIDER_MIDDLE}) can be passed to those set
-     * methods.
+     * The drawable to be drawn for the horizontal dividers.
      */
-    @IntDef(flag = true,
-            value = {
-                    SHOW_DIVIDER_NONE,
-                    SHOW_DIVIDER_BEGINNING,
-                    SHOW_DIVIDER_MIDDLE,
-                    SHOW_DIVIDER_END
-            })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface DividerMode {
-
-    }
-
-    /** Constant to how no dividers */
-    public static final int SHOW_DIVIDER_NONE = 0;
-
-    /** Constant to show a divider at the beginning of the flex lines (or flex items). */
-    public static final int SHOW_DIVIDER_BEGINNING = 1;
-
-    /** Constant to show dividers between flex lines or flex items. */
-    public static final int SHOW_DIVIDER_MIDDLE = 1 << 1;
-
-    /** Constant to show a divider at the end of the flex lines or flex items. */
-    public static final int SHOW_DIVIDER_END = 1 << 2;
-
-    /** The drawable to be drawn for the horizontal dividers. */
     private Drawable mDividerDrawableHorizontal;
-
-    /** The drawable to be drawn for the vertical dividers. */
+    /**
+     * The drawable to be drawn for the vertical dividers.
+     */
     private Drawable mDividerDrawableVertical;
-
     /**
      * Indicates the divider mode for the {@link #mDividerDrawableHorizontal}. The value needs to
      * be the combination of the value of {@link #SHOW_DIVIDER_NONE},
      * {@link #SHOW_DIVIDER_BEGINNING}, {@link #SHOW_DIVIDER_MIDDLE} and {@link #SHOW_DIVIDER_END}
      */
     private int mShowDividerHorizontal;
-
     /**
      * Indicates the divider mode for the {@link #mDividerDrawableVertical}. The value needs to
      * be the combination of the value of {@link #SHOW_DIVIDER_NONE},
      * {@link #SHOW_DIVIDER_BEGINNING}, {@link #SHOW_DIVIDER_MIDDLE} and {@link #SHOW_DIVIDER_END}
      */
     private int mShowDividerVertical;
-
-    /** The height of the {@link #mDividerDrawableHorizontal}. */
+    /**
+     * The height of the {@link #mDividerDrawableHorizontal}.
+     */
     private int mDividerHorizontalHeight;
-
-    /** The width of the {@link #mDividerDrawableVertical}. */
+    /**
+     * The width of the {@link #mDividerDrawableVertical}.
+     */
     private int mDividerVerticalWidth;
-
     /**
      * Holds reordered indices, which {@link LayoutParams#order} parameters are taken into account
      */
     private int[] mReorderedIndices;
-
     /**
      * Caches the {@link LayoutParams#order} attributes for children views.
      * Key: the index of the view ({@link #mReorderedIndices} isn't taken into account)
      * Value: the value for the order attribute
      */
     private SparseIntArray mOrderCache;
-
     private List<FlexLine> mFlexLines = new ArrayList<>();
-
     /**
      * Holds the 'frozen' state of children during measure. If a view is frozen it will no longer
      * expand or shrink regardless of flexGrow/flexShrink. Items are indexed by the child's
@@ -2484,27 +2402,6 @@ public class FlexboxLayout extends ViewGroup {
     }
 
     /**
-     * @return the vertical divider drawable that will divide each item.
-     * @see #setDividerDrawable(Drawable)
-     * @see #setDividerDrawableVertical(Drawable)
-     */
-    public Drawable getDividerDrawableVertical() {
-        return mDividerDrawableVertical;
-    }
-
-    /**
-     * Set a drawable to be used as a divider between items. The drawable is used for both
-     * horizontal and vertical dividers.
-     *
-     * @param divider Drawable that will divide each item for both horizontally and vertically.
-     * @see #setShowDivider(int)
-     */
-    public void setDividerDrawable(Drawable divider) {
-        setDividerDrawableHorizontal(divider);
-        setDividerDrawableVertical(divider);
-    }
-
-    /**
      * Set a drawable to be used as a horizontal divider between items.
      *
      * @param divider Drawable that will divide each item.
@@ -2524,6 +2421,15 @@ public class FlexboxLayout extends ViewGroup {
         }
         setWillNotDrawFlag();
         requestLayout();
+    }
+
+    /**
+     * @return the vertical divider drawable that will divide each item.
+     * @see #setDividerDrawable(Drawable)
+     * @see #setDividerDrawableVertical(Drawable)
+     */
+    public Drawable getDividerDrawableVertical() {
+        return mDividerDrawableVertical;
     }
 
     /**
@@ -2548,29 +2454,21 @@ public class FlexboxLayout extends ViewGroup {
         requestLayout();
     }
 
+    /**
+     * Set a drawable to be used as a divider between items. The drawable is used for both
+     * horizontal and vertical dividers.
+     *
+     * @param divider Drawable that will divide each item for both horizontally and vertically.
+     * @see #setShowDivider(int)
+     */
+    public void setDividerDrawable(Drawable divider) {
+        setDividerDrawableHorizontal(divider);
+        setDividerDrawableVertical(divider);
+    }
+
     @FlexboxLayout.DividerMode
     public int getShowDividerVertical() {
         return mShowDividerVertical;
-    }
-
-    @FlexboxLayout.DividerMode
-    public int getShowDividerHorizontal() {
-        return mShowDividerHorizontal;
-    }
-
-    /**
-     * Set how dividers should be shown between items in this layout. This method sets the
-     * divider mode for both horizontally and vertically.
-     *
-     * @param dividerMode One or more of {@link #SHOW_DIVIDER_BEGINNING},
-     *                    {@link #SHOW_DIVIDER_MIDDLE}, or {@link #SHOW_DIVIDER_END},
-     *                    or {@link #SHOW_DIVIDER_NONE} to show no dividers.
-     * @see #setShowDividerVertical(int)
-     * @see #setShowDividerHorizontal(int)
-     */
-    public void setShowDivider(@DividerMode int dividerMode) {
-        setShowDividerVertical(dividerMode);
-        setShowDividerHorizontal(dividerMode);
     }
 
     /**
@@ -2588,6 +2486,11 @@ public class FlexboxLayout extends ViewGroup {
         }
     }
 
+    @FlexboxLayout.DividerMode
+    public int getShowDividerHorizontal() {
+        return mShowDividerHorizontal;
+    }
+
     /**
      * Set how horizontal dividers should be shown between items in this layout.
      *
@@ -2601,6 +2504,21 @@ public class FlexboxLayout extends ViewGroup {
             mShowDividerHorizontal = dividerMode;
             requestLayout();
         }
+    }
+
+    /**
+     * Set how dividers should be shown between items in this layout. This method sets the
+     * divider mode for both horizontally and vertically.
+     *
+     * @param dividerMode One or more of {@link #SHOW_DIVIDER_BEGINNING},
+     *                    {@link #SHOW_DIVIDER_MIDDLE}, or {@link #SHOW_DIVIDER_END},
+     *                    or {@link #SHOW_DIVIDER_NONE} to show no dividers.
+     * @see #setShowDividerVertical(int)
+     * @see #setShowDividerHorizontal(int)
+     */
+    public void setShowDivider(@DividerMode int dividerMode) {
+        setShowDividerVertical(dividerMode);
+        setShowDividerHorizontal(dividerMode);
     }
 
     private void setWillNotDrawFlag() {
@@ -2705,31 +2623,74 @@ public class FlexboxLayout extends ViewGroup {
 
     }
 
+    @IntDef({FLEX_DIRECTION_ROW, FLEX_DIRECTION_ROW_REVERSE, FLEX_DIRECTION_COLUMN,
+            FLEX_DIRECTION_COLUMN_REVERSE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface FlexDirection {
+
+    }
+
+    @IntDef({FLEX_WRAP_NOWRAP, FLEX_WRAP_WRAP, FLEX_WRAP_WRAP_REVERSE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface FlexWrap {
+
+    }
+
+    @IntDef({JUSTIFY_CONTENT_FLEX_START, JUSTIFY_CONTENT_FLEX_END, JUSTIFY_CONTENT_CENTER,
+            JUSTIFY_CONTENT_SPACE_BETWEEN, JUSTIFY_CONTENT_SPACE_AROUND})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface JustifyContent {
+
+    }
+
+    @IntDef({ALIGN_ITEMS_FLEX_START, ALIGN_ITEMS_FLEX_END, ALIGN_ITEMS_CENTER,
+            ALIGN_ITEMS_BASELINE, ALIGN_ITEMS_STRETCH})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AlignItems {
+
+    }
+
+    @IntDef({ALIGN_CONTENT_FLEX_START, ALIGN_CONTENT_FLEX_END, ALIGN_CONTENT_CENTER,
+            ALIGN_CONTENT_SPACE_BETWEEN, ALIGN_CONTENT_SPACE_AROUND, ALIGN_CONTENT_STRETCH})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AlignContent {
+
+    }
+
+    /**
+     * The int definition to be used as the arguments for the {@link #setShowDivider(int)},
+     * {@link #setShowDividerHorizontal(int)} or {@link #setShowDividerVertical(int)}.
+     * One or more of the values (such as
+     * {@link #SHOW_DIVIDER_BEGINNING} | {@link #SHOW_DIVIDER_MIDDLE}) can be passed to those set
+     * methods.
+     */
+    @IntDef(flag = true,
+            value = {
+                    SHOW_DIVIDER_NONE,
+                    SHOW_DIVIDER_BEGINNING,
+                    SHOW_DIVIDER_MIDDLE,
+                    SHOW_DIVIDER_END
+            })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface DividerMode {
+
+    }
+
     /**
      * Per child parameters for children views of the {@link FlexboxLayout}.
      */
     public static class LayoutParams extends MarginLayoutParams {
 
-        private static final int ORDER_DEFAULT = 1;
-
-        private static final float FLEX_GROW_DEFAULT = 0f;
-
-        private static final float FLEX_SHRINK_DEFAULT = 1f;
-
         public static final float FLEX_BASIS_PERCENT_DEFAULT = -1f;
-
         public static final int ALIGN_SELF_AUTO = -1;
-
         public static final int ALIGN_SELF_FLEX_START = ALIGN_ITEMS_FLEX_START;
-
         public static final int ALIGN_SELF_FLEX_END = ALIGN_ITEMS_FLEX_END;
-
         public static final int ALIGN_SELF_CENTER = ALIGN_ITEMS_CENTER;
-
         public static final int ALIGN_SELF_BASELINE = ALIGN_ITEMS_BASELINE;
-
         public static final int ALIGN_SELF_STRETCH = ALIGN_ITEMS_STRETCH;
-
+        private static final int ORDER_DEFAULT = 1;
+        private static final float FLEX_GROW_DEFAULT = 0f;
+        private static final float FLEX_SHRINK_DEFAULT = 1f;
         private static final int MAX_SIZE = Integer.MAX_VALUE & ViewCompat.MEASURED_SIZE_MASK;
 
         /**
@@ -2865,10 +2826,14 @@ public class FlexboxLayout extends ViewGroup {
      */
     private static class Order implements Comparable<Order> {
 
-        /** {@link View}'s index */
+        /**
+         * {@link View}'s index
+         */
         int index;
 
-        /** order property in the Flexbox */
+        /**
+         * order property in the Flexbox
+         */
         int order;
 
         @Override

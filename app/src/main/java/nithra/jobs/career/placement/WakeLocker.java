@@ -15,7 +15,9 @@ public abstract class WakeLocker {
                 PowerManager.ON_AFTER_RELEASE, "WakeLock");
         wakeLock.acquire();
     }
+
     public static void release() {
-        if (wakeLock != null) wakeLock.release(); wakeLock = null;
+        if (wakeLock != null) wakeLock.release();
+        wakeLock = null;
     }
 }

@@ -1,10 +1,13 @@
-#Thu Jun 28 15:20:42 IST 2018
-path.2=classes.dex
-path.1=classes.dex
+#Sat Jun 13 19:27:40 IST 2020
+path.3=classes4.dex
+path.2=classes3.dex
+path.1=classes2.dex
 path.0=classes.dex
+renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.2=/home/vanmathi/Desktop/Jobs_03_03_18_ver19_backup/Jobs/app/build/intermediates/transforms/dexMerger/debug/26
-base.1=/home/vanmathi/Desktop/Jobs_03_03_18_ver19_backup/Jobs/app/build/intermediates/transforms/dexMerger/debug/27
-base.0=/home/vanmathi/Desktop/Jobs_03_03_18_ver19_backup/Jobs/app/build/intermediates/transforms/dexMerger/debug/28
+base.3=/media/nithra/DRIVE-D/Jobs_28_04_2020/Jobs/app/build/intermediates/dex/debug/mergeDexDebug/classes4.dex
+base.2=/media/nithra/DRIVE-D/Jobs_28_04_2020/Jobs/app/build/intermediates/dex/debug/mergeDexDebug/classes3.dex
+base.1=/media/nithra/DRIVE-D/Jobs_28_04_2020/Jobs/app/build/intermediates/dex/debug/mergeDexDebug/classes2.dex
+base.0=/media/nithra/DRIVE-D/Jobs_28_04_2020/Jobs/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex

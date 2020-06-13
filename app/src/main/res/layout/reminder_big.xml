@@ -38,7 +38,7 @@
                 android:layout_marginRight="@dimen/lrtbp_10"
                 android:layout_marginTop="@dimen/lrtbp_10"
                 android:scaleType="fitXY"
-                android:src="@drawable/nithra_round" />
+                android:src="@drawable/jobs_round_logo_black" />
 
         </LinearLayout>
 

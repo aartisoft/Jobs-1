@@ -5,38 +5,48 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <!--<android.support.v7.widget.CardView-->
-        <!--android:id="@+id/card"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lrtbp_5"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardCornerRadius="@dimen/lrtbp_5"
+        card_view:cardUseCompatPadding="false">
 
         <LinearLayout
             android:id="@+id/reminderlay"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginLeft="@dimen/lrtbp_10"
-                android:layout_gravity="center"
                 android:id="@+id/imgLogo"
                 android:layout_width="@dimen/wh_70"
-                android:layout_height="@dimen/wh_70" />
+                android:layout_height="@dimen/wh_70"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/lrtbp_10" />
 
             <LinearLayout
-                android:layout_weight="1"
-                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="end"
-                    android:gravity="end">
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txtActionDate"
@@ -60,53 +70,51 @@
                     android:text="Title"
                     android:textColor="@color/primary_text" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnReminderEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:padding="@dimen/lrtbp_10"
+                        android:src="@drawable/ic_mode_edit_black_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnReminderDelete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:padding="@dimen/lrtbp_10"
+                        android:src="@drawable/ic_delete_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/txtDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingTop="10dp"
+                        android:text="Last Date"
+                        android:textColor="@color/secondary_text" />
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/txtDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:text="Description"
-                    android:visibility="gone"
-                    android:textColor="@color/secondary_text" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_weight="1"
-                        android:id="@+id/txtDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:text="Last Date"
-                        android:textColor="@color/secondary_text"  />
-                    <ImageButton
-                        android:id="@+id/btnReminderEdit"
-                        android:padding="@dimen/lrtbp_10"
-                        android:background="@null"
-                        android:src="@drawable/ic_mode_edit_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                    <ImageButton
-                        android:id="@+id/btnReminderDelete"
-                        android:padding="@dimen/lrtbp_10"
-                        android:background="@null"
-                        android:src="@drawable/ic_delete_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-
-                </LinearLayout>
+                    android:textColor="@color/secondary_text"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-    <!--</android.support.v7.widget.CardView>-->
-
-    <FrameLayout
-        android:id="@+id/frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -6,7 +6,31 @@
     android:background="@color/trans_black"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/search_text"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_trans_black"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:padding="@dimen/lrtbp_10"
+        android:text="உங்கள் விபரங்களை புதுப்பித்து கொள்ள இங்கே கிளிக் செய்யவும்."
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,7 +90,6 @@
                 android:textColor="@color/white" />
 
             <RelativeLayout
-                android:id="@+id/menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -92,7 +115,7 @@
                     android:layout_alignEnd="@+id/action_notifications"
                     android:layout_alignRight="@+id/action_notifications"
                     android:layout_alignTop="@+id/action_notifications"
-                    android:background="@drawable/rounded_sqr"
+                    android:background="@drawable/bg_black_line"
                     android:gravity="center"
                     android:minWidth="15sp"
                     android:paddingBottom="1dp"
@@ -105,30 +128,6 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/search_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:padding="@dimen/lrtbp_10"
-        android:text="உங்கள் விபரங்களை புதுப்பித்து கொள்ள இங்கே கிளிக் செய்யவும்."
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/ok_btn"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/search_text"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/rectangle_guide"
-        android:gravity="center"
-        android:text="@string/ok"
-        android:textColor="@color/white" />
+    </androidx.appcompat.widget.Toolbar>
 
 </RelativeLayout>

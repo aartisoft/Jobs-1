@@ -13,7 +13,6 @@ import nithra.jobs.career.placement.utills.SU;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
 
-
 public final class ServerUtilities {
     private static JSONArray jArray;
     private static String result = null;

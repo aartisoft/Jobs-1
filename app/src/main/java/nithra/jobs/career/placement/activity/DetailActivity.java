@@ -8,12 +8,10 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,14 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
 import nithra.jobs.career.placement.adapters.MyAdapter;
@@ -44,51 +40,38 @@ import nithra.jobs.career.placement.utills.U;
 
 public class DetailActivity extends AppCompatActivity {
 
-    SharedPreference sharedPreference;
-    WebView content_view;
-    // ImageView backdrop;Bitmap bitmap;
-    InterstitialAd interstitialAd_noti;
-    LinearLayout addview;
-    AppCompatImageView btn_close;
-    String str_title, message, url;
-    NestedScrollView scrool;
-    int share_val = 0;
-    ImageView share;
-    java.util.List<ResolveInfo> listApp;
-    PackageManager pManager;
+    private SharedPreference sharedPreference;
+    private String str_title, message;
+    private java.util.List<ResolveInfo> listApp;
+    private PackageManager pManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.st_lay);
 
         pManager = getPackageManager();
         sharedPreference = new SharedPreference();
+        WebView content_view = findViewById(R.id.web);
 
-        interstitialAd_noti = new InterstitialAd(this);
-        interstitialAd_noti.setAdUnitId(U.INDUS_AD_NOTI);
-        AdRequest notadRequest1 = new AdRequest.Builder().build();
-        interstitialAd_noti.loadAd(notadRequest1);
-
-        content_view = findViewById(R.id.web);
-
-        scrool = findViewById(R.id.scrool);
-        addview = findViewById(R.id.ads_lay);
-        share = findViewById(R.id.share);
-        if(U.isNetworkAvailable(DetailActivity.this)) {
-            MainActivity.showAd(this, addview, true);
+        LinearLayout addview = findViewById(R.id.ads_lay);
+        ImageView share = findViewById(R.id.share);
+        FloatingActionButton save = findViewById(R.id.fab);
+        save.hide();
+        addview.setVisibility(View.GONE);
+        if (sharedPreference.getInt(this, U.SH_AD_PURCHASED) == 0) {
+            if (U.isNetworkAvailable(this)) {
+                MainActivity.showAd(this, addview, true);
+            }
         }
 
         Bundle extras;
         extras = getIntent().getExtras();
         if (extras != null) {
-
             str_title = extras.getString("title");
             message = extras.getString("message");
-            url = extras.getString("url");
-
         }
-
 
         content_view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -96,7 +79,6 @@ public class DetailActivity extends AppCompatActivity {
                 return true;
             }
         });
-
 
         TextView tit_txt = findViewById(R.id.sticky);
         tit_txt.setText(str_title);
@@ -127,13 +109,12 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 //view.loadUrl(url);
-
-                Intent i = new Intent();
-                i.setAction(Intent.ACTION_VIEW);
-                i.addCategory(Intent.CATEGORY_BROWSABLE);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-
+                if (url.substring(0, 4).equals("http")) {
+                    U.custom_tabs(DetailActivity.this, url);
+                } else {
+                    String web = "http://" + url;
+                    U.custom_tabs(DetailActivity.this, web);
+                }
                 return true;
             }
 
@@ -160,21 +141,12 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-
-        btn_close = findViewById(R.id.btn_close);
+        AppCompatImageView btn_close = findViewById(R.id.btn_close);
 
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (interstitialAd_noti.isLoaded()) {
-                    interstitialAd_noti.show();
-                    interstitialAd_noti.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdClosed() {
-                            finish();
-                        }
-                    });
-                } else finish();
+                close();
             }
         });
 
@@ -200,7 +172,7 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String[] shareString = U.substringsBetween(message, "<tt>", "</tt>");
-                            if(shareString!=null) {
+                            if (shareString != null) {
                                 Log.e("strrr", "" + shareString.length);
                                 for (int i = 0; i < shareString.length; i++) {
                                     message = message.replace(shareString[i], "((?))" + i + "((?))");
@@ -211,18 +183,18 @@ public class DetailActivity extends AppCompatActivity {
                                     message = message.replace("((?))" + i + "((?))", shareString[i]);
                                     Log.e("strrrr2", message);
                                 }
-                                String[] symboles = {"&#36;","&#8242;","&#39;"};
-                                String[] symboles1 = {"$","′","′"};
-                                for (int i = 0; i<symboles.length; i++){
-                                    message = message.replace(symboles[i],symboles1[i]);
+                                String[] symboles = {"&#36;", "&#8242;", "&#39;"};
+                                String[] symboles1 = {"$", "′", "′"};
+                                for (int i = 0; i < symboles.length; i++) {
+                                    message = message.replace(symboles[i], symboles1[i]);
                                 }
                                 share(listApp.get(position), message);
                             } else {
                                 message = CodetoTamilUtil.convertToTamil(CodetoTamilUtil.BAMINI, Html.fromHtml(message).toString());
-                                String[] symboles = {"&#36;","&#8242;","&#39;"};
-                                String[] symboles1 = {"$","′","′"};
-                                for (int i = 0; i<symboles.length; i++){
-                                    message = message.replace(symboles[i],symboles1[i]);
+                                String[] symboles = {"&#36;", "&#8242;", "&#39;"};
+                                String[] symboles1 = {"$", "′", "′"};
+                                for (int i = 0; i < symboles.length; i++) {
+                                    message = message.replace(symboles[i], symboles1[i]);
                                 }
                                 share(listApp.get(position), message);
                             }
@@ -238,51 +210,19 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        if (interstitialAd_noti.isLoaded()) {
-            interstitialAd_noti.show();
-            interstitialAd_noti.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    finish();
-                }
-            });
-        } else {
-            finish();
-        }
-
+        close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        adds(addview);
-
     }
 
-    public void adds(final LinearLayout layout) {
-        AdView adView = new AdView(DetailActivity.this);
-        adView.setAdUnitId(U.BANNER_AD);
-        adView.setAdSize(AdSize.SMART_BANNER);
-        try {
-            layout.removeAllViews();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        layout.addView(adView);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                layout.setVisibility(View.VISIBLE);
-            }
-        });
-        AdRequest request = new AdRequest.Builder().build();
-        adView.loadAd(request);
+    public void close() {
+        finish();
     }
-    
+
     private java.util.List<ResolveInfo> showAllShareApp() {
-
         java.util.List<ResolveInfo> mApps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_SEND, null);
         intent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
@@ -300,11 +240,11 @@ public class DetailActivity extends AppCompatActivity {
             sendIntent.setType("text/*");
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, str_title);
             Uri uriUrl = Uri.parse("whatsapp://send?text=" + "நித்ரா வேலைவாய்ப்பு செயலி வழியாக பகிரப்பட்டது. செயலியை தரவிறக்கம் செய்ய:" + U.UTM_SOURCE + "\n\n" +
-                    sharefinal + " \nகீழுள்ள லிங்கை கிளிக் செய்து இந்த இலவச ஆன்டிராய்டு அப்ளிகேசனை டவுன்லோடு செய்து கொள்ளுங்கள்! "
+                    sharefinal + " \nகீழுள்ள லிங்கை கிளிக் செய்து இந்த இலவச ஆண்ட்ராய்டு அப்ளிகேசனை டவுன்லோடு செய்து கொள்ளுங்கள்! "
                     + U.UTM_SOURCE);
             sendIntent.setAction(Intent.ACTION_VIEW);
             sendIntent.setData(uriUrl);
-            sendIntent.setComponent(new ComponentName(appInfo.activityInfo.packageName, appInfo.activityInfo.name));
+            sendIntent.setPackage("com.whatsapp");
             startActivity(sendIntent);
 
         } else {
@@ -314,12 +254,11 @@ public class DetailActivity extends AppCompatActivity {
             sendIntent.putExtra(
                     Intent.EXTRA_TEXT,
                     "நித்ரா வேலைவாய்ப்பு செயலி வழியாக பகிரப்பட்டது. செயலியை தரவிறக்கம் செய்ய: " + U.UTM_SOURCE + "\n\n" +
-                            sharefinal + " \nகீழுள்ள லிங்கை கிளிக் செய்து இந்த இலவச ஆன்டிராய்டு அப்ளிகேசனை டவுன்லோடு செய்து கொள்ளுங்கள்! "
+                            sharefinal + " \nகீழுள்ள லிங்கை கிளிக் செய்து இந்த இலவச ஆண்ட்ராய்டு அப்ளிகேசனை டவுன்லோடு செய்து கொள்ளுங்கள்! "
                             + U.UTM_SOURCE);
             sendIntent.setComponent(new ComponentName(appInfo.activityInfo.packageName, appInfo.activityInfo.name));
             sendIntent.setType("text/*");
             startActivity(sendIntent);
         }
     }
-
 }

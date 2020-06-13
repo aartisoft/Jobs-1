@@ -2,15 +2,16 @@ package nithra.jobs.career.placement.bottomsheets;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
 import nithra.jobs.career.placement.R;
 
 
@@ -18,7 +19,7 @@ import nithra.jobs.career.placement.R;
  * Created by ARUNRK THOMAS on 4/27/2017.
  */
 
-public class ShareBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener{
+public class ShareBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
 
     View view;
     CardView cardWhatsApp, cardGmail, cardShare;
@@ -26,31 +27,6 @@ public class ShareBottomSheet extends BottomSheetDialogFragment implements View.
     AppCompatActivity activity;
     OnShareClick onShareClick;
     String message;
-
-
-
-    public interface OnShareClick{
-        void onShareItemClick(int item, String message);
-    }
-
-    @SuppressLint("ValidFragment")
-    public ShareBottomSheet(AppCompatActivity activity, String message) {
-        this.activity= activity;
-        this.message = message;
-        onShareClick = (OnShareClick) fragment;
-    }
-
-    @SuppressLint("ValidFragment")
-    public ShareBottomSheet(Fragment fragment, String message) {
-        this.fragment = fragment;
-        this.message = message;
-        onShareClick = (OnShareClick) fragment;
-    }
-
-    @SuppressLint("ValidFragment")
-    public ShareBottomSheet() {
-    }
-
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -67,6 +43,23 @@ public class ShareBottomSheet extends BottomSheetDialogFragment implements View.
         }
     };
 
+    @SuppressLint("ValidFragment")
+    public ShareBottomSheet(AppCompatActivity activity, String message) {
+        this.activity = activity;
+        this.message = message;
+        onShareClick = (OnShareClick) fragment;
+    }
+
+    @SuppressLint("ValidFragment")
+    public ShareBottomSheet(Fragment fragment, String message) {
+        this.fragment = fragment;
+        this.message = message;
+        onShareClick = (OnShareClick) fragment;
+    }
+
+    @SuppressLint("ValidFragment")
+    public ShareBottomSheet() {
+    }
 
     @Override
     public void setupDialog(final Dialog dialog, int style) {
@@ -86,7 +79,7 @@ public class ShareBottomSheet extends BottomSheetDialogFragment implements View.
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
 
-        if( behavior != null && behavior instanceof BottomSheetBehavior ) {
+        if (behavior != null && behavior instanceof BottomSheetBehavior) {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
@@ -98,6 +91,10 @@ public class ShareBottomSheet extends BottomSheetDialogFragment implements View.
         if (v == cardWhatsApp) onShareClick.onShareItemClick(1, message);
         else if (v == cardGmail) onShareClick.onShareItemClick(2, message);
         else if (v == cardShare) onShareClick.onShareItemClick(3, message);
+    }
+
+    public interface OnShareClick {
+        void onShareItemClick(int item, String message);
     }
 
 }

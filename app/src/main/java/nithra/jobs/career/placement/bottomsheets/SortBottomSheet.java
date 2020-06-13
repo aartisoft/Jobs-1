@@ -3,16 +3,17 @@ package nithra.jobs.career.placement.bottomsheets;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
 import nithra.jobs.career.placement.R;
 
 
@@ -20,37 +21,15 @@ import nithra.jobs.career.placement.R;
  * Created by ARUNRK THOMAS on 4/27/2017.
  */
 
-public class SortBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener{
+public class SortBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
 
     View view;
-    CardView cardDateAsc, cardDateDesc,cardToday,cardTwoDay,cardOneWeek,cardVacancyAsc,cardVacancyDesc;
+    CardView cardDateAsc, cardDateDesc, cardToday, cardTwoDay, cardOneWeek, cardVacancyAsc, cardVacancyDesc;
     Fragment fragment;
     AppCompatActivity activity;
     OnSortClick onSortClick;
     int message, mark = 0;
-    TextView txtDescending, txtAscending,txtToday,txtTwoDay,txtOneWeek,txtVacancyAsc,txtVacancyDesc;
-
-    public interface OnSortClick {
-        void onSortItemClick(int item, int message);
-    }
-
-    @SuppressLint("ValidFragment")
-    public SortBottomSheet(AppCompatActivity activity) {
-        this.activity= activity;
-        onSortClick = (OnSortClick) fragment;
-    }
-
-    @SuppressLint("ValidFragment")
-    public SortBottomSheet(Fragment fragment, int mark) {
-        this.fragment = fragment;
-        this.mark = mark;
-        onSortClick = (OnSortClick) fragment;
-    }
-
-    @SuppressLint("ValidFragment")
-    public SortBottomSheet() {
-    }
-
+    TextView txtDescending, txtAscending, txtToday, txtTwoDay, txtOneWeek, txtVacancyAsc, txtVacancyDesc;
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
@@ -66,6 +45,23 @@ public class SortBottomSheet extends BottomSheetDialogFragment implements View.O
 
         }
     };
+
+    @SuppressLint("ValidFragment")
+    public SortBottomSheet(AppCompatActivity activity) {
+        this.activity = activity;
+        onSortClick = (OnSortClick) fragment;
+    }
+
+    @SuppressLint("ValidFragment")
+    public SortBottomSheet(Fragment fragment, int mark) {
+        this.fragment = fragment;
+        this.mark = mark;
+        onSortClick = (OnSortClick) fragment;
+    }
+
+    @SuppressLint("ValidFragment")
+    public SortBottomSheet() {
+    }
 
     @Override
     public void setupDialog(final Dialog dialog, int style) {
@@ -101,20 +97,27 @@ public class SortBottomSheet extends BottomSheetDialogFragment implements View.O
         cardVacancyDesc = view.findViewById(R.id.cardvacancydesc);
         cardVacancyDesc.setOnClickListener(this);
 
-        if (mark == 2) txtDescending.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 1) txtAscending.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 4) txtToday.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 5) txtTwoDay.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 6) txtOneWeek.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 7) txtVacancyAsc.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
-        else if (mark == 8) txtVacancyDesc.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        if (mark == 2)
+            txtDescending.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 1)
+            txtAscending.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 4)
+            txtToday.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 5)
+            txtTwoDay.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 6)
+            txtOneWeek.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 7)
+            txtVacancyAsc.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
+        else if (mark == 8)
+            txtVacancyDesc.setTextColor(fragment.getResources().getColor(R.color.colorPrimary));
 
 
         dialog.setContentView(view);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) view.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
 
-        if( behavior != null && behavior instanceof BottomSheetBehavior ) {
+        if (behavior != null && behavior instanceof BottomSheetBehavior) {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
@@ -130,6 +133,10 @@ public class SortBottomSheet extends BottomSheetDialogFragment implements View.O
         else if (v == cardOneWeek) onSortClick.onSortItemClick(6, 6);
         else if (v == cardVacancyAsc) onSortClick.onSortItemClick(7, 7);
         else if (v == cardVacancyDesc) onSortClick.onSortItemClick(8, 8);
+    }
+
+    public interface OnSortClick {
+        void onSortItemClick(int item, int message);
     }
 
 }

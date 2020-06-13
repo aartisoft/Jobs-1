@@ -1,52 +1,31 @@
 package nithra.jobs.career.placement.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import nithra.jobs.career.placement.MainActivity;
 import nithra.jobs.career.placement.R;
+import nithra.jobs.career.placement.engine.LocalDB;
 import nithra.jobs.career.placement.fragments.JobListFragment;
-import nithra.jobs.career.placement.networking.MySingleton;
-import nithra.jobs.career.placement.pojo.Item;
+import nithra.jobs.career.placement.fragments.PlaceholderFragment;
 import nithra.jobs.career.placement.utills.SU;
 import nithra.jobs.career.placement.utills.SharedPreference;
 import nithra.jobs.career.placement.utills.U;
@@ -58,44 +37,72 @@ import nithra.jobs.career.placement.utills.U;
 public class MultipleNotificationActivity extends FragmentActivity {
 
     ViewPager viewPager;
-    String type, jobids, title, notifyId;
+    String type = "", message = "", title = "", notifyId = "";
     InterstitialAd interstitialAd;
     TextView textview;
     Fragment fragment;
     SharedPreference pref;
     SQLiteDatabase myDB;
     Dialog infodialog;
-    private List<Item> districtList;
+    LocalDB localDB;
+    String mode = "";
+    LinearLayout adview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarTranslucent(false);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.multiple_notification_lay);
-        loadInDusAd();
         pref = new SharedPreference();
+        localDB = new LocalDB(this);
+
         myDB = openOrCreateDatabase("myDB", 0, null);
 
-        Bundle extras;
-        extras = getIntent().getExtras();
-        if (extras != null) {
-            type = extras.getString("type");
-            jobids = extras.getString("jobids");
-            title = extras.getString("title");
-            notifyId = extras.getString("Notifyid");
+        try {
+            type = getIntent().getStringExtra("type");
+            message = getIntent().getStringExtra("message");
+            title = getIntent().getStringExtra("title");
+            notifyId = getIntent().getStringExtra("Notifyid");
+            mode = getIntent().getStringExtra("mode");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        viewPager = findViewById(R.id.viewpager);
+        adview = findViewById(R.id.adview);
+        adview.setVisibility(View.GONE);
+        textview = findViewById(R.id.txtTitle);
+        textview.setText(title);
 
         if (type != null) {
             switch (type) {
+                case "rj":
+                    if (message != null && !message.isEmpty()) {
+                        fragment = PlaceholderFragment.newInstance(0, U.GCM, message, U.GCM);
+                        if (pref.getInt(MultipleNotificationActivity.this, U.SH_AD_PURCHASED) == 0) {
+                            MainActivity.showAd(this, adview, true);
+                        }
+                    }
+                    break;
                 case "s":
-                    String query = "update noti_cal set isclose='1' where id='" + notifyId + "'";
-                    myDB.execSQL(query);
-                    fragment = JobListFragment.newInstance(U.NOTIJOBS, jobids, "");
+                    if (message != null && !message.isEmpty()) {
+                        String query = "update noti_cal set isclose='1' where id='" + notifyId + "'";
+                        myDB.execSQL(query);
+                        if (message.contains(",")) {
+                            fragment = JobListFragment.newInstance(U.NOTIJOBS, message.trim(), "");
+                        } else {
+                            if (message.matches("[0-9]+")) {
+                                fragment = PlaceholderFragment.newInstance(0, U.GCM, message, U.GCM);
+                                if (pref.getInt(MultipleNotificationActivity.this, U.SH_AD_PURCHASED) == 0) {
+                                    MainActivity.showAd(this, adview, true);
+                                }
+                            }
+                        }
+                    }
                     break;
                 case "cj":
-                    if (jobids != null) {
-                        switch (jobids) {
+                    if (message != null) {
+                        switch (message) {
                             case "homePrivate":
                                 fragment = setModeFragment(U.SH_FIRST_TIME_PRIVATE, "1");
                                 break;
@@ -104,6 +111,9 @@ public class MultipleNotificationActivity extends FragmentActivity {
                                 break;
                             case "homeCentral":
                                 fragment = setModeFragment(U.SH_FIRST_TIME_CENTRAL, "3");
+                                break;
+                            case "homeFreshers":
+                                fragment = setFreshersFragment();
                                 break;
                             case "homeConsultancy":
                                 fragment = setModeFragment(U.SH_FIRST_TIME_CONSULTANCY, "4");
@@ -114,89 +124,108 @@ public class MultipleNotificationActivity extends FragmentActivity {
                             case "homeAlljobs":
                                 fragment = JobListFragment.newInstance(U.ALLJOBS, "", "3");
                                 break;
+                            case "homePopularEmp":
+                                fragment = JobListFragment.newInstance(SU.POPULAR_EMP, "", "");
+                                break;
                         }
+                    } else {
+                        finish();
                     }
                     break;
                 case "fj":
-                    if (jobids != null) {
-                        fragment = JobListFragment.newInstance(U.ALLJOBS, U.NOTIFICATION, jobids);
+                    if (message != null) {
+                        fragment = JobListFragment.newInstance(U.ALLJOBS, U.NOTIFICATION, message.trim());
+                    } else {
+                        finish();
                     }
                     break;
                 case "dj":
-                    if (jobids != null) {
+                    if (message != null) {
                         String query1 = "update noti_cal set isclose='1' where id='" + notifyId + "'";
                         myDB.execSQL(query1);
-                        fragment = JobListFragment.newInstance(SU.DISTRICTWISE_NOTIFICATION, "", "" + jobids,
+                        fragment = JobListFragment.newInstance(SU.DISTRICTWISE_NOTIFICATION, "", "" + message.trim(),
                                 "", "", "", "", "", "", "1");
+                    } else {
+                        finish();
+                    }
+                    break;
+                case SU.GETPERSONALISEDJOBS:
+                    Log.e("personalisedJobs", "called");
+                    fragment = JobListFragment.newInstance(SU.GETPERSONALISEDJOBS, "", "");
+                    break;
+                case "pn":
+                    if (message != null) {
+                        if (message.equals(U.catArray[0])) {
+                            fragment = setModeRFragment(U.RJOB, pref.getString(MultipleNotificationActivity.this, U.SH_SKILLS), pref.getString(MultipleNotificationActivity.this, U.SH_JOBLOCATION),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_COURSE), pref.getString(MultipleNotificationActivity.this, U.SH_EMPLOYEE_ID),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_GENDER),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_MARITAL_STATUS), "எங்களால் பரிந்துரைக்கப்படுபவை", "");
+                        } else if (message.equals(U.catArray[1])) {
+                            fragment = setModeRFragment(U.RJOB, pref.getString(MultipleNotificationActivity.this, U.SH_SKILLS), "",
+                                    "", pref.getString(MultipleNotificationActivity.this, U.SH_EMPLOYEE_ID), pref.getString(MultipleNotificationActivity.this, U.SH_GENDER),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_MARITAL_STATUS), "உங்கள் திறமைக்கானவை", "");
+                        } else if (message.equals(U.catArray[2])) {
+                            fragment = setModeRFragment(U.RJOB, "", "", pref.getString(MultipleNotificationActivity.this, U.SH_COURSE), pref.getString(MultipleNotificationActivity.this, U.SH_EMPLOYEE_ID),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_GENDER),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_MARITAL_STATUS), "உங்கள் படிப்பிற்கானவை", "");
+                        } else if (message.equals(U.catArray[3])) {
+                            fragment = setModeRFragment(U.RJOB, "", pref.getString(MultipleNotificationActivity.this, U.SH_JOBLOCATION),
+                                    "", pref.getString(MultipleNotificationActivity.this, U.SH_EMPLOYEE_ID), pref.getString(MultipleNotificationActivity.this, U.SH_GENDER),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_MARITAL_STATUS), "நீங்கள் தேர்ந்தெடுத்த இடங்களில் உள்ளவை", "");
+                        } else if (message.equals(U.catArray[4])) {
+                            fragment = setModeRFragment(U.RJOB, pref.getString(MultipleNotificationActivity.this, U.SH_SKILLS), pref.getString(MultipleNotificationActivity.this, U.SH_JOBLOCATION),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_COURSE), pref.getString(MultipleNotificationActivity.this, U.SH_EMPLOYEE_ID),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_GENDER),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_MARITAL_STATUS), "எங்களால் பரிந்துரைக்கப்படுபவை", U.catArray[4]);
+                        } else if (message.equals(U.catArray[5])) {
+                            fragment = setFragment(pref.getString(MultipleNotificationActivity.this, U.SH_SKILLS), pref.getString(MultipleNotificationActivity.this, U.SH_JOBLOCATION),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_COURSE), 2);
+                        } else if (message.equals(U.catArray[6])) {
+                            fragment = setFragment(pref.getString(MultipleNotificationActivity.this, U.SH_SKILLS), pref.getString(MultipleNotificationActivity.this, U.SH_JOBLOCATION),
+                                    pref.getString(MultipleNotificationActivity.this, U.SH_COURSE), 3);
+                        }
+                    } else {
+                        finish();
+                    }
+                    break;
+                case "grp_jobs":
+                    fragment = JobListFragment.newInstance(U.NOTIJOBS, message.trim(), "");
+                    break;
+                case "upn":
+                    if (message.equals(U.UnReg_catArray[0])) {
+                        String district = pref.getString(MultipleNotificationActivity.this, U.SH_USER_DISTRICT_NAME);
+                        fragment = JobListFragment.newInstance(SU.DISTRICTWISE, "", district, "", "", "", "", "", "", "1");
+                    } else if (message.equals(U.UnReg_catArray[1])) {
+                        String mKey = localDB.getReadIds();
+                        if (!mKey.equals("")) {
+                            fragment = JobListFragment.newInstance(SU.GETRECENTJOBS, "", "");
+                        } else {
+                            fragment = JobListFragment.newInstance(U.ALLJOBS, "", "3");
+                        }
+                    } else if (message.equals(U.UnReg_catArray[2])) {
+                        if (!pref.getString(MultipleNotificationActivity.this, U.SH_RECENT_SEARCH_KEYS).equals("")) {
+                            String search = pref.getString(MultipleNotificationActivity.this, U.SH_RECENT_SEARCH_KEYS).replace(",", " ").replace("+", " ");
+                            fragment = JobListFragment.newInstance(U.ADVSEARCH, search, "key");
+                        } else {
+                            fragment = JobListFragment.newInstance(U.ALLJOBS, "", "3");
+                        }
+                    } else if (message.equals(U.UnReg_catArray[3])) {
+                        fragment = JobListFragment.newInstance(U.ALLJOBS, "", "3");
+                    } else if (message.equals(U.UnReg_catArray[4])) {
+                        fragment = setModeFragment(U.SH_FIRST_TIME_PRIVATE, "1");
+                    } else if (message.equals(U.UnReg_catArray[5])) {
+                        fragment = setModeFragment(U.SH_FIRST_TIME_STATE, "2");
+                    } else if (message.equals(U.UnReg_catArray[6])) {
+                        fragment = setModeFragment(U.SH_FIRST_TIME_CENTRAL, "3");
                     }
                     break;
             }
+        } else {
+            finish();
         }
 
-        viewPager = findViewById(R.id.viewpager);
-        textview = findViewById(R.id.txtTitle);
-        textview.setText(title);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return fragment;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    }
-
-    protected void setStatusBarTranslucent(boolean makeTranslucent) {
-        if (makeTranslucent) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            else {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            }
-        }
-    }
-
-    private void loadInDusAd() {
-        //INDUS ADD
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(U.INDUS_AD_EXIT);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        interstitialAd.loadAd(adRequest);
-        // ---- END ---
-    }
-
-    public void showIndus() {
-        interstitialAd.show();
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                finish();
-            }
-        });
     }
 
     public int checkFirstTime(String key) {
@@ -211,10 +240,26 @@ public class MultipleNotificationActivity extends FragmentActivity {
     }
 
     public Fragment setModeFragment(String key, String mode) {
-        JobListFragment fragment = JobListFragment.newInstance(SU.FILTER, "", "",
+        return JobListFragment.newInstance(SU.FILTER, "", "",
                 "", "", "", "" + mode, "", "",
                 "" + checkFirstTime(key));
-        return fragment;
+    }
+
+    public Fragment setFreshersFragment() {
+        return JobListFragment.newInstance(SU.FILTER, "", "",
+                "", "100,101", "", "", "", "", "" + checkFirstTime(U.SH_FIRST_TIME_FRESHERS));
+    }
+
+    public Fragment setFragment(String skills, String location, String qualification, int mode) {
+        return JobListFragment.newInstance(SU.GETRJOBS, skills, location,
+                qualification, "", "", "" + mode, "", "",
+                "1");
+    }
+
+    public Fragment setModeRFragment(String action, String skill, String location, String qualification, String empId,
+                                     String gender, String marital_status, String title, String category) {
+        return JobListFragment.newInstance(action, skill, location, qualification,
+                empId, gender, marital_status, 1, title);
     }
 
     public void showInfoDialog() {
@@ -252,8 +297,8 @@ public class MultipleNotificationActivity extends FragmentActivity {
         infodialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if (jobids != null) {
-                    if (jobids.equals("homeConsultancy")) {
+                if (message != null) {
+                    if (message.equals("homeConsultancy")) {
                         if (pref.getInt(MultipleNotificationActivity.this, U.SH_CONSULTANCY_INFO_SHOW) == 0) {
                             finish();
                         }
@@ -265,13 +310,59 @@ public class MultipleNotificationActivity extends FragmentActivity {
         infodialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (interstitialAd.isLoaded()) {
-            showIndus();
+    public void close() {
+        if (pref.getString(MultipleNotificationActivity.this, U.SH_USER_TYPE).equals("")) {
+            Intent i = new Intent(MultipleNotificationActivity.this, MainActivity.class);
+            finish();
+            startActivity(i);
+        } else if (mode.equals("initial")) {
+            if (pref.getString(MultipleNotificationActivity.this, U.SH_USER_TYPE).equals(U.EMPLOYER)) {
+                startActivity(new Intent(MultipleNotificationActivity.this, EmployerHomeActivity.class));
+                finish();
+            } else {
+                Intent i = new Intent(MultipleNotificationActivity.this, MainActivity.class).putExtra("mode", "gcm");
+                finish();
+                startActivity(i);
+            }
+        } else if (mode.equals("gcm")) {
+            Intent i = new Intent(MultipleNotificationActivity.this, MainActivity.class).putExtra("mode", "gcm");
+            finish();
+            startActivity(i);
+        } else if (mode.equals("reminderNoti")) {
+            startActivity(new Intent(MultipleNotificationActivity.this, EmployerHomeActivity.class));
+            finish();
         } else {
             finish();
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            close();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return fragment;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    }
+
 }

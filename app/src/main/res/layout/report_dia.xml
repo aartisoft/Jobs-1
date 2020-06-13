@@ -7,6 +7,17 @@
     android:gravity="center"
     android:background="@color/transparent">
 
+    <ImageView
+        android:id="@+id/close_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_circle_yellow"
+        android:padding="5dp"
+        android:layout_above="@id/layoutBottom"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/ic_close"/>
+
     <LinearLayout
         android:id="@+id/layoutBottom"
         android:layout_width="match_parent"
@@ -17,6 +28,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/rel_lay"
         android:orientation="vertical"
@@ -96,46 +108,20 @@
             android:textStyle="italic|bold"
             android:lineSpacingExtra="5dp"/>
 
-        <RadioGroup
-            android:layout_below="@+id/report"
-            android:id="@+id/report_group"
+        <Button
+            android:id="@+id/send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/lrtbp_10"
-            android:scrollbars="none">
-
-            <RadioButton
-                android:id="@+id/reportbtn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/fakejob"/>
-            <RadioButton
-                android:id="@+id/reportbtn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/lnf"/>
-            <RadioButton
-                android:id="@+id/reportbtn3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/exjob"/>
-            <RadioButton
-                android:id="@+id/reportbtn4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/cnr"/>
-            <RadioButton
-                android:id="@+id/reportbtn5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/others"/>
-        </RadioGroup>
+            android:padding="@dimen/lrtbp_10"
+            android:text="@string/send"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_grey"
+            android:layout_below="@+id/report"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/lrtbp_15"
+            android:layout_marginBottom="@dimen/lrtbp_15"/>
 
         <EditText
             android:id="@+id/report"
@@ -152,36 +138,58 @@
             android:layout_below="@+id/name"/>
 
 
-        <Button
-            android:id="@+id/send"
+        <RadioGroup
+            android:layout_below="@+id/report"
+            android:id="@+id/report_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/lrtbp_10"
-            android:text="@string/send"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:background="@drawable/layout_bg"
-            android:layout_below="@+id/report"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/lrtbp_15"
-            android:layout_marginBottom="@dimen/lrtbp_15"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/lrtbp_10"
+            android:scrollbars="none">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:buttonTint="@color/black"
+                android:text="@string/fakejob"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:buttonTint="@color/black"
+                android:text="@string/lnf"/>
+             <RadioButton
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="@string/mnf"
+                android:textColor="@color/white"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:buttonTint="@color/black"
+                android:text="@string/exjob"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:buttonTint="@color/black"
+                android:text="@string/cnr"/>
+            <RadioButton
+                android:id="@+id/reportbtn6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:buttonTint="@color/black"
+                android:text="@string/others"/>
+        </RadioGroup>
 
     </LinearLayout>
 
     </RelativeLayout>
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/close_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/lightblue_circle"
-        android:padding="5dp"
-        android:layout_above="@id/layoutBottom"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="-30dp"
-        android:src="@drawable/ic_close"/>
 
 </RelativeLayout>

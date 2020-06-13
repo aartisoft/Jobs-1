@@ -1,16 +1,9 @@
 <resources>
 
     <!-- sw720dp -->
-    
-    <dimen name="croll_app_width">600dp</dimen>
-    <dimen name="croll_app_height">190dp</dimen>
-    <dimen name="croll_insbut_width">140dp</dimen>
-    <dimen name="croll_insbut_height">55dp</dimen>
-     <dimen name="but_height">80dp</dimen>
 
-  
-    
-    <dimen name="lrtbp_5">8dp</dimen>  
+
+    <dimen name="lrtbp_5">8dp</dimen>
      <dimen name="lrtbp_10">20dp</dimen> 
       <dimen name="lrtbp_15">15dp</dimen> 
      <dimen name="lrtbp_20">20dp</dimen> 
@@ -40,11 +33,7 @@
            <dimen name="txt_12">18dp</dimen>
     <dimen name="txt_15">21dp</dimen>
          <dimen name="txt_16">25dp</dimen>
-    <dimen name="txt_17">26dp</dimen>
- <dimen name="txt_18">28dp</dimen>
+    <dimen name="txt_18">28dp</dimen>
   <dimen name="txt_20">32dp</dimen>
-  <dimen name="txt_24">36dp</dimen>
-  <dimen name="txt_22">32dp</dimen>
-  <dimen name="txt_25">38dp</dimen>
-    <dimen name="txt_50">76dp</dimen>
+    <dimen name="txt_25">38dp</dimen>
 </resources>

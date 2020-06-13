@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wh_150"
+        android:background="@drawable/half_rec">
+
+        <LinearLayout
+            android:id="@+id/helpLay_earn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/lrtbp_5"
+            android:orientation="vertical"
+            android:padding="@dimen/lrtbp_5"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/lrtbp_15"
+                android:layout_height="@dimen/lrtbp_15"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_help_circle_outline"
+                android:tint="@color/orange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Help"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_10"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="@dimen/lrtbp_10"
+            android:padding="@dimen/lrtbp_5"
+            android:text="SHARE &amp; EARN \n FREE JOB POST"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/lrtbp_10"
+        android:layout_marginLeft="@dimen/lrtbp_10"
+        android:layout_marginRight="@dimen/lrtbp_10"
+        android:layout_marginTop="@dimen/lrtbp_20"
+        android:gravity="center"
+        android:visibility="visible"
+        app:cardBackgroundColor="@color/thick_yellow"
+        app:cardCornerRadius="@dimen/lrtbp_10"
+        app:cardElevation="@dimen/wh_2">
+
+        <TextView
+            android:id="@+id/sharePromoBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/lrtbp_15"
+            android:text="Share and Earn Job Title"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/lrtbp_10"
+        android:layout_marginLeft="@dimen/lrtbp_10"
+        android:layout_marginRight="@dimen/lrtbp_10"
+        android:layout_marginTop="@dimen/lrtbp_20"
+        android:gravity="center"
+        app:cardBackgroundColor="@color/thick_yellow"
+        app:cardCornerRadius="@dimen/lrtbp_10"
+        app:cardElevation="@dimen/wh_2">
+
+        <TextView
+            android:id="@+id/earning_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/lrtbp_15"
+            android:text="Earned Job Titles"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
